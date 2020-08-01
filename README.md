@@ -1,4 +1,6 @@
-# countcheck: Detecting Count Anomalies Using a Bayesian Hierarchical Model
+# countcheck
+
+## Detecting Count Anomalies Using Bayesian Hierarchical Models
 
 Prototype for using a Bayesian hierarchical model to dertermine
 threshold values in anomaly detection problems. Dertermines upper control

@@ -1,6 +1,6 @@
 Package: countcheck
 Type: Package
-Title: Detecting Count Anomalies Using a Bayesian Hierarchical Model
+Title: Detecting Count Anomalies Using Bayesian Hierarchical Models
 Version: 0.1.0
 Author: Jens Meydam
 Maintainer: Jens Meydam <jmeydam at gmail dot com>

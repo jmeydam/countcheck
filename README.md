@@ -1,6 +1,8 @@
-# countcheck:<br>Detecting Count Anomalies Using Bayesian Hierarchical Models
+# countcheck
 
-Prototype (R package)
+## Detecting Count Anomalies Using Bayesian Hierarchical Models
+
+Prototype (R package).
 
 * Dertermines upper control limits for count data
 * Imports and exports data in CSV format

@@ -5,8 +5,8 @@
 Prototype (R package).
 
 * Dertermines upper control limits for count data
-* Imports and exports data in CSV format
-* Generates simple HTML reports
+* Reasonable results also in cases with few or no observed events
+* HTML reports
 
 Model and code are based on an examples in McElreath [2020] and
 Gelman et al. [2014].

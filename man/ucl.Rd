@@ -12,7 +12,7 @@ ucl(theta_hat, n_new)
 \item{n_new}{New value for exposure (reference counts)}
 }
 \value{
-UCL
+UCLs
 }
 \description{
 Basic formula for UCL: estimated mean + 3 * estimated standard deviation

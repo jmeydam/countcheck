@@ -12,7 +12,7 @@
 #'
 #' @param theta_hat Estimate (unless known) of rate parameter theta
 #' @param n_new New value for exposure (reference counts)
-#' @return UCL
+#' @return UCLs
 ucl <- function(theta_hat, n_new) {
   lambda_hat <- theta_hat * n_new
   # Parameter lambda is both mean and variance of Poisson distribution

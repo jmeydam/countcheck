@@ -72,8 +72,8 @@ theta_partpool <- function(unit, n, y, random_seed) {
   # distribution of our model.
   # Four chains with 4000 iterations each, of which half are used for
   # warm-up, giving 8000 samples for each of the parameters.
-  dat <- list(unit, n, y)
-  m <- ulam(
+  dat <- list(unit = unit, n = n, y = y)
+  m <- rethinking::ulam(
     alist(
       y ~ dpois(lambda),
       lambda <- n * theta[unit],
@@ -84,7 +84,7 @@ theta_partpool <- function(unit, n, y, random_seed) {
     chains = 4,
     iter = 4000,
     seed = random_seed)
-  post <- extract.samples(m)
+  post <- rethinking::extract.samples(m)
   post_theta_means <- apply(post$theta, 2, mean)
   # We will use the sample means as point estimates.
   post_theta_means

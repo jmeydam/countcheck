@@ -20,7 +20,7 @@ simulate_data <- function(units = 1000, random_seed = NULL) {
   # units. We use reference counts n as an approximate measure of exposure.
 
   # Draw values from a Pareto distribution with suitable parameters
-  v <- rpareto2(units, min = 0, shape = 5, scale = 1000)
+  v <- actuar::rpareto2(units, min = 0, shape = 5, scale = 1000)
   # Transform to discrete values for count data
   n <- ceiling(v)
   # n must never be 0 (and will not, since v will never be exactly 0)
@@ -45,7 +45,7 @@ simulate_data <- function(units = 1000, random_seed = NULL) {
 
   # Set "true" value of theta for each unit by drawing from a half-normal
   # distribution with parameter alpha.
-  true_theta <- rhnorm(units, alpha)
+  true_theta <- extraDistr::rhnorm(units, alpha)
 
   # Given the reference counts (exposure) n_i and the rate parameters theta_i
   # we can now draw count values of interest y_i from Poisson distributions.

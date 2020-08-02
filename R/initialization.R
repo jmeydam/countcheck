@@ -1,7 +1,6 @@
 #' Initialize data frame
 #'
 #' Construct data frame with these fields:
-#'
 #' - unit:            index for unit
 #' - n:               previous reference count values (measure of exposure)
 #' - y:               previous count values of interest

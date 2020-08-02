@@ -5,11 +5,11 @@
 #' of theta_i is the ratio of the observed count values of interest y_i to
 #' the reference count values n_i.
 #'
-#' @param d Initialized data frame
-#' @return data frame with values for theta_nopool
-nopool <- function(d) {
-  d$theta_nopool <- d$y / d$n
-  d
+#' @param n Previous reference count values (measure of exposure)
+#' @param y Previous count values of interest
+#' @return No-pooling estimates of theta
+theta_nopool <- function(n, y) {
+  y / n
 }
 
 #' Complete-pooling model
@@ -21,11 +21,11 @@ nopool <- function(d) {
 #' the observed count values of interest y_i to the sum of the
 #' reference count values n_i.
 #'
-#' @param d Initialized data frame
-#' @return data frame with values for theta_complpool
-complpool <- function(d) {
-  d$theta_complpool <- rep(sum(d$y) / sum(d$n), length(d$units))
-  d
+#' @param n Previous reference count values (measure of exposure)
+#' @param y Previous count values of interest
+#' @return Complete-pooling estimates of theta
+theta_complpool <- function(n, y) {
+  rep(sum(y) / sum(n), length(n))
 }
 
 #' Partial-pooling model (Bayesian hierarchical model)
@@ -62,15 +62,17 @@ complpool <- function(d) {
 #' We will use the mean of the theta samples drawn from the posterior
 #' distribution as the partial pooling estimate for theta.
 #'
-#' @param d Initialized data frame
-#' @param random_seed Seed value (default: 200731)
-#' @return data frame with values for theta_partpool
-partpool <- function(d, random_seed = 200731) {
+#' @param unit Index for units
+#' @param n Previous reference count values (measure of exposure)
+#' @param y Previous count values of interest
+#' @param random_seed Seed value for Stan
+#' @return Partial-pooling estimates of theta
+theta_partpool <- function(unit, n, y, random_seed) {
   # The function ulam() returns samples drawn from the posterior
   # distribution of our model.
   # Four chains with 4000 iterations each, of which half are used for
   # warm-up, giving 8000 samples for each of the parameters.
-  dat <- list(d$unit, d$n, d$y)
+  dat <- list(unit, n, y)
   m <- ulam(
     alist(
       y ~ dpois(lambda),
@@ -85,6 +87,34 @@ partpool <- function(d, random_seed = 200731) {
   post <- extract.samples(m)
   post_theta_means <- apply(post$theta, 2, mean)
   # We will use the sample means as point estimates.
-  d$theta_partpool <- post_theta_means
+  post_theta_means
+}
+
+#' Add no-pooling estimate of theta to data frame
+#'
+#' @param d Initialized data frame
+#' @return data frame with values for theta_nopool
+add_theta_nopool <- function(d) {
+  d$theta_nopool <- theta_nopool(d$n, d$y)
+  d
+}
+
+#' Add complete-pooling estimate of theta to data frame
+#'
+#' @param d Initialized data frame
+#' @return data frame with values for theta_complpool
+add_theta_complpool <- function(d) {
+  d$theta_complpool <- theta_complpool(d$n, d$y)
+  d
+}
+
+#' Add partial-pooling estimate of theta (based on Bayesian hierarchical
+#' model) to data frame
+#'
+#' @param d Initialized data frame
+#' @param random_seed Seed value for Stan (default: 200731)
+#' @return data frame with values for theta_partpool
+add_theta_partpool <- function(d, random_seed = 200731) {
+  d$theta_partpool <- theta_partpool(d$unit, d$n, d$y, random_seed)
   d
 }

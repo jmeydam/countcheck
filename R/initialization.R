@@ -27,13 +27,15 @@
 #' @return Initialized data frame
 initialize <- function(n, y, n_new, y_new, true_theta = NULL) {
 
+  units <- length(n)
+
   # Optional: true_theta
   if (is.null(true_theta)) {
     true_theta <- rep(NA, units)
   }
 
   data.frame(
-    unit = 1:length(n),
+    unit = 1:units,
     n = n,
     y = y,
     n_new = n_new,

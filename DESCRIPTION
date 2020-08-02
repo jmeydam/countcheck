@@ -10,6 +10,10 @@ Description: Dertermines upper control limits for count data.
     Model and code are based on examples in McElreath [2020] and
   Gelman et al. [2014].
 License: MIT
+Imports:
+    actuar,
+    extraDistr,
+    rethinking
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0

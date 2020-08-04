@@ -1,8 +1,8 @@
-test_drive <- FALSE
+test_drive <- TRUE
 
 if (test_drive) {
 
-  random_seed = 200804
+  random_seed = 200805
 
   # Simulate data for use in examples
   d <- simulate_data(units = 1000, random_seed = random_seed)

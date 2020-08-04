@@ -21,6 +21,7 @@
 #' \item \emph{ucl_partpool}:    UCL based on n_new and partial-pooling
 #'                               estimate of theta
 #' }
+#' Input vectors must be of equal length, with length >= 3.
 #' \emph{unit} is initialized based on the length of \code{n}.
 #' \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new}, and \emph{true_theta}
 #' (if known) are initialized using the corresponding parameters.
@@ -34,20 +35,36 @@
 #' @return Initialized data frame
 initialize <- function(n, y, n_new, y_new, true_theta = NULL) {
 
-  units <- length(n)
+  # check arguments
+  stopifnot(
+    # length of n >= 3
+    length(n) >= 3,
+    # length of mandatory arguments is the same
+    length(y) == length(n),
+    length(n_new) == length(n),
+    length(y_new) == length(n),
+    # length of optional argument, if present, is the same
+    ifelse(is.null(true_theta), length(n), length(true_theta)) == length(n),
+    # counts are integers
+    n == as.integer(n),
+    y == as.integer(y),
+    n_new == as.integer(n_new),
+    y_new == as.integer(y_new),
+    # true_theta, if present, is numeric
+    ifelse(is.null(true_theta), TRUE, is.numeric(true_theta))
+  )
 
-  # Optional: true_theta
-  if (is.null(true_theta)) {
-    true_theta <- rep(NA, units)
-  }
+  units <- length(n)
 
   data.frame(
     unit = 1:units,
-    n = n,
-    y = y,
-    n_new = n_new,
-    y_new = y_new,
-    true_theta = true_theta,
+    n = as.integer(n),
+    y = as.integer(y),
+    n_new = as.integer(n_new),
+    y_new = as.integer(y_new),
+    true_theta = ifelse(is.null(true_theta),
+                        rep(NA, units),
+                        as.numeric(true_theta)),
     theta_nopool = rep(NA, units),
     theta_complpool = rep(NA, units),
     theta_partpool = rep(NA, units),

@@ -42,6 +42,7 @@ Construct data frame with these fields:
 \item \emph{ucl_partpool}:    UCL based on n_new and partial-pooling
                               estimate of theta
 }
+Input vectors must be of equal length, with length >= 3.
 \emph{unit} is initialized based on the length of \code{n}.
 \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new}, and \emph{true_theta}
 (if known) are initialized using the corresponding parameters.

@@ -7,7 +7,7 @@
 ucl(theta_hat, n_new)
 }
 \arguments{
-\item{theta_hat}{Estimate (unless known) of rate parameter theta}
+\item{theta_hat}{Estimate (unless known) of rate parameter \emph{theta}}
 
 \item{n_new}{New value for exposure (reference counts)}
 }
@@ -15,11 +15,12 @@ ucl(theta_hat, n_new)
 UCLs
 }
 \description{
-Basic formula for UCL: estimated mean + 3 * estimated standard deviation
+Basic formula for UCL:
+\eqn{estimated mean + 3 * estimated standard deviation}
 }
 \details{
 In this case, assuming a Poisson distribution, both the estimated mean
-and the estimated variance are lambda_hat = theta_hat * n_new.
+and the estimated variance are \deqn{lambda_hat = theta_hat * n_new}.
 
 Round the result to the nearest integer.
 

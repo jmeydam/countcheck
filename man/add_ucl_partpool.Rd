@@ -2,7 +2,7 @@
 % Please edit documentation in R/ucls.R
 \name{add_ucl_partpool}
 \alias{add_ucl_partpool}
-\title{Add partial-pooling UCL (based on Bayesian hierarchical model) to data frame}
+\title{Add partial-pooling UCL to data frame}
 \usage{
 add_ucl_partpool(d)
 }
@@ -10,8 +10,9 @@ add_ucl_partpool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for ucl_partpool
+data frame with values for \emph{ucl_partpool}
 }
 \description{
-UCL based on n_new and partial-pooling estimate of theta
+Add UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
+to data frame.
 }

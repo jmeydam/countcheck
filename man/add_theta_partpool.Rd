@@ -2,8 +2,7 @@
 % Please edit documentation in R/models.R
 \name{add_theta_partpool}
 \alias{add_theta_partpool}
-\title{Add partial-pooling estimate of theta (based on Bayesian hierarchical
-model) to data frame}
+\title{Add partial-pooling estimate of \emph{theta} to data frame}
 \usage{
 add_theta_partpool(d, random_seed = 200731)
 }
@@ -13,9 +12,9 @@ add_theta_partpool(d, random_seed = 200731)
 \item{random_seed}{Seed value for Stan (default: 200731)}
 }
 \value{
-data frame with values for theta_partpool
+data frame with values for \emph{theta_partpool}
 }
 \description{
-Add partial-pooling estimate of theta (based on Bayesian hierarchical
-model) to data frame
+Add partial-pooling estimate of \emph{theta} (based on Bayesian hierarchical
+model) to data frame.
 }

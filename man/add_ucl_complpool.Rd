@@ -10,8 +10,9 @@ add_ucl_complpool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for ucl_complpool
+data frame with values for \emph{ucl_complpool}
 }
 \description{
-UCL based on n_new and complete-pooling estimate of theta
+Add UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
+to data frame.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/models.R
 \name{add_theta_nopool}
 \alias{add_theta_nopool}
-\title{Add no-pooling estimate of theta to data frame}
+\title{Add no-pooling estimate of \emph{theta} to data frame}
 \usage{
 add_theta_nopool(d)
 }
@@ -10,8 +10,8 @@ add_theta_nopool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for theta_nopool
+data frame with values for \emph{theta_nopool}
 }
 \description{
-Add no-pooling estimate of theta to data frame
+Add no-pooling estimate of \emph{theta} to data frame.
 }

@@ -10,8 +10,9 @@ add_ucl_nopool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for ucl_nopool
+data frame with values for \emph{ucl_nopool}
 }
 \description{
-UCL based on n_new and no-pooling estimate of theta
+Add UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
+to data frame.
 }

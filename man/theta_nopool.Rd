@@ -12,11 +12,11 @@ theta_nopool(n, y)
 \item{y}{Previous count values of interest}
 }
 \value{
-No-pooling estimates of theta
+No-pooling estimates of \emph{theta}
 }
 \description{
-For the no-pooling model we estimate theta_i using only the observed
-counts of observational unit i. For each unit i our no-pooling estimate
-of theta_i is the ratio of the observed count values of interest y_i to
-the reference count values n_i.
+For the no-pooling model we estimate \emph{theta_i} using only the observed
+counts of observational unit \emph{i}. For each unit \emph{i} our no-pooling
+estimate of \emph{theta_i} is the ratio of the observed count values of
+interest \emph{y_i} to the reference count values \emph{n_i}.
 }

@@ -10,8 +10,9 @@ add_ucl_true_theta(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for ucl_true_theta
+data frame with values for \emph{ucl_true_theta}
 }
 \description{
-UCL based on n_new and true value of theta
+Add UCL based on \emph{n_new} and true value of \emph{theta} to
+data frame.
 }

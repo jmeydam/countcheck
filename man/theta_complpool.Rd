@@ -12,13 +12,13 @@ theta_complpool(n, y)
 \item{y}{Previous count values of interest}
 }
 \value{
-Complete-pooling estimates of theta
+Complete-pooling estimates of \emph{theta}
 }
 \description{
-For the complete-pooling model we consider theta_i to be the same
+For the complete-pooling model we consider \emph{theta_i} to be the same
 for all observational units. We assume that observed data can be
-treated as coming from a homogeneous source. For all units i our
-complete-pooling estimate of theta_i is the ratio of the sum of
-the observed count values of interest y_i to the sum of the
-reference count values n_i.
+treated as coming from a homogeneous source. For all units \emph{i} our
+complete-pooling estimate of \emph{theta_i} is the ratio of the sum of
+the observed count values of interest \emph{y_i} to the sum of the
+reference count values \emph{n_i}.
 }

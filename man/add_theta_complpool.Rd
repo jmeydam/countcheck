@@ -2,7 +2,7 @@
 % Please edit documentation in R/models.R
 \name{add_theta_complpool}
 \alias{add_theta_complpool}
-\title{Add complete-pooling estimate of theta to data frame}
+\title{Add complete-pooling estimate of \emph{theta} to data frame}
 \usage{
 add_theta_complpool(d)
 }
@@ -10,8 +10,8 @@ add_theta_complpool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for theta_complpool
+data frame with values for \emph{theta_complpool}
 }
 \description{
-Add complete-pooling estimate of theta to data frame
+Add complete-pooling estimate of \emph{theta} to data frame.
 }

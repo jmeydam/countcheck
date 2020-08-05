@@ -4,7 +4,7 @@
 \alias{theta_partpool}
 \title{Partial-pooling model (Bayesian hierarchical model)}
 \usage{
-theta_partpool(unit, n, y, random_seed)
+theta_partpool(unit, n, y, random_seed = 200731)
 }
 \arguments{
 \item{unit}{Index for units}
@@ -13,7 +13,7 @@ theta_partpool(unit, n, y, random_seed)
 
 \item{y}{Previous count values of interest}
 
-\item{random_seed}{Seed value for Stan}
+\item{random_seed}{Seed value for Stan (default: 200731)}
 }
 \value{
 Partial-pooling estimates of \emph{theta}

@@ -9,6 +9,14 @@
 #' @param y Previous count values of interest
 #' @return No-pooling estimates of \emph{theta}
 theta_nopool <- function(n, y) {
+  # check arguments
+  stopifnot(
+    # denominator must not be 0
+    # n must be 1 or greater
+    sum(n < 1) == 0,
+    # y must be non-negative
+    sum(y < 0) == 0
+  )
   y / n
 }
 
@@ -25,6 +33,14 @@ theta_nopool <- function(n, y) {
 #' @param y Previous count values of interest
 #' @return Complete-pooling estimates of \emph{theta}
 theta_complpool <- function(n, y) {
+  # check arguments
+  stopifnot(
+    # n must be 1 or greater
+    # (then always sum(n) > 0, so denominator cannot be 0)
+    sum(n < 1) == 0,
+    # y must be non-negative
+    sum(y < 0) == 0
+  )
   rep(sum(y) / sum(n), length(n))
 }
 
@@ -65,9 +81,18 @@ theta_complpool <- function(n, y) {
 #' @param unit Index for units
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
-#' @param random_seed Seed value for Stan
+#' @param random_seed Seed value for Stan (default: 200731)
 #' @return Partial-pooling estimates of \emph{theta}
-theta_partpool <- function(unit, n, y, random_seed) {
+theta_partpool <- function(unit, n, y, random_seed = 200731) {
+  # check arguments
+  stopifnot(
+    # unit must be unique
+    length(unit) == length(unique(unit)),
+    # n must be 1 or greater
+    sum(n < 1) == 0,
+    # y must be non-negative
+    sum(y < 0) == 0
+  )
   # The function ulam() returns samples drawn from the posterior
   # distribution of our model.
   # Four chains with 4000 iterations each, of which half are used for
@@ -83,7 +108,8 @@ theta_partpool <- function(unit, n, y, random_seed) {
     data = dat,
     chains = 4,
     iter = 4000,
-    seed = random_seed)
+    seed = random_seed
+  )
   post <- rethinking::extract.samples(m)
   post_theta_means <- apply(post$theta, 2, mean)
   # We will use the sample means as point estimates.
@@ -95,7 +121,7 @@ theta_partpool <- function(unit, n, y, random_seed) {
 #' Add no-pooling estimate of \emph{theta} to data frame.
 #'
 #' @param d Initialized data frame
-#' @return data frame with values for \emph{theta_nopool}
+#' @return Data frame with values for \emph{theta_nopool}
 add_theta_nopool <- function(d) {
   d$theta_nopool <- theta_nopool(d$n, d$y)
   d
@@ -106,7 +132,7 @@ add_theta_nopool <- function(d) {
 #' Add complete-pooling estimate of \emph{theta} to data frame.
 #'
 #' @param d Initialized data frame
-#' @return data frame with values for \emph{theta_complpool}
+#' @return Data frame with values for \emph{theta_complpool}
 add_theta_complpool <- function(d) {
   d$theta_complpool <- theta_complpool(d$n, d$y)
   d
@@ -119,7 +145,7 @@ add_theta_complpool <- function(d) {
 #'
 #' @param d Initialized data frame
 #' @param random_seed Seed value for Stan (default: 200731)
-#' @return data frame with values for \emph{theta_partpool}
+#' @return Data frame with values for \emph{theta_partpool}
 add_theta_partpool <- function(d, random_seed = 200731) {
   d$theta_partpool <- theta_partpool(d$unit, d$n, d$y, random_seed)
   d

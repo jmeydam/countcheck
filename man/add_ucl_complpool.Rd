@@ -4,13 +4,15 @@
 \alias{add_ucl_complpool}
 \title{Add complete-pooling UCL to data frame}
 \usage{
-add_ucl_complpool(d)
+add_ucl_complpool(d, factor_sd = 3)
 }
 \arguments{
 \item{d}{Initialized data frame}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }
 \value{
-data frame with values for \emph{ucl_complpool}
+Data frame with values for \emph{ucl_complpool}
 }
 \description{
 Add UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}

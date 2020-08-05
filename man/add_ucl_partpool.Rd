@@ -4,13 +4,15 @@
 \alias{add_ucl_partpool}
 \title{Add partial-pooling UCL to data frame}
 \usage{
-add_ucl_partpool(d)
+add_ucl_partpool(d, factor_sd = 3)
 }
 \arguments{
 \item{d}{Initialized data frame}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }
 \value{
-data frame with values for \emph{ucl_partpool}
+Data frame with values for \emph{ucl_partpool}
 }
 \description{
 Add UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}

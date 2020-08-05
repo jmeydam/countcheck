@@ -12,7 +12,7 @@ simulate_data(units = 1000, random_seed = NULL)
 \item{random_seed}{Seed value (optional)}
 }
 \value{
-data frame initialized with simulated data
+Data frame initialized with simulated data
 }
 \description{
 The distributions and parameters in this simulation have been chosen

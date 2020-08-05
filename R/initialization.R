@@ -56,22 +56,25 @@ initialize <- function(n, y, n_new, y_new, true_theta = NULL) {
 
   units <- length(n)
 
+  # Optional: true_theta
+  if (is.null(true_theta)) {
+    true_theta <- rep(NA, units)
+  }
+
   data.frame(
     unit = 1:units,
     n = as.integer(n),
     y = as.integer(y),
     n_new = as.integer(n_new),
     y_new = as.integer(y_new),
-    true_theta = ifelse(is.null(true_theta),
-                        rep(NA, units),
-                        as.numeric(true_theta)),
-    theta_nopool = rep(NA, units),
-    theta_complpool = rep(NA, units),
-    theta_partpool = rep(NA, units),
-    ucl_true_theta = rep(NA, units),
-    ucl_nopool = rep(NA, units),
-    ucl_complpool = rep(NA, units),
-    ucl_partpool = rep(NA, units)
+    true_theta = as.numeric(true_theta),
+    theta_nopool = as.numeric(rep(NA, units)),
+    theta_complpool = as.numeric(rep(NA, units)),
+    theta_partpool = as.numeric(rep(NA, units)),
+    ucl_true_theta = as.numeric(rep(NA, units)),
+    ucl_nopool = as.numeric(rep(NA, units)),
+    ucl_complpool = as.numeric(rep(NA, units)),
+    ucl_partpool = as.numeric(rep(NA, units))
   )
 
 }

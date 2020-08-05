@@ -10,7 +10,7 @@ add_theta_complpool(d)
 \item{d}{Initialized data frame}
 }
 \value{
-data frame with values for \emph{theta_complpool}
+Data frame with values for \emph{theta_complpool}
 }
 \description{
 Add complete-pooling estimate of \emph{theta} to data frame.

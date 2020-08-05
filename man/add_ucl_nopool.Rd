@@ -4,13 +4,15 @@
 \alias{add_ucl_nopool}
 \title{Add no-pooling UCL to data frame}
 \usage{
-add_ucl_nopool(d)
+add_ucl_nopool(d, factor_sd = 3)
 }
 \arguments{
 \item{d}{Initialized data frame}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }
 \value{
-data frame with values for \emph{ucl_nopool}
+Data frame with values for \emph{ucl_nopool}
 }
 \description{
 Add UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}

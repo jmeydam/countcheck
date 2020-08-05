@@ -4,12 +4,14 @@
 \alias{ucl}
 \title{Calculate upper control limit (UCL)}
 \usage{
-ucl(theta_hat, n_new)
+ucl(theta_hat, n_new, factor_sd = 3)
 }
 \arguments{
 \item{theta_hat}{Estimate (unless known) of rate parameter \emph{theta}}
 
 \item{n_new}{New value for exposure (reference counts)}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }
 \value{
 UCLs

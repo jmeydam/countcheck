@@ -19,9 +19,9 @@ test_that("initialize() rejects arguments that are not plausible", {
       y = c(1, 2, 3),
       n_new = c(1, 2, 3),
       y_new = c(1, 2, 3),
-      true_theta = 1
+      true_theta = 0.9
     ),
-    "ifelse(is.null(true_theta), length(n), length(true_theta)) == ",
+    "ifelse(is.null(true_theta), length(n), length(true_theta))",
     fixed = TRUE
   )
   expect_error(
@@ -80,18 +80,69 @@ test_that("initialize() rejects arguments that are not plausible", {
 })
 
 test_that("initialize() returns a plausible data frame", {
-  expect_equal(nrow(initialize(
+  expect_equal(dim(initialize(
     n = c(1, 2, 3),
     y = c(1, 2, 3),
     n_new = c(1, 1, 1),
     y_new = c(1, 1, 1),
     true_theta = NULL
-  )), 3)
-  expect_equal(nrow(initialize(
+  )), c(3, 13))
+  expect_equal(dim(initialize(
     n = c(1, 2, 3),
     y = c(1, 2, 3),
     n_new = c(1, 1, 1),
     y_new = c(1, 1, 1),
-    true_theta = c(0.1, 0.1, 0.1)
-  )), 3)
+    true_theta = c(0.9, 0.9, 0.9)
+  )), c(3, 13))
+  expect_equal(
+    colnames(initialize(
+      n = c(1, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(1, 1, 1),
+      y_new = c(1, 1, 1),
+      true_theta = NULL
+    )),
+    c(
+      "unit",
+      "n",
+      "y",
+      "n_new",
+      "y_new",
+      "true_theta",
+      "theta_nopool",
+      "theta_complpool",
+      "theta_partpool",
+      "ucl_true_theta",
+      "ucl_nopool",
+      "ucl_complpool",
+      "ucl_partpool"
+    )
+  )
+  expect_equal(
+    unname(sapply(
+      initialize(
+        n = c(1, 2, 3),
+        y = c(1, 2, 3),
+        n_new = c(1, 1, 1),
+        y_new = c(1, 1, 1),
+        true_theta = c(0.9, 0.9, 0.9)
+      ),
+      class
+    )),
+    c(
+      "integer",
+      "integer",
+      "integer",
+      "integer",
+      "integer",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric"
+    )
+  )
 })

@@ -6,7 +6,7 @@
 #'
 #' @param units Number of observational units (default: 1000)
 #' @param random_seed Seed value (optional)
-#' @return data frame initialized with simulated data
+#' @return Data frame initialized with simulated data
 simulate_data <- function(units = 1000, random_seed = NULL) {
 
   # Optional: set random seed

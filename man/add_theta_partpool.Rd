@@ -12,7 +12,7 @@ add_theta_partpool(d, random_seed = 200731)
 \item{random_seed}{Seed value for Stan (default: 200731)}
 }
 \value{
-data frame with values for \emph{theta_partpool}
+Data frame with values for \emph{theta_partpool}
 }
 \description{
 Add partial-pooling estimate of \emph{theta} (based on Bayesian hierarchical

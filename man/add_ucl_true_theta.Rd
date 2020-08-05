@@ -4,13 +4,15 @@
 \alias{add_ucl_true_theta}
 \title{Add "true" UCL to data frame}
 \usage{
-add_ucl_true_theta(d)
+add_ucl_true_theta(d, factor_sd = 3)
 }
 \arguments{
 \item{d}{Initialized data frame}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }
 \value{
-data frame with values for \emph{ucl_true_theta}
+Data frame with values for \emph{ucl_true_theta}
 }
 \description{
 Add UCL based on \emph{n_new} and true value of \emph{theta} to

@@ -5,6 +5,7 @@
 #' estimate of \emph{theta_i} is the ratio of the observed count values of
 #' interest \emph{y_i} to the reference count values \emph{n_i}.
 #'
+#' @export
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
 #' @return No-pooling estimates of \emph{theta}
@@ -29,6 +30,7 @@ theta_nopool <- function(n, y) {
 #' the observed count values of interest \emph{y_i} to the sum of the
 #' reference count values \emph{n_i}.
 #'
+#' @export
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
 #' @return Complete-pooling estimates of \emph{theta}
@@ -78,6 +80,7 @@ theta_complpool <- function(n, y) {
 #' We will use the mean of the \emph{theta} samples drawn from the posterior
 #' distribution as the partial pooling estimate for \emph{theta}.
 #'
+#' @export
 #' @param unit Index for units
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
@@ -120,6 +123,7 @@ theta_partpool <- function(unit, n, y, random_seed = 200731) {
 #'
 #' Add no-pooling estimate of \emph{theta} to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @return Data frame with values for \emph{theta_nopool}
 add_theta_nopool <- function(d) {
@@ -131,6 +135,7 @@ add_theta_nopool <- function(d) {
 #'
 #' Add complete-pooling estimate of \emph{theta} to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @return Data frame with values for \emph{theta_complpool}
 add_theta_complpool <- function(d) {
@@ -143,6 +148,7 @@ add_theta_complpool <- function(d) {
 #' Add partial-pooling estimate of \emph{theta} (based on Bayesian hierarchical
 #' model) to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @param random_seed Seed value for Stan (default: 200731)
 #' @return Data frame with values for \emph{theta_partpool}

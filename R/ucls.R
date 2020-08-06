@@ -11,6 +11,7 @@
 #' Add 0.5, so that count values are either above or below the UCL
 #' (as in Wheeler & Chambers [1992]).
 #'
+#' @export
 #' @param theta_hat Estimate (unless known) of rate parameter \emph{theta}
 #' @param n_new New value for exposure (reference counts)
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
@@ -26,6 +27,7 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #' Add UCL based on \emph{n_new} and true value of \emph{theta} to
 #' data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_true_theta}
@@ -39,6 +41,7 @@ add_ucl_true_theta <- function(d, factor_sd = 3) {
 #' Add UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
 #' to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_nopool}
@@ -52,6 +55,7 @@ add_ucl_nopool <- function(d, factor_sd = 3) {
 #' Add UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
 #' to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_complpool}
@@ -65,6 +69,7 @@ add_ucl_complpool <- function(d, factor_sd = 3) {
 #' Add UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
 #' to data frame.
 #'
+#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_partpool}

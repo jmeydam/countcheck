@@ -27,6 +27,7 @@
 #' (if known) are initialized using the corresponding parameters.
 #' The other fields are initialized with NA.
 #'
+#' @export
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
 #' @param n_new New reference count values

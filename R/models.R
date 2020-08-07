@@ -81,16 +81,13 @@ theta_complpool <- function(n, y) {
 #' distribution as the partial pooling estimate for \emph{theta}.
 #'
 #' @export
-#' @param unit Index for units
 #' @param n Previous reference count values (measure of exposure)
 #' @param y Previous count values of interest
 #' @param random_seed Seed value for Stan (default: 200731)
 #' @return Partial-pooling estimates of \emph{theta}
-theta_partpool <- function(unit, n, y, random_seed = 200731) {
+theta_partpool <- function(n, y, random_seed = 200731) {
   # check arguments
   stopifnot(
-    # unit must be unique
-    length(unit) == length(unique(unit)),
     # n must be 1 or greater
     sum(n < 1) == 0,
     # y must be non-negative
@@ -100,6 +97,7 @@ theta_partpool <- function(unit, n, y, random_seed = 200731) {
   # distribution of our model.
   # Four chains with 4000 iterations each, of which half are used for
   # warm-up, giving 8000 samples for each of the parameters.
+  unit <- 1:length(n) # unit must be index of sequence
   dat <- list(unit = unit, n = n, y = y)
   m <- rethinking::ulam(
     alist(
@@ -153,6 +151,6 @@ add_theta_complpool <- function(d) {
 #' @param random_seed Seed value for Stan (default: 200731)
 #' @return Data frame with values for \emph{theta_partpool}
 add_theta_partpool <- function(d, random_seed = 200731) {
-  d$theta_partpool <- theta_partpool(d$unit, d$n, d$y, random_seed)
+  d$theta_partpool <- theta_partpool(d$n, d$y, random_seed)
   d
 }

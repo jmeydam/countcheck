@@ -4,11 +4,9 @@
 \alias{theta_partpool}
 \title{Partial-pooling model (Bayesian hierarchical model)}
 \usage{
-theta_partpool(unit, n, y, random_seed = 200731)
+theta_partpool(n, y, random_seed = 200731)
 }
 \arguments{
-\item{unit}{Index for units}
-
 \item{n}{Previous reference count values (measure of exposure)}
 
 \item{y}{Previous count values of interest}

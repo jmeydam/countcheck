@@ -47,6 +47,6 @@ Construct data frame with these fields:
 Input vectors must be of equal length, with length >= 3.
 \emph{unit}, \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new},
 and \emph{true_theta} (if known) are initialized using the
-corresponding parameters. The other fields (and \emph{true_theta}
-(if not known)) are initialized with NA.
+corresponding parameters. The other fields (and \emph{true_theta},
+if not known) are initialized with NA.
 }

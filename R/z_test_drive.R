@@ -1,4 +1,4 @@
-test_drive <- FALSE
+test_drive <- TRUE
 
 if (test_drive) {
 

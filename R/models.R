@@ -16,7 +16,9 @@ theta_nopool <- function(n, y) {
     # n must be 1 or greater
     sum(n < 1) == 0,
     # y must be non-negative
-    sum(y < 0) == 0
+    sum(y < 0) == 0,
+    # n and y must be vectors of same length
+    length(n) == length(y)
   )
   y / n
 }
@@ -41,7 +43,9 @@ theta_complpool <- function(n, y) {
     # (then always sum(n) > 0, so denominator cannot be 0)
     sum(n < 1) == 0,
     # y must be non-negative
-    sum(y < 0) == 0
+    sum(y < 0) == 0,
+    # n and y must be vectors of same length
+    length(n) == length(y)
   )
   rep(sum(y) / sum(n), length(n))
 }
@@ -91,7 +95,9 @@ theta_partpool <- function(n, y, random_seed = 200731) {
     # n must be 1 or greater
     sum(n < 1) == 0,
     # y must be non-negative
-    sum(y < 0) == 0
+    sum(y < 0) == 0,
+    # n and y must be vectors of same length
+    length(n) == length(y)
   )
   # The function ulam() returns samples drawn from the posterior
   # distribution of our model.

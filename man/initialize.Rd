@@ -4,9 +4,11 @@
 \alias{initialize}
 \title{Initialize data frame}
 \usage{
-initialize(n, y, n_new, y_new, true_theta = NULL)
+initialize(unit, n, y, n_new, y_new, true_theta = NULL)
 }
 \arguments{
+\item{unit}{ID for unit}
+
 \item{n}{Previous reference count values (measure of exposure)}
 
 \item{y}{Previous count values of interest}
@@ -23,7 +25,7 @@ Initialized data frame
 \description{
 Construct data frame with these fields:
 \itemize{
-\item \emph{unit}:            index for unit
+\item \emph{unit}:            ID for unit
 \item \emph{n}:               previous reference count values
                               (measure of exposure)
 \item \emph{y}:               previous count values of interest
@@ -43,8 +45,8 @@ Construct data frame with these fields:
                               estimate of theta
 }
 Input vectors must be of equal length, with length >= 3.
-\emph{unit} is initialized based on the length of \code{n}.
-\emph{n}, \emph{y}, \emph{n_new}, \emph{y_new}, and \emph{true_theta}
-(if known) are initialized using the corresponding parameters.
-The other fields are initialized with NA.
+\emph{unit}, \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new},
+and \emph{true_theta} (if known) are initialized using the
+corresponding parameters. The other fields (and \emph{true_theta}
+(if not known)) are initialized with NA.
 }

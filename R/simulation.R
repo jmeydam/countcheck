@@ -63,5 +63,5 @@ simulate_data <- function(units = 1000, random_seed = NULL) {
   # lambda equaling the product of n_new and the true_theta.
   y_new <- rpois(units, lambda = n_new * true_theta)
 
-  initialize(n, y, n_new, y_new, true_theta)
+  initialize(unit = 1:length(n), n, y, n_new, y_new, true_theta)
 }

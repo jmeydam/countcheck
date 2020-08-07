@@ -22,10 +22,11 @@ Basic formula for UCL:
 }
 \details{
 In this case, assuming a Poisson distribution, both the estimated mean
-and the estimated variance are \deqn{lambda_hat = theta_hat * n_new}.
+and the estimated variance are
+\deqn{lambda_hat = theta_hat * n_new}
 
-Round the result to the nearest integer.
+Rounds the result to the nearest integer.
 
-Add 0.5, so that count values are either above or below the UCL
+Adds 0.5, so that count values are either above or below the UCL
 (as in Wheeler & Chambers [1992]).
 }

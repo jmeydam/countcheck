@@ -4,11 +4,12 @@
 #' \eqn{estimated mean + 3 * estimated standard deviation}
 #'
 #' In this case, assuming a Poisson distribution, both the estimated mean
-#' and the estimated variance are \deqn{lambda_hat = theta_hat * n_new}.
+#' and the estimated variance are
+#' \deqn{lambda_hat = theta_hat * n_new}
 #'
-#' Round the result to the nearest integer.
+#' Rounds the result to the nearest integer.
 #'
-#' Add 0.5, so that count values are either above or below the UCL
+#' Adds 0.5, so that count values are either above or below the UCL
 #' (as in Wheeler & Chambers [1992]).
 #'
 #' @export
@@ -20,6 +21,37 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
   lambda_hat <- theta_hat * n_new
   # Parameter lambda is both mean and variance of Poisson distribution
   round(lambda_hat + factor_sd * sqrt(lambda_hat)) + 0.5
+}
+
+#' Calculate by how many standard deviations y_new exceeds upper
+#' control limit (UCL)
+#'
+#' Calculates factor \emph{e}, with observed \emph{y_new} exceeding UCL by
+#'   \eqn{e * sd(y_new)}.
+#'
+#' Assuming a Poisson distribution with
+#' \deqn{lambda_hat = theta_hat * n_new}
+#' the estimated standard deviation of \emph{y_new}
+#' is
+#' \deqn{sqrt(lambda_hat)}
+#'
+#' @export
+#' @param theta_hat Estimate (unless known) of rate parameter \emph{theta}
+#' @param n_new New value for exposure (reference counts)
+#' @param y_new New count values of interest
+#' @param ucl Upper control limit (UCL)
+#' @return Factor \emph{e}, with observed \emph{y_new} exceeding UCL by
+#'   \eqn{e * sd(y_new)}
+factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
+  lambda_hat <- theta_hat * n_new
+  # Parameter lambda is both mean and variance of Poisson distribution
+  sd_hat <- sqrt(lambda_hat)
+  if (sd_hat > 0) {
+    e <- (y_new - ucl) / sd_hat
+  } else {
+    e <- Inf
+  }
+  e
 }
 
 #' Add "true" UCL to data frame

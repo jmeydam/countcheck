@@ -13,6 +13,18 @@ Gelman et al. [2014].
 
 ## Example
 
+Count data for 1000 observational units are simulated, assuming a "normal"
+data-generating process.
+
+Since the data-generating process is free of anomalies, all counts exceeding 
+their respective upper control limits (UCLs) are false positives. Other things 
+being equal it is desirable to have as few false positives as possible.
+
+Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed
+their respective upper control limits, vs. 68 when using a no-pooling 
+model. (4 counts exceed the UCLs based on the true value of the parameter 
+_theta_, which is known in this case.)
+
 ```
 > devtools::install_github("https://github.com/jmeydam/countcheck.git")
 > library(countcheck)

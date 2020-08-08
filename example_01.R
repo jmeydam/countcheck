@@ -17,7 +17,6 @@ sum(d$y_new - d$ucl_complpool > 0)
 sum(d$y_new - d$ucl_partpool > 0)
 
 d[d$y_new - d$ucl_partpool > 0,
-  c("unit", "n", "y", "n_new", "y_new",
+  c("n", "y", "n_new", "y_new",
     "true_theta", "theta_partpool",
-    "ucl_true_theta", "ucl_partpool",
-    "fe_true_theta", "fe_partpool")]
+    "ucl_true_theta", "ucl_partpool", "fe_partpool")]

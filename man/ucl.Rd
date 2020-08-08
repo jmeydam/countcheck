@@ -9,7 +9,7 @@ ucl(theta_hat, n_new, factor_sd = 3)
 \arguments{
 \item{theta_hat}{Estimate (unless known) of rate parameter \emph{theta}}
 
-\item{n_new}{New value for exposure (reference counts)}
+\item{n_new}{New value for exposure (reference counts), must at least be 1}
 
 \item{factor_sd}{Factor multiplying standard deviation (default: 3)}
 }

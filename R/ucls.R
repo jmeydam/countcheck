@@ -14,10 +14,21 @@
 #'
 #' @export
 #' @param theta_hat Estimate (unless known) of rate parameter \emph{theta}
-#' @param n_new New value for exposure (reference counts)
+#' @param n_new New value for exposure (reference counts), must at least be 1
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return UCLs
 ucl <- function(theta_hat, n_new, factor_sd = 3) {
+  # check arguments
+  stopifnot(
+    # theta_hat must be non-negative
+    sum(theta_hat < 0) == 0,
+    # n_new must be 1 or greater
+    sum(n_new < 1) == 0,
+    # theta_hat and n_new must be vectors of same length
+    length(theta_hat) == length(n_new),
+    # factor_sd must be non-negative
+    factor_sd >= 0
+  )
   lambda_hat <- theta_hat * n_new
   # Parameter lambda is both mean and variance of Poisson distribution
   round(lambda_hat + factor_sd * sqrt(lambda_hat)) + 0.5
@@ -26,8 +37,8 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #' Calculate by how many standard deviations y_new exceeds upper
 #' control limit (UCL)
 #'
-#' Calculates factor \emph{e}, with observed \emph{y_new} exceeding UCL by
-#'   \eqn{e * sd(y_new)}.
+#' Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
+#'   \eqn{f * sd(y_new)}.
 #'
 #' Assuming a Poisson distribution with
 #' \deqn{lambda_hat = theta_hat * n_new}
@@ -37,12 +48,29 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #'
 #' @export
 #' @param theta_hat Estimate (unless known) of rate parameter \emph{theta}
-#' @param n_new New value for exposure (reference counts)
+#' @param n_new New value for exposure (reference counts), must at least be 1
 #' @param y_new New count values of interest
-#' @param ucl Upper control limit (UCL)
-#' @return Factor \emph{e}, with observed \emph{y_new} exceeding UCL by
-#'   \eqn{e * sd(y_new)}
+#' @param ucl Upper control limit (UCL), must be greater than 0
+#' @return Factor \emph{f}, with observed \emph{y_new} exceeding UCL by
+#'   \eqn{f * sd(y_new)}
 factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
+  # check arguments
+  stopifnot(
+    # theta_hat must be non-negative
+    sum(theta_hat < 0) == 0,
+    # n_new must be 1 or greater
+    sum(n_new < 1) == 0,
+    # y_new must be non-negative
+    sum(y_new < 0) == 0,
+    # ucl must be greater than 0
+    sum(ucl <= 0) == 0,
+    # theta_hat and n_new must be vectors of same length
+    length(theta_hat) == length(n_new),
+    # y_new and n_new must be vectors of same length
+    length(y_new) == length(n_new),
+    # ucl and n_new must be vectors of same length
+    length(ucl) == length(n_new)
+  )
   lambda_hat <- theta_hat * n_new
   # Parameter lambda is both mean and variance of Poisson distribution
   sd_hat <- sqrt(lambda_hat)

@@ -62,16 +62,66 @@ test_that("initialize() rejects arguments that are not plausible", {
     "n == as.integer(n) are not all TRUE",
     fixed = TRUE
   )
-  expect_error(suppressWarnings(initialize(
-    unit = c(1, 2, 3),
-    n = c("A", "B", "C"),
-    y = c(1, 2, 3),
-    n_new = c(1, 2, 3),
-    y_new = c(1, 2, 3),
-    true_theta = NULL
-  )),
-  "n == as.integer(n) are not all TRUE",
-  fixed = TRUE)
+  expect_error(
+    suppressWarnings(initialize(
+      unit = c(1, 2, 3),
+      n = c("A", "B", "C"),
+      y = c(1, 2, 3),
+      n_new = c(1, 2, 3),
+      y_new = c(1, 2, 3),
+      true_theta = NULL
+    )),
+    "n == as.integer(n) are not all TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    initialize(
+      unit = c(1, 2, 3),
+      n = c(0, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(1, 2, 3),
+      y_new = c(1, 2, 3),
+      true_theta = NULL
+    ),
+    "sum(n < 1) == 0 is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    initialize(
+      unit = c(1, 2, 3),
+      n = c(1, 2, 3),
+      y = c(-1, 2, 3),
+      n_new = c(1, 2, 3),
+      y_new = c(1, 2, 3),
+      true_theta = NULL
+    ),
+    "sum(y < 0) == 0 is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    initialize(
+      unit = c(1, 2, 3),
+      n = c(1, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(0, 2, 3),
+      y_new = c(1, 2, 3),
+      true_theta = NULL
+    ),
+    "sum(n_new < 1) == 0 is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    initialize(
+      unit = c(1, 2, 3),
+      n = c(1, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(1, 2, 3),
+      y_new = c(-1, 2, 3),
+      true_theta = NULL
+    ),
+    "sum(y_new < 0) == 0 is not TRUE",
+    fixed = TRUE
+  )
   expect_error(
     suppressWarnings(initialize(
       unit = c(1, 2, 3),
@@ -87,22 +137,28 @@ test_that("initialize() rejects arguments that are not plausible", {
 })
 
 test_that("initialize() returns a plausible data frame", {
-  expect_equal(dim(initialize(
-    unit = c(1, 2, 3),
-    n = c(1, 2, 3),
-    y = c(1, 2, 3),
-    n_new = c(1, 1, 1),
-    y_new = c(1, 1, 1),
-    true_theta = NULL
-  )), c(3, 13))
-  expect_equal(dim(initialize(
-    unit = c(1, 2, 3),
-    n = c(1, 2, 3),
-    y = c(1, 2, 3),
-    n_new = c(1, 1, 1),
-    y_new = c(1, 1, 1),
-    true_theta = c(0.9, 0.9, 0.9)
-  )), c(3, 13))
+  expect_equal(
+    dim(initialize(
+      unit = c(1, 2, 3),
+      n = c(1, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(1, 1, 1),
+      y_new = c(1, 1, 1),
+      true_theta = NULL
+    )),
+    c(3, 13)
+  )
+  expect_equal(
+    dim(initialize(
+      unit = c(1, 2, 3),
+      n = c(1, 2, 3),
+      y = c(1, 2, 3),
+      n_new = c(1, 1, 1),
+      y_new = c(1, 1, 1),
+      true_theta = c(0.9, 0.9, 0.9)
+    )),
+    c(3, 13)
+  )
   expect_equal(
     colnames(initialize(
       unit = c(1, 2, 3),

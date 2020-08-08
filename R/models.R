@@ -6,7 +6,8 @@
 #' interest \emph{y_i} to the reference count values \emph{n_i}.
 #'
 #' @export
-#' @param n Previous reference count values (measure of exposure)
+#' @param n Previous reference count values (measure of exposure),
+#'   must at least be 1
 #' @param y Previous count values of interest
 #' @return No-pooling estimates of \emph{theta}
 theta_nopool <- function(n, y) {
@@ -33,7 +34,8 @@ theta_nopool <- function(n, y) {
 #' reference count values \emph{n_i}.
 #'
 #' @export
-#' @param n Previous reference count values (measure of exposure)
+#' @param n Previous reference count values (measure of exposure),
+#'   must at least be 1
 #' @param y Previous count values of interest
 #' @return Complete-pooling estimates of \emph{theta}
 theta_complpool <- function(n, y) {
@@ -85,7 +87,8 @@ theta_complpool <- function(n, y) {
 #' distribution as the partial pooling estimate for \emph{theta}.
 #'
 #' @export
-#' @param n Previous reference count values (measure of exposure)
+#' @param n Previous reference count values (measure of exposure),
+#'   must at least be 1
 #' @param y Previous count values of interest
 #' @param random_seed Seed value for Stan (default: 200731)
 #' @return Partial-pooling estimates of \emph{theta}

@@ -10,19 +10,19 @@ factor_exceeding(theta_hat, n_new, y_new, ucl)
 \arguments{
 \item{theta_hat}{Estimate (unless known) of rate parameter \emph{theta}}
 
-\item{n_new}{New value for exposure (reference counts)}
+\item{n_new}{New value for exposure (reference counts), must at least be 1}
 
 \item{y_new}{New count values of interest}
 
-\item{ucl}{Upper control limit (UCL)}
+\item{ucl}{Upper control limit (UCL), must be greater than 0}
 }
 \value{
-Factor \emph{e}, with observed \emph{y_new} exceeding UCL by
-  \eqn{e * sd(y_new)}
+Factor \emph{f}, with observed \emph{y_new} exceeding UCL by
+  \eqn{f * sd(y_new)}
 }
 \description{
-Calculates factor \emph{e}, with observed \emph{y_new} exceeding UCL by
-  \eqn{e * sd(y_new)}.
+Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
+  \eqn{f * sd(y_new)}.
 }
 \details{
 Assuming a Poisson distribution with

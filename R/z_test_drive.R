@@ -42,5 +42,5 @@ if (test_drive) {
                                     y_new = d$y_new,
                                     ucl = d$ucl_partpool)
   str(d)
-  # print(summary(d$fe_partpool))
+  print(summary(d$fe_partpool))
 }

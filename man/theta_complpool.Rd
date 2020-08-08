@@ -7,7 +7,8 @@
 theta_complpool(n, y)
 }
 \arguments{
-\item{n}{Previous reference count values (measure of exposure)}
+\item{n}{Previous reference count values (measure of exposure),
+must at least be 1}
 
 \item{y}{Previous count values of interest}
 }

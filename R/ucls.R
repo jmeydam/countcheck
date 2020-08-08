@@ -46,12 +46,9 @@ factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
   lambda_hat <- theta_hat * n_new
   # Parameter lambda is both mean and variance of Poisson distribution
   sd_hat <- sqrt(lambda_hat)
-  if (sd_hat > 0) {
-    e <- (y_new - ucl) / sd_hat
-  } else {
-    e <- Inf
-  }
-  e
+  ifelse(sd_hat > 0,
+         (y_new - ucl) / sd_hat,
+         Inf)
 }
 
 #' Add "true" UCL to data frame

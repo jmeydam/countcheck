@@ -37,4 +37,10 @@ if (test_drive) {
   print(paste("ucl_complpool: ", sum(d$y_new - d$ucl_complpool > 0)))
   print(paste("ucl_partpool:  ", sum(d$y_new - d$ucl_partpool > 0)))
 
+  d$fe_partpool <- factor_exceeding(theta_hat = d$theta_partpool,
+                                    n_new = d$n_new,
+                                    y_new = d$y_new,
+                                    ucl = d$ucl_partpool)
+  str(d)
+  # print(summary(d$fe_partpool))
 }

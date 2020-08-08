@@ -1,4 +1,4 @@
-#' Initialize data frame
+#' Return data frame combining data and results
 #'
 #' Constructs data frame with these fields:
 #' \itemize{
@@ -42,11 +42,10 @@
 #'                                 given n_new and partial-pooling estimate
 #'                                 of theta
 #' }
-#' Vectors must be of equal length, with length >= 3.
-#' \emph{unit}, \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new},
-#' and \emph{true_theta} (if known) are initialized using the
-#' corresponding parameters. The other fields (and \emph{true_theta},
-#' if not known) are initialized with NA.
+#' If data is provided via arguments, vectors must be of equal length,
+#' with length >= 3. If \emph{unit} is NULL, all data vectors passed
+#' to this function are ignored, and the complete data set is generated
+#' in a simulation run.
 #'
 #' @export
 #' @param unit ID for unit
@@ -57,67 +56,69 @@
 #'   must at least be 1
 #' @param y_new New count values of interest
 #' @param true_theta True value of theta (if known; optional)
-#' @return Initialized data frame
-initialize <- function(unit, n, y, n_new, y_new, true_theta = NULL) {
+#' @param random_seed Seed value (optional) - used in simulation and by Stan
+#' @return Data frame with all columns populated
+countcheck <- function(unit = NULL,
+                       n = NULL,
+                       y = NULL,
+                       n_new = NULL,
+                       y_new = NULL,
+                       true_theta = NULL,
+                       random_seed = 200731) {
 
-  # check arguments
-  stopifnot(
-    # length of unit >= 3
-    length(unit) >= 3,
-    # length of mandatory arguments is the same
-    length(n) == length(unit),
-    length(y) == length(unit),
-    length(n_new) == length(unit),
-    length(y_new) == length(unit),
-    # length of optional argument, if present, is the same
-    ifelse(is.null(true_theta),
-           length(unit),
-           length(true_theta)) == length(unit),
-    # IDs are integers
-    unit == as.integer(unit),
-    # counts are integers
-    n == as.integer(n),
-    y == as.integer(y),
-    n_new == as.integer(n_new),
-    y_new == as.integer(y_new),
-    # n must be 1 or greater
-    sum(n < 1) == 0,
-    # y must be non-negative
-    sum(y < 0) == 0,
-    # n_new must be 1 or greater
-    sum(n_new < 1) == 0,
-    # y_new must be non-negative
-    sum(y_new < 0) == 0,
-    # true_theta, if present, is numeric
-    ifelse(is.null(true_theta),
-           TRUE,
-           is.numeric(true_theta))
-  )
+  # If unit is NULL, all data vectors passed to function are ignored,
+  # and simulation is used to generate data
+  simulation <- is.null(unit)
 
-  units <- length(unit)
-  # Optional: true_theta
-  if (is.null(true_theta)) {
-    true_theta <- rep(NA, units)
+  if (simulation) {
+    # Simulate data for use in examples, demos, ...
+    d <- simulate_data(units = 1000, random_seed = random_seed)
+  } else {
+    # Use data passed to function
+    # (length of vectors must match and data must be reasonable,
+    # otherwise initialize() will abort)
+    d <- initialize(unit = unit,
+                    n = n,
+                    y = y,
+                    n_new = n_new,
+                    y_new = y_new,
+                    true_theta = true_theta)
   }
 
-  data.frame(
-    unit = as.integer(unit),
-    n = as.integer(n),
-    y = as.integer(y),
-    n_new = as.integer(n_new),
-    y_new = as.integer(y_new),
-    true_theta = as.numeric(true_theta),
-    theta_nopool = as.numeric(rep(NA, units)),
-    theta_complpool = as.numeric(rep(NA, units)),
-    theta_partpool = as.numeric(rep(NA, units)),
-    ucl_true_theta = as.numeric(rep(NA, units)),
-    ucl_nopool = as.numeric(rep(NA, units)),
-    ucl_complpool = as.numeric(rep(NA, units)),
-    ucl_partpool = as.numeric(rep(NA, units)),
-    fe_true_theta = as.numeric(rep(NA, units)),
-    fe_nopool = as.numeric(rep(NA, units)),
-    fe_complpool = as.numeric(rep(NA, units)),
-    fe_partpool = as.numeric(rep(NA, units))
-  )
+  # Add no-pooling estimate of theta to data frame
+  d <- add_theta_nopool(d)
 
+  # Add complete-pooling estimate of theta to data frame
+  d <- add_theta_complpool(d)
+
+  # Add partial-pooling estimate of theta to data frame
+  # (based on Bayesian hierarchical model)
+  d <- add_theta_partpool(d, random_seed = random_seed)
+
+  # Add "true" UCL to data frame
+  d <- add_ucl_true_theta(d)
+
+  # Add no-pooling UCL to data frame
+  d <- add_ucl_nopool(d)
+
+  # Add complete-pooling UCL to data frame
+  d <- add_ucl_complpool(d)
+
+  # Add partial-pooling UCL to data frame
+  # (based on Bayesian hierarchical model)
+  d <- add_ucl_partpool(d)
+
+  # Add fe (factor_exceeding) based on "true" UCL to data frame
+  d <- add_fe_true_theta(d)
+
+  # Add fe (factor_exceeding) based on no-pooling UCL to data frame
+  d <- add_fe_nopool(d)
+
+  # Add fe (factor_exceeding) based on complete-pooling UCL to data frame
+  d <- add_fe_complpool(d)
+
+  # Add fe (factor_exceeding) based on partial-pooling UCL to data frame
+  d <- add_fe_partpool(d)
+
+  d
 }

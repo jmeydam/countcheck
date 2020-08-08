@@ -34,7 +34,7 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
   round(lambda_hat + factor_sd * sqrt(lambda_hat)) + 0.5
 }
 
-#' Calculate by how many standard deviations y_new exceeds upper
+#' Calculate by how many standard deviations \emph{y_new} exceeds upper
 #' control limit (UCL)
 #'
 #' Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
@@ -81,7 +81,7 @@ factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
 
 #' Add "true" UCL to data frame
 #'
-#' Add UCL based on \emph{n_new} and true value of \emph{theta} to
+#' Adds UCL based on \emph{n_new} and true value of \emph{theta} to
 #' data frame.
 #'
 #' @export
@@ -95,7 +95,7 @@ add_ucl_true_theta <- function(d, factor_sd = 3) {
 
 #' Add no-pooling UCL to data frame
 #'
-#' Add UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
+#' Adds UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
 #' to data frame.
 #'
 #' @export
@@ -109,7 +109,7 @@ add_ucl_nopool <- function(d, factor_sd = 3) {
 
 #' Add complete-pooling UCL to data frame
 #'
-#' Add UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
+#' Adds UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
 #' to data frame.
 #'
 #' @export
@@ -123,7 +123,7 @@ add_ucl_complpool <- function(d, factor_sd = 3) {
 
 #' Add partial-pooling UCL to data frame
 #'
-#' Add UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
+#' Adds UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
 #' to data frame.
 #'
 #' @export
@@ -132,5 +132,93 @@ add_ucl_complpool <- function(d, factor_sd = 3) {
 #' @return Data frame with values for \emph{ucl_partpool}
 add_ucl_partpool <- function(d, factor_sd = 3) {
   d$ucl_partpool <- ucl(d$theta_partpool, d$n_new, factor_sd)
+  d
+}
+
+#' Add fe (factor_exceeding) based on "true" UCL to data frame
+#'
+#' Adds fe (factor_exceeding) based on true UCL to data frame, given
+#' \emph{n_new} and true value of \emph{theta}.
+#'
+#' \emph{fe_true_theta}: factor \emph{f}, with observed y_new
+#' exceeding true-theta UCL by \eqn{f * sd(y_new)},
+#' given n_new and true value of theta (if known)
+#'
+#' @export
+#' @param d Initialized data frame with UCLs
+#' @return Data frame with values for \emph{fe_true_theta}
+add_fe_true_theta <- function(d) {
+  d$fe_true_theta <- factor_exceeding(
+    theta_hat = d$true_theta,
+    n_new = d$n_new,
+    y_new = d$y_new,
+    ucl = d$ucl_true_theta
+  )
+  d
+}
+
+#' Add fe (factor_exceeding) based on no-pooling UCL to data frame
+#'
+#' Adds fe (factor_exceeding) based on no-pooling UCL to data frame, given
+#' \emph{n_new} and no-pooling estimate of \emph{theta}.
+#'
+#' \emph{fe_nopool}: factor \emph{f}, with observed y_new
+#' exceeding no-pooling UCL by \eqn{f * sd(y_new)},
+#' given n_new and no-pooling estimate of theta
+#'
+#' @export
+#' @param d Initialized data frame with UCLs
+#' @return Data frame with values for \emph{fe_nopool}
+add_fe_nopool <- function(d) {
+  d$fe_nopool <- factor_exceeding(
+    theta_hat = d$theta_nopool,
+    n_new = d$n_new,
+    y_new = d$y_new,
+    ucl = d$ucl_nopool
+  )
+  d
+}
+
+#' Add fe (factor_exceeding) based on complete-pooling UCL to data frame
+#'
+#' Adds fe (factor_exceeding) based on complete-pooling UCL to data frame,
+#' given \emph{n_new} and complete-pooling estimate of \emph{theta}.
+#'
+#' \emph{fe_complpool}: factor \emph{f}, with observed y_new
+#' exceeding complete-pooling UCL by \eqn{f * sd(y_new)},
+#' given n_new and complete-pooling estimate of theta
+#'
+#' @export
+#' @param d Initialized data frame with UCLs
+#' @return Data frame with values for \emph{fe_complpool}
+add_fe_complpool <- function(d) {
+  d$fe_complpool <- factor_exceeding(
+    theta_hat = d$theta_complpool,
+    n_new = d$n_new,
+    y_new = d$y_new,
+    ucl = d$ucl_complpool
+  )
+  d
+}
+
+#' Add fe (factor_exceeding) based on partial-pooling UCL to data frame
+#'
+#' Adds fe (factor_exceeding) based on partial-pooling UCL to data frame,
+#' given \emph{n_new} and partial-pooling estimate of \emph{theta}.
+#'
+#' \emph{fe_partpool}: factor \emph{f}, with observed y_new
+#' exceeding partial-pooling UCL by \eqn{f * sd(y_new)},
+#' given n_new and partial-pooling estimate of theta
+#'
+#' @export
+#' @param d Initialized data frame with UCLs
+#' @return Data frame with values for \emph{fe_partpool}
+add_fe_partpool <- function(d) {
+  d$fe_partpool <- factor_exceeding(
+    theta_hat = d$theta_partpool,
+    n_new = d$n_new,
+    y_new = d$y_new,
+    ucl = d$ucl_partpool
+  )
   d
 }

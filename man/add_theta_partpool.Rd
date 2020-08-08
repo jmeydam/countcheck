@@ -15,6 +15,6 @@ add_theta_partpool(d, random_seed = 200731)
 Data frame with values for \emph{theta_partpool}
 }
 \description{
-Add partial-pooling estimate of \emph{theta} (based on Bayesian hierarchical
-model) to data frame.
+Adds partial-pooling estimate of \emph{theta} (based on Bayesian
+hierarchical model) to data frame.
 }

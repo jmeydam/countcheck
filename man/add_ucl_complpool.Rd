@@ -15,6 +15,6 @@ add_ucl_complpool(d, factor_sd = 3)
 Data frame with values for \emph{ucl_complpool}
 }
 \description{
-Add UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
+Adds UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
 to data frame.
 }

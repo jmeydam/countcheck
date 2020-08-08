@@ -25,7 +25,7 @@ must at least be 1}
 Initialized data frame
 }
 \description{
-Construct data frame with these fields:
+Constructs data frame with these fields:
 \itemize{
 \item \emph{unit}:            ID for unit
 \item \emph{n}:               previous reference count values (measure of
@@ -46,6 +46,26 @@ Construct data frame with these fields:
                                 estimate of theta
 \item \emph{ucl_partpool}:    UCL based on n_new and partial-pooling
                                 estimate of theta
+\item \emph{fe_true_theta}:   factor \emph{f}, with observed y_new
+                                exceeding true-theta UCL by
+                                \eqn{f * sd(y_new)},
+                                given n_new and true value of theta
+                                (if known)
+\item \emph{fe_nopool}:       factor \emph{f}, with observed y_new
+                                exceeding no-pooling UCL by
+                                \eqn{f * sd(y_new)},
+                                given n_new and no-pooling estimate
+                                of theta
+\item \emph{fe_complpool}:    factor \emph{f}, with observed y_new
+                                exceeding complete-pooling UCL by
+                                \eqn{f * sd(y_new)},
+                                given n_new and complete-pooling estimate
+                                of theta
+\item \emph{fe_partpool}:     factor \emph{f}, with observed y_new
+                                exceeding partial-pooling UCL by
+                                \eqn{f * sd(y_new)},
+                                given n_new and partial-pooling estimate
+                                of theta
 }
 Input vectors must be of equal length, with length >= 3.
 \emph{unit}, \emph{n}, \emph{y}, \emph{n_new}, \emph{y_new},

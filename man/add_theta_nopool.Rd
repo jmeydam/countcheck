@@ -13,5 +13,5 @@ add_theta_nopool(d)
 Data frame with values for \emph{theta_nopool}
 }
 \description{
-Add no-pooling estimate of \emph{theta} to data frame.
+Adds no-pooling estimate of \emph{theta} to data frame.
 }

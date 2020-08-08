@@ -128,7 +128,7 @@ theta_partpool <- function(n, y, random_seed = 200731) {
 
 #' Add no-pooling estimate of \emph{theta} to data frame
 #'
-#' Add no-pooling estimate of \emph{theta} to data frame.
+#' Adds no-pooling estimate of \emph{theta} to data frame.
 #'
 #' @export
 #' @param d Initialized data frame
@@ -140,7 +140,7 @@ add_theta_nopool <- function(d) {
 
 #' Add complete-pooling estimate of \emph{theta} to data frame
 #'
-#' Add complete-pooling estimate of \emph{theta} to data frame.
+#' Adds complete-pooling estimate of \emph{theta} to data frame.
 #'
 #' @export
 #' @param d Initialized data frame
@@ -152,8 +152,8 @@ add_theta_complpool <- function(d) {
 
 #' Add partial-pooling estimate of \emph{theta} to data frame
 #'
-#' Add partial-pooling estimate of \emph{theta} (based on Bayesian hierarchical
-#' model) to data frame.
+#' Adds partial-pooling estimate of \emph{theta} (based on Bayesian
+#' hierarchical model) to data frame.
 #'
 #' @export
 #' @param d Initialized data frame

@@ -15,6 +15,6 @@ add_ucl_nopool(d, factor_sd = 3)
 Data frame with values for \emph{ucl_nopool}
 }
 \description{
-Add UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
+Adds UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
 to data frame.
 }

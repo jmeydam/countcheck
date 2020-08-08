@@ -146,7 +146,7 @@ test_that("initialize() returns a plausible data frame", {
       y_new = c(1, 1, 1),
       true_theta = NULL
     )),
-    c(3, 13)
+    c(3, 17)
   )
   expect_equal(
     dim(initialize(
@@ -157,7 +157,7 @@ test_that("initialize() returns a plausible data frame", {
       y_new = c(1, 1, 1),
       true_theta = c(0.9, 0.9, 0.9)
     )),
-    c(3, 13)
+    c(3, 17)
   )
   expect_equal(
     colnames(initialize(
@@ -181,7 +181,11 @@ test_that("initialize() returns a plausible data frame", {
       "ucl_true_theta",
       "ucl_nopool",
       "ucl_complpool",
-      "ucl_partpool"
+      "ucl_partpool",
+      "fe_true_theta",
+      "fe_nopool",
+      "fe_complpool",
+      "fe_partpool"
     )
   )
   expect_equal(
@@ -202,6 +206,10 @@ test_that("initialize() returns a plausible data frame", {
       "integer",
       "integer",
       "integer",
+      "numeric",
+      "numeric",
+      "numeric",
+      "numeric",
       "numeric",
       "numeric",
       "numeric",

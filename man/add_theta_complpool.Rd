@@ -13,5 +13,5 @@ add_theta_complpool(d)
 Data frame with values for \emph{theta_complpool}
 }
 \description{
-Add complete-pooling estimate of \emph{theta} to data frame.
+Adds complete-pooling estimate of \emph{theta} to data frame.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ucls.R
 \name{factor_exceeding}
 \alias{factor_exceeding}
-\title{Calculate by how many standard deviations y_new exceeds upper
+\title{Calculate by how many standard deviations \emph{y_new} exceeds upper
 control limit (UCL)}
 \usage{
 factor_exceeding(theta_hat, n_new, y_new, ucl)

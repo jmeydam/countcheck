@@ -1,4 +1,3 @@
-# devtools::load_all()
 devtools::install_github("https://github.com/jmeydam/countcheck.git")
 
 library(countcheck)

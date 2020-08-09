@@ -1,11 +1,11 @@
 #' Calculate upper control limit (UCL)
 #'
 #' Basic formula for UCL:
-#' \eqn{estimated mean + 3 * estimated standard deviation}
+#' \emph{estimated mean + 3 * estimated standard deviation}
 #'
 #' In this case, assuming a Poisson distribution, both the estimated mean
 #' and the estimated variance are
-#' \deqn{lambda_hat = theta_hat * n_new}
+#' \emph{lambda_hat = theta_hat * n_new}.
 #'
 #' Rounds the result to the nearest integer.
 #'
@@ -38,13 +38,12 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #' control limit (UCL)
 #'
 #' Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-#'   \eqn{f * sd(y_new)}.
+#'   \emph{f * sd(y_new)}.
 #'
 #' Assuming a Poisson distribution with
-#' \deqn{lambda_hat = theta_hat * n_new}
+#' \emph{lambda_hat = theta_hat * n_new}
 #' the estimated standard deviation of \emph{y_new}
-#' is
-#' \deqn{sqrt(lambda_hat)}
+#' is \emph{sqrt(lambda_hat)}.
 #'
 #' @export
 #' @param theta_hat Estimate (unless known) of rate parameter \emph{theta}
@@ -52,7 +51,7 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #' @param y_new New count values of interest
 #' @param ucl Upper control limit (UCL), must be greater than 0
 #' @return Factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-#'   \eqn{f * sd(y_new)}
+#'   \emph{f * sd(y_new)}
 factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
   # check arguments
   stopifnot(
@@ -141,7 +140,7 @@ add_ucl_partpool <- function(d, factor_sd = 3) {
 #' \emph{n_new} and true value of \emph{theta}.
 #'
 #' \emph{fe_true_theta}: factor \emph{f}, with observed y_new
-#' exceeding true-theta UCL by \eqn{f * sd(y_new)},
+#' exceeding true-theta UCL by \emph{f * sd(y_new)},
 #' given n_new and true value of theta (if known)
 #'
 #' @export
@@ -163,7 +162,7 @@ add_fe_true_theta <- function(d) {
 #' \emph{n_new} and no-pooling estimate of \emph{theta}.
 #'
 #' \emph{fe_nopool}: factor \emph{f}, with observed y_new
-#' exceeding no-pooling UCL by \eqn{f * sd(y_new)},
+#' exceeding no-pooling UCL by \emph{f * sd(y_new)},
 #' given n_new and no-pooling estimate of theta
 #'
 #' @export
@@ -185,7 +184,7 @@ add_fe_nopool <- function(d) {
 #' given \emph{n_new} and complete-pooling estimate of \emph{theta}.
 #'
 #' \emph{fe_complpool}: factor \emph{f}, with observed y_new
-#' exceeding complete-pooling UCL by \eqn{f * sd(y_new)},
+#' exceeding complete-pooling UCL by \emph{f * sd(y_new)},
 #' given n_new and complete-pooling estimate of theta
 #'
 #' @export
@@ -207,7 +206,7 @@ add_fe_complpool <- function(d) {
 #' given \emph{n_new} and partial-pooling estimate of \emph{theta}.
 #'
 #' \emph{fe_partpool}: factor \emph{f}, with observed y_new
-#' exceeding partial-pooling UCL by \eqn{f * sd(y_new)},
+#' exceeding partial-pooling UCL by \emph{f * sd(y_new)},
 #' given n_new and partial-pooling estimate of theta
 #'
 #' @export

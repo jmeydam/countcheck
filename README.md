@@ -24,7 +24,7 @@ for details.
 
 ## Installation
 
-First install dependencies - currently:
+First install dependencies:
 
 * actuar (>= 3.0)
 * extraDistr (>= 1.8.11)
@@ -218,8 +218,8 @@ _theta_, which is known in this case.
 
 As analyzed in detail in the
 [simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
-if we gradually increase the factor from 1 to 8 we will find that number of 
-cases exceeding the UCL is similar for the partial-pooling and true-theta 
+if we gradually increase the factor from 1 to 8 we will find that the number
+of cases exceeding the UCL is similar for the partial-pooling and true-theta 
 UCLs, but initially substantially higher for the no-pooling UCLs, as was 
 demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
 especially when the previously observed count _y_ was 0, leading to an UCL

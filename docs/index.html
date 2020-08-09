@@ -92,7 +92,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>First install dependencies - currently:</p>
+<p>First install dependencies:</p>
 <ul>
 <li>actuar (&gt;= 3.0)</li>
 <li>extraDistr (&gt;= 1.8.11)</li>
@@ -252,7 +252,7 @@
 998  2505  41  1253    38 0.014551266    0.016720363           31.5         35.5   0.5461873
 999  3780 238  1890   250 0.065819145    0.062777478          158.5        151.5   9.0428098
 1000 3909  63  1955    76 0.019160583    0.016331095           56.5         49.5   4.6899137</code></pre>
-<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
+<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
 <p>The general results are not affected when changing the seed value.</p>
 <p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
 <p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>

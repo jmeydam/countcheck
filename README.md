@@ -22,6 +22,9 @@ kind of data. Please refer to the
 [report](https://jmeydam.github.io/count-anomalies/simulation_study.html) 
 for details.
 
+The package documentation can be accessed via the 
+[package website](https://jmeydam.github.io/countcheck/).
+
 ## Installation
 
 First install dependencies:

@@ -139,9 +139,9 @@ add_ucl_partpool <- function(d, factor_sd = 3) {
 #' Adds fe (factor_exceeding) based on true UCL to data frame, given
 #' \emph{n_new} and true value of \emph{theta}.
 #'
-#' \emph{fe_true_theta}: factor \emph{f}, with observed y_new
+#' \emph{fe_true_theta}: factor \emph{f}, with observed \emph{y_new}
 #' exceeding true-theta UCL by \emph{f * sd(y_new)},
-#' given n_new and true value of theta (if known)
+#' given \emph{n_new} and true value of \emph{theta} (if known)
 #'
 #' @export
 #' @param d Initialized data frame with UCLs
@@ -161,9 +161,9 @@ add_fe_true_theta <- function(d) {
 #' Adds fe (factor_exceeding) based on no-pooling UCL to data frame, given
 #' \emph{n_new} and no-pooling estimate of \emph{theta}.
 #'
-#' \emph{fe_nopool}: factor \emph{f}, with observed y_new
+#' \emph{fe_nopool}: factor \emph{f}, with observed \emph{y_new}
 #' exceeding no-pooling UCL by \emph{f * sd(y_new)},
-#' given n_new and no-pooling estimate of theta
+#' given \emph{n_new} and no-pooling estimate of \emph{theta}
 #'
 #' @export
 #' @param d Initialized data frame with UCLs
@@ -183,9 +183,9 @@ add_fe_nopool <- function(d) {
 #' Adds fe (factor_exceeding) based on complete-pooling UCL to data frame,
 #' given \emph{n_new} and complete-pooling estimate of \emph{theta}.
 #'
-#' \emph{fe_complpool}: factor \emph{f}, with observed y_new
+#' \emph{fe_complpool}: factor \emph{f}, with observed \emph{y_new}
 #' exceeding complete-pooling UCL by \emph{f * sd(y_new)},
-#' given n_new and complete-pooling estimate of theta
+#' given \emph{n_new} and complete-pooling estimate of \emph{theta}
 #'
 #' @export
 #' @param d Initialized data frame with UCLs
@@ -205,9 +205,9 @@ add_fe_complpool <- function(d) {
 #' Adds fe (factor_exceeding) based on partial-pooling UCL to data frame,
 #' given \emph{n_new} and partial-pooling estimate of \emph{theta}.
 #'
-#' \emph{fe_partpool}: factor \emph{f}, with observed y_new
+#' \emph{fe_partpool}: factor \emph{f}, with observed \emph{y_new}
 #' exceeding partial-pooling UCL by \emph{f * sd(y_new)},
-#' given n_new and partial-pooling estimate of theta
+#' given \emph{n_new} and partial-pooling estimate of \emph{theta}
 #'
 #' @export
 #' @param d Initialized data frame with UCLs

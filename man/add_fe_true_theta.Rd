@@ -17,7 +17,7 @@ Adds fe (factor_exceeding) based on true UCL to data frame, given
 \emph{n_new} and true value of \emph{theta}.
 }
 \details{
-\emph{fe_true_theta}: factor \emph{f}, with observed y_new
+\emph{fe_true_theta}: factor \emph{f}, with observed \emph{y_new}
 exceeding true-theta UCL by \emph{f * sd(y_new)},
-given n_new and true value of theta (if known)
+given \emph{n_new} and true value of \emph{theta} (if known)
 }

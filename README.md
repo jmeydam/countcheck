@@ -26,9 +26,9 @@ for details.
 
 First install dependencies:
 
-* actuar (>= 3.0)
-* extraDistr (>= 1.8.11)
-* rstan (>= 2.19.3) ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started))
+* actuar
+* extraDistr
+* rstan ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started))
 * rethinking (>= 2.01)
 
 The rethinking package needs to be installed from 

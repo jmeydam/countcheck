@@ -8,12 +8,37 @@ Prototype (R package).
 * Reasonable results also in cases with few or no observed events
 * HTML reports
 
-Model and code are based on an examples in McElreath [2020] and
-Gelman et al. [2014].
+Model and code are based on examples in 
+[McElreath (2020)](https://xcelab.net/rm/statistical-rethinking/) and
+[Gelman et al. (2014)](https://www.stat.columbia.edu/~gelman/book/).
 
-Please refer to this accompanying
-[report](https://jmeydam.github.io/count-anomalies/simulation_study.html)
-and the [package website](https://jmeydam.github.io/countcheck/) for details.
+This prototype is related to a previous 
+[simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html).
+
+The distributions and parameters in the simulation study were chosen
+so that the generated data is comparable to certain data of interest.
+The prototype is only meant to be used for roughly the same 
+kind of data. Please refer to the
+[report](https://jmeydam.github.io/count-anomalies/simulation_study.html) 
+for details.
+
+## Installation
+
+First install dependencies - currently:
+
+* actuar (>= 3.0)
+* extraDistr (>= 1.8.11)
+* rstan (>= 2.19.3) ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started))
+* rethinking (>= 2.01)
+
+The rethinking package needs to be installed from 
+[GitHub](https://github.com/rmcelreath/rethinking).
+
+This package can then be installed from GitHub with:
+```
+> devtools::install_github("https://github.com/jmeydam/countcheck.git", 
++                          build_vignettes = TRUE)
+```
 
 ## Example 1
 
@@ -30,9 +55,6 @@ model. (4 counts exceed the UCLs based on the true value of the parameter
 _theta_, which is known in this case.)
 
 ```
-> devtools::install_github("https://github.com/jmeydam/countcheck.git", 
-+                          build_vignettes = TRUE)
-
 > library(countcheck)
 
 > d <- countcheck(random_seed = 200807)

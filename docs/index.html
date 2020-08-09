@@ -85,8 +85,24 @@
 <li>Reasonable results also in cases with few or no observed events</li>
 <li>HTML reports</li>
 </ul>
-<p>Model and code are based on an examples in McElreath [2020] and Gelman et al. [2014].</p>
-<p>Please refer to this accompanying <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> and the <a href="https://jmeydam.github.io/countcheck/">package website</a> for details.</p>
+<p>Model and code are based on examples in <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a> and <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a>.</p>
+<p>This prototype is related to a previous <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>.</p>
+<p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is only meant to be used for roughly the same kind of data. Please refer to the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>First install dependencies - currently:</p>
+<ul>
+<li>actuar (&gt;= 3.0)</li>
+<li>extraDistr (&gt;= 1.8.11)</li>
+<li>rstan (&gt;= 2.19.3) (<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">instructions</a>)</li>
+<li>rethinking (&gt;= 2.01)</li>
+</ul>
+<p>The rethinking package needs to be installed from <a href="https://github.com/rmcelreath/rethinking">GitHub</a>.</p>
+<p>This package can then be installed from GitHub with:</p>
+<pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git", 
++                          build_vignettes = TRUE)</code></pre>
 </div>
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
@@ -94,10 +110,7 @@
 <p>Count data for 1000 observational units are simulated, assuming a “normal” data-generating process.</p>
 <p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
 <p>Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed their respective upper control limits, vs. 68 when using a no-pooling model. (4 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.)</p>
-<pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git", 
-+                          build_vignettes = TRUE)
-
-&gt; library(countcheck)
+<pre><code>&gt; library(countcheck)
 
 &gt; d &lt;- countcheck(random_seed = 200807)
 

@@ -21,8 +21,8 @@ Imports:
     rethinking (>= 2.01)
 Suggests: 
     testthat (>= 2.3.2),
-    knitr,
-    rmarkdown
+    knitr (>= 1.29),
+    rmarkdown (>= 2.3)
 Depends: 
     R (>= 4.0.2)
 VignetteBuilder: knitr

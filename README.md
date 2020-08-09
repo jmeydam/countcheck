@@ -30,7 +30,9 @@ model. (4 counts exceed the UCLs based on the true value of the parameter
 _theta_, which is known in this case.)
 
 ```
-> devtools::install_github("https://github.com/jmeydam/countcheck.git")
+> devtools::install_github("https://github.com/jmeydam/countcheck.git", 
++                          build_vignettes = TRUE)
+
 > library(countcheck)
 
 > d <- countcheck(random_seed = 200807)

@@ -41,7 +41,7 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #'   \emph{f * sd(y_new)}.
 #'
 #' Assuming a Poisson distribution with
-#' \emph{lambda_hat = theta_hat * n_new}
+#' \emph{lambda_hat = theta_hat * n_new},
 #' the estimated standard deviation of \emph{y_new}
 #' is \emph{sqrt(lambda_hat)}.
 #'
@@ -83,7 +83,6 @@ factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
 #' Adds UCL based on \emph{n_new} and true value of \emph{theta} to
 #' data frame.
 #'
-#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_true_theta}
@@ -97,7 +96,6 @@ add_ucl_true_theta <- function(d, factor_sd = 3) {
 #' Adds UCL based on \emph{n_new} and no-pooling estimate of \emph{theta}
 #' to data frame.
 #'
-#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_nopool}
@@ -111,7 +109,6 @@ add_ucl_nopool <- function(d, factor_sd = 3) {
 #' Adds UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
 #' to data frame.
 #'
-#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_complpool}
@@ -125,7 +122,6 @@ add_ucl_complpool <- function(d, factor_sd = 3) {
 #' Adds UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
 #' to data frame.
 #'
-#' @export
 #' @param d Initialized data frame
 #' @param factor_sd Factor multiplying standard deviation (default: 3)
 #' @return Data frame with values for \emph{ucl_partpool}
@@ -143,7 +139,6 @@ add_ucl_partpool <- function(d, factor_sd = 3) {
 #' exceeding true-theta UCL by \emph{f * sd(y_new)},
 #' given \emph{n_new} and true value of \emph{theta} (if known)
 #'
-#' @export
 #' @param d Initialized data frame with UCLs
 #' @return Data frame with values for \emph{fe_true_theta}
 add_fe_true_theta <- function(d) {
@@ -165,7 +160,6 @@ add_fe_true_theta <- function(d) {
 #' exceeding no-pooling UCL by \emph{f * sd(y_new)},
 #' given \emph{n_new} and no-pooling estimate of \emph{theta}
 #'
-#' @export
 #' @param d Initialized data frame with UCLs
 #' @return Data frame with values for \emph{fe_nopool}
 add_fe_nopool <- function(d) {
@@ -187,7 +181,6 @@ add_fe_nopool <- function(d) {
 #' exceeding complete-pooling UCL by \emph{f * sd(y_new)},
 #' given \emph{n_new} and complete-pooling estimate of \emph{theta}
 #'
-#' @export
 #' @param d Initialized data frame with UCLs
 #' @return Data frame with values for \emph{fe_complpool}
 add_fe_complpool <- function(d) {
@@ -209,7 +202,6 @@ add_fe_complpool <- function(d) {
 #' exceeding partial-pooling UCL by \emph{f * sd(y_new)},
 #' given \emph{n_new} and partial-pooling estimate of \emph{theta}
 #'
-#' @export
 #' @param d Initialized data frame with UCLs
 #' @return Data frame with values for \emph{fe_partpool}
 add_fe_partpool <- function(d) {

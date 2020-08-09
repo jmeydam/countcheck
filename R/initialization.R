@@ -48,7 +48,6 @@
 #' corresponding parameters. The other fields (and \emph{true_theta},
 #' if not known) are initialized with NA.
 #'
-#' @export
 #' @param unit ID for unit
 #' @param n Previous reference count values (measure of exposure),
 #'   must at least be 1

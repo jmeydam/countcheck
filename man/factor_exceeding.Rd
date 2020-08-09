@@ -26,7 +26,7 @@ Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
 }
 \details{
 Assuming a Poisson distribution with
-\emph{lambda_hat = theta_hat * n_new}
+\emph{lambda_hat = theta_hat * n_new},
 the estimated standard deviation of \emph{y_new}
 is \emph{sqrt(lambda_hat)}.
 }

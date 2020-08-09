@@ -26,3 +26,5 @@ Suggests:
 Depends: 
     R (>= 4.0.2)
 VignetteBuilder: knitr
+URL: https://github.com/jmeydam/countcheck
+BugReports: https://github.com/jmeydam/countcheck/issues

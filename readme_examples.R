@@ -1,6 +1,7 @@
 devtools::install_github("https://github.com/jmeydam/countcheck.git")
-
 library(countcheck)
+
+# Example 1 #################################################################
 
 d <- countcheck(random_seed = 200807)
 
@@ -19,3 +20,11 @@ d[d$y_new - d$ucl_partpool > 0,
   c("n", "y", "n_new", "y_new",
     "true_theta", "theta_partpool",
     "ucl_true_theta", "ucl_partpool", "fe_partpool")]
+
+e <- example_01
+d1 <- countcheck(unit = e$unit,
+                 n = e$n,
+                 y = e$y,
+                 n_new = e$n_new,
+                 y_new = e$y_new,
+                 random_seed = 200807)

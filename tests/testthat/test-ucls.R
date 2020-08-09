@@ -4,7 +4,7 @@ library(countcheck)
 test_that("ucl() rejects arguments that are not plausible", {
   expect_error(
     ucl(theta_hat = -0.5, n_new = 1),
-    "sum(theta_hat < 0) == 0 is not TRUE",
+    "sum(theta_hat < 0) == 0 | sum(!is.na(theta_hat)) == 0 is not TRUE",
     fixed = TRUE
   )
   expect_error(
@@ -29,6 +29,9 @@ test_that("ucl() calculates UCLs as expected", {
     ucl(theta_hat = 0.5, n_new = 8),
     4 + 3 * sqrt(4) + 0.5
   )
+  expect_true(
+    is.na(ucl(theta_hat = NA, n_new = 8))
+  )
   expect_equal(
     ucl(theta_hat = 0.5, n_new = 8, factor_sd = 3),
     4 + 3 * sqrt(4) + 0.5
@@ -47,7 +50,7 @@ test_that("factor_exceeding() rejects arguments that are not plausible", {
       y_new = 14,
       ucl = 10.5
     ),
-    "sum(theta_hat < 0) == 0 is not TRUE",
+    "sum(theta_hat < 0) == 0 | sum(!is.na(theta_hat)) == 0 is not TRUE",
     fixed = TRUE
   )
   expect_error(
@@ -77,7 +80,7 @@ test_that("factor_exceeding() rejects arguments that are not plausible", {
       y_new = 14,
       ucl = 0
     ),
-    "sum(ucl <= 0) == 0 is not TRUE",
+    "sum(ucl <= 0) == 0 | sum(!is.na(ucl)) == 0 is not TRUE",
     fixed = TRUE
   )
   expect_error(
@@ -123,6 +126,22 @@ test_that("factor_exceeding() calculates factor as expected", {
     ),
     1.75
   )
+  expect_true(is.na(
+    factor_exceeding(
+      theta_hat = NA,
+      n_new = 8,
+      y_new = 14,
+      ucl = 10.5
+    )
+  ))
+  expect_true(is.na(
+    factor_exceeding(
+      theta_hat = 0.5,
+      n_new = 8,
+      y_new = 14,
+      ucl = NA
+    )
+  ))
   expect_equal(
     factor_exceeding(
       theta_hat = 0.5,

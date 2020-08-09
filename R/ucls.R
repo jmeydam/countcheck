@@ -20,8 +20,8 @@
 ucl <- function(theta_hat, n_new, factor_sd = 3) {
   # check arguments
   stopifnot(
-    # theta_hat must be non-negative
-    sum(theta_hat < 0) == 0,
+    # theta_hat must be non-negative or NA
+    sum(theta_hat < 0) == 0 | sum(! is.na(theta_hat)) == 0,
     # n_new must be 1 or greater
     sum(n_new < 1) == 0,
     # theta_hat and n_new must be vectors of same length
@@ -56,14 +56,14 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 factor_exceeding <- function(theta_hat, n_new, y_new, ucl) {
   # check arguments
   stopifnot(
-    # theta_hat must be non-negative
-    sum(theta_hat < 0) == 0,
+    # theta_hat must be non-negative or NA
+    sum(theta_hat < 0) == 0 | sum(! is.na(theta_hat)) == 0,
     # n_new must be 1 or greater
     sum(n_new < 1) == 0,
     # y_new must be non-negative
     sum(y_new < 0) == 0,
-    # ucl must be greater than 0
-    sum(ucl <= 0) == 0,
+    # ucl must be greater than 0 or NA
+    sum(ucl <= 0) == 0 | sum(! is.na(ucl)) == 0,
     # theta_hat and n_new must be vectors of same length
     length(theta_hat) == length(n_new),
     # y_new and n_new must be vectors of same length

@@ -11,7 +11,7 @@ Prototype (R package).
 Model and code are based on an examples in McElreath [2020] and
 Gelman et al. [2014].
 
-## Example
+## Example 1
 
 Count data for 1000 observational units are simulated, assuming a "normal"
 data-generating process.

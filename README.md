@@ -13,7 +13,7 @@ Gelman et al. [2014].
 
 Please refer to this accompanying
 [report](https://jmeydam.github.io/count-anomalies/simulation_study.html)
-for details.
+and the [package website](https://jmeydam.github.io/countcheck/) for details.
 
 ## Example 1
 

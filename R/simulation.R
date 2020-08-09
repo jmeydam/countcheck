@@ -4,6 +4,7 @@
 #' so that the generated data is roughly comparable to certain data of
 #' interest.
 #'
+#' @keywords internal
 #' @param units Number of observational units (default: 1000)
 #' @param random_seed Seed value (optional)
 #' @return Data frame initialized with simulated data

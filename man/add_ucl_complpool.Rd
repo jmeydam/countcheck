@@ -18,3 +18,4 @@ Data frame with values for \emph{ucl_complpool}
 Adds UCL based on \emph{n_new} and complete-pooling estimate of \emph{theta}
 to data frame.
 }
+\keyword{internal}

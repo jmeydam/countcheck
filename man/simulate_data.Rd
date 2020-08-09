@@ -19,3 +19,4 @@ The distributions and parameters in this simulation have been chosen
 so that the generated data is roughly comparable to certain data of
 interest.
 }
+\keyword{internal}

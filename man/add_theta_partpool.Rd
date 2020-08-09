@@ -18,3 +18,4 @@ Data frame with values for \emph{theta_partpool}
 Adds partial-pooling estimate of \emph{theta} (based on Bayesian
 hierarchical model) to data frame.
 }
+\keyword{internal}

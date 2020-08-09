@@ -18,3 +18,4 @@ Data frame with values for \emph{ucl_true_theta}
 Adds UCL based on \emph{n_new} and true value of \emph{theta} to
 data frame.
 }
+\keyword{internal}

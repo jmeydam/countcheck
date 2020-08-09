@@ -21,3 +21,4 @@ Adds fe (factor_exceeding) based on no-pooling UCL to data frame, given
 exceeding no-pooling UCL by \emph{f * sd(y_new)},
 given \emph{n_new} and no-pooling estimate of \emph{theta}
 }
+\keyword{internal}

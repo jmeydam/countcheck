@@ -73,3 +73,4 @@ and \emph{true_theta} (if known) are initialized using the
 corresponding parameters. The other fields (and \emph{true_theta},
 if not known) are initialized with NA.
 }
+\keyword{internal}

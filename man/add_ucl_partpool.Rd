@@ -18,3 +18,4 @@ Data frame with values for \emph{ucl_partpool}
 Adds UCL based on \emph{n_new} and partial-pooling estimate of \emph{theta}
 to data frame.
 }
+\keyword{internal}

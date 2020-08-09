@@ -15,3 +15,4 @@ Data frame with values for \emph{theta_nopool}
 \description{
 Adds no-pooling estimate of \emph{theta} to data frame.
 }
+\keyword{internal}

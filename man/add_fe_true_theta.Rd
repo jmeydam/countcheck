@@ -21,3 +21,4 @@ Adds fe (factor_exceeding) based on true UCL to data frame, given
 exceeding true-theta UCL by \emph{f * sd(y_new)},
 given \emph{n_new} and true value of \emph{theta} (if known)
 }
+\keyword{internal}

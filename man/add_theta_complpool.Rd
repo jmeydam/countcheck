@@ -15,3 +15,4 @@ Data frame with values for \emph{theta_complpool}
 \description{
 Adds complete-pooling estimate of \emph{theta} to data frame.
 }
+\keyword{internal}

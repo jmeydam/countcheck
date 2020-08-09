@@ -21,3 +21,4 @@ given \emph{n_new} and complete-pooling estimate of \emph{theta}.
 exceeding complete-pooling UCL by \emph{f * sd(y_new)},
 given \emph{n_new} and complete-pooling estimate of \emph{theta}
 }
+\keyword{internal}

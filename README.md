@@ -51,10 +51,9 @@ _theta_, which is known in this case.)
 [1] 18
 
 > d[d$y_new - d$ucl_partpool > 0,
-+   c("unit", "n", "y", "n_new", "y_new",
++   c("n", "y", "n_new", "y_new",
 +     "true_theta", "theta_partpool",
-+     "ucl_true_theta", "ucl_partpool",
-+     "fe_true_theta", "fe_partpool")]
++     "ucl_true_theta", "ucl_partpool", "fe_partpool")]
 
        n  y n_new y_new true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool
 109   24  0    12     3 0.05812885    0.024064468            3.5          2.5  0.93044617

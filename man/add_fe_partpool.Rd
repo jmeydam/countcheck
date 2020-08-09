@@ -18,6 +18,6 @@ given \emph{n_new} and partial-pooling estimate of \emph{theta}.
 }
 \details{
 \emph{fe_partpool}: factor \emph{f}, with observed y_new
-exceeding partial-pooling UCL by \eqn{f * sd(y_new)},
+exceeding partial-pooling UCL by \emph{f * sd(y_new)},
 given n_new and partial-pooling estimate of theta
 }

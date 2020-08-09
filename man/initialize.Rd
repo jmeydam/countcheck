@@ -48,22 +48,22 @@ Constructs data frame with these fields:
                                 estimate of theta
 \item \emph{fe_true_theta}:   factor \emph{f}, with observed y_new
                                 exceeding true-theta UCL by
-                                \eqn{f * sd(y_new)},
+                                \emph{f * sd(y_new)},
                                 given n_new and true value of theta
                                 (if known)
 \item \emph{fe_nopool}:       factor \emph{f}, with observed y_new
                                 exceeding no-pooling UCL by
-                                \eqn{f * sd(y_new)},
+                                \emph{f * sd(y_new)},
                                 given n_new and no-pooling estimate
                                 of theta
 \item \emph{fe_complpool}:    factor \emph{f}, with observed y_new
                                 exceeding complete-pooling UCL by
-                                \eqn{f * sd(y_new)},
+                                \emph{f * sd(y_new)},
                                 given n_new and complete-pooling estimate
                                 of theta
 \item \emph{fe_partpool}:     factor \emph{f}, with observed y_new
                                 exceeding partial-pooling UCL by
-                                \eqn{f * sd(y_new)},
+                                \emph{f * sd(y_new)},
                                 given n_new and partial-pooling estimate
                                 of theta
 }

@@ -18,6 +18,6 @@ Adds fe (factor_exceeding) based on no-pooling UCL to data frame, given
 }
 \details{
 \emph{fe_nopool}: factor \emph{f}, with observed y_new
-exceeding no-pooling UCL by \eqn{f * sd(y_new)},
+exceeding no-pooling UCL by \emph{f * sd(y_new)},
 given n_new and no-pooling estimate of theta
 }

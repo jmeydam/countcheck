@@ -18,16 +18,15 @@ factor_exceeding(theta_hat, n_new, y_new, ucl)
 }
 \value{
 Factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-  \eqn{f * sd(y_new)}
+  \emph{f * sd(y_new)}
 }
 \description{
 Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-  \eqn{f * sd(y_new)}.
+  \emph{f * sd(y_new)}.
 }
 \details{
 Assuming a Poisson distribution with
-\deqn{lambda_hat = theta_hat * n_new}
+\emph{lambda_hat = theta_hat * n_new}
 the estimated standard deviation of \emph{y_new}
-is
-\deqn{sqrt(lambda_hat)}
+is \emph{sqrt(lambda_hat)}.
 }

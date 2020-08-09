@@ -18,6 +18,6 @@ given \emph{n_new} and complete-pooling estimate of \emph{theta}.
 }
 \details{
 \emph{fe_complpool}: factor \emph{f}, with observed y_new
-exceeding complete-pooling UCL by \eqn{f * sd(y_new)},
+exceeding complete-pooling UCL by \emph{f * sd(y_new)},
 given n_new and complete-pooling estimate of theta
 }

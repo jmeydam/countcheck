@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Calculate upper control limit (UCL) — ucl" />
 <meta property="og:description" content="Basic formula for UCL:
-\(estimated mean + 3 * estimated standard deviation\)" />
+estimated mean + 3 * estimated standard deviation" />
 
 
 
@@ -114,7 +114,7 @@
 
     <div class="ref-description">
     <p>Basic formula for UCL:
-\(estimated mean + 3 * estimated standard deviation\)</p>
+<em>estimated mean + 3 * estimated standard deviation</em></p>
     </div>
 
     <pre class="usage"><span class='fu'>ucl</span>(<span class='no'>theta_hat</span>, <span class='no'>n_new</span>, <span class='kw'>factor_sd</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
@@ -143,7 +143,7 @@
 
     <p>In this case, assuming a Poisson distribution, both the estimated mean
 and the estimated variance are
-$$lambda_hat = theta_hat * n_new$$</p>
+<em>lambda_hat = theta_hat * n_new</em>.</p>
 <p>Rounds the result to the nearest integer.</p>
 <p>Adds 0.5, so that count values are either above or below the UCL
 (as in Wheeler &amp; Chambers [1992]).</p>

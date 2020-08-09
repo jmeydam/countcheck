@@ -79,7 +79,7 @@
 <li>HTML reports</li>
 </ul>
 <p>Model and code are based on an examples in McElreath [2020] and Gelman et al. [2014].</p>
-<p>Please refer to this accompanying <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
+<p>Please refer to this accompanying <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> and the <a href="https://jmeydam.github.io/countcheck/">package website</a> for details.</p>
 </div>
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
@@ -87,7 +87,9 @@
 <p>Count data for 1000 observational units are simulated, assuming a “normal” data-generating process.</p>
 <p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
 <p>Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed their respective upper control limits, vs. 68 when using a no-pooling model. (4 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.)</p>
-<pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git")
+<pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git", 
++                          build_vignettes = TRUE)
+
 &gt; library(countcheck)
 
 &gt; d &lt;- countcheck(random_seed = 200807)

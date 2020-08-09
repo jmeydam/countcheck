@@ -18,12 +18,12 @@ UCLs
 }
 \description{
 Basic formula for UCL:
-\eqn{estimated mean + 3 * estimated standard deviation}
+\emph{estimated mean + 3 * estimated standard deviation}
 }
 \details{
 In this case, assuming a Poisson distribution, both the estimated mean
 and the estimated variance are
-\deqn{lambda_hat = theta_hat * n_new}
+\emph{lambda_hat = theta_hat * n_new}.
 
 Rounds the result to the nearest integer.
 

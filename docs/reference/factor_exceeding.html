@@ -43,7 +43,7 @@ control limit (UCL) — factor_exceeding • countcheck</title>
 <meta property="og:title" content="Calculate by how many standard deviations <em>y_new</em> exceeds upper
 control limit (UCL) — factor_exceeding" />
 <meta property="og:description" content="Calculates factor f, with observed y_new exceeding UCL by
-  \(f * sd(y_new)\)." />
+  f * sd(y_new)." />
 
 
 
@@ -117,7 +117,7 @@ control limit (UCL)</h1>
 
     <div class="ref-description">
     <p>Calculates factor <em>f</em>, with observed <em>y_new</em> exceeding UCL by
-  \(f * sd(y_new)\).</p>
+  <em>f * sd(y_new)</em>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>factor_exceeding</span>(<span class='no'>theta_hat</span>, <span class='no'>n_new</span>, <span class='no'>y_new</span>, <span class='no'>ucl</span>)</pre>
@@ -146,14 +146,13 @@ control limit (UCL)</h1>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Factor <em>f</em>, with observed <em>y_new</em> exceeding UCL by
-  \(f * sd(y_new)\)</p>
+  <em>f * sd(y_new)</em></p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Assuming a Poisson distribution with
-$$lambda_hat = theta_hat * n_new$$
+<em>lambda_hat = theta_hat * n_new</em>
 the estimated standard deviation of <em>y_new</em>
-is
-$$sqrt(lambda_hat)$$</p>
+is <em>sqrt(lambda_hat)</em>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

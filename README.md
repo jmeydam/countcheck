@@ -189,10 +189,10 @@ _theta_, which is known in this case.
 [1] 332
 
 > head(
-+ d2[d2$y_new - d2$ucl_partpool > 0,
-+    c("n", "y", "n_new", "y_new",
-+      "true_theta", "theta_partpool",
-+      "ucl_true_theta", "ucl_partpool", "fe_partpool")]
++   d2[d2$y_new - d2$ucl_partpool > 0,
++      c("n", "y", "n_new", "y_new",
++        "true_theta", "theta_partpool",
++        "ucl_true_theta", "ucl_partpool", "fe_partpool")]
 + )
 
   n y n_new y_new  true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool

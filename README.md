@@ -192,10 +192,21 @@ _theta_, which is known in this case.
 1000 3909  63  1955    76 0.019160583    0.016331095           56.5         49.5   4.6899137
 ```
 
+As analyzed in detail in the
+[simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
+if we gradually increase the factor from 1 to 8 we will find that number of 
+cases exceeding the UCL is similar for the partial-pooling and true-theta 
+UCLs, but initially substantially higher for the no-pooling UCLs, as was 
+demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
+especially when the previously observed count _y_ was 0, leading to an UCL
+of 0.5.
+
 The general results are not affected when changing the seed value.
 
-In a realistic scenario, the true value of theta is not known, and the
-probability distributions assumed for the Bayesian hierarchical model
-(the no-pooling model) may be more or less appropriate. On the other hand,
-it may then be possible to assess performance by investigating individual 
-cases.
+In a realistic scenario it is not possible to assess performance by
+comparison with "true" values. The true values of _theta_ are generally 
+not known, and the probability distributions assumed for the Bayesian 
+hierarchical model (the no-pooling model) may in fact be inappropriate.
+
+On the other hand, in a realistic scenario it is often possible to assess 
+performance by investigating individual cases.

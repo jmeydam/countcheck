@@ -5,7 +5,7 @@
 \alias{example_01}
 \title{Simulated data without anomalies}
 \format{
-A data frame with 1000 rows and 5 variables:
+A data frame with 1000 rows and 6 variables:
 \itemize{
 \item \emph{unit}:            ID for unit
 \item \emph{n}:               previous reference count values (measure of
@@ -14,13 +14,14 @@ A data frame with 1000 rows and 5 variables:
 \item \emph{n_new}:           new reference count values (measure of
                                 exposure), must at least be 1
 \item \emph{y_new}:           new count values of interest
+\item \emph{true_theta}:      true value of theta (if known)
 }
 }
 \usage{
 example_01
 }
 \description{
-The first five columns of data frame created with
-countcheck(random_seed = 200807)
+The first six columns of data frame created with
+\emph{countcheck(random_seed = 200807)}
 }
 \keyword{datasets}

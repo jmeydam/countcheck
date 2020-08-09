@@ -1,6 +1,6 @@
 # str(d)
-# example_01 <- d[, c("unit", "n", "y", "n_new", "y_new", "true_theta")]
-# usethis::use_data(example_01, overwrite = TRUE)
+# simdat <- d[, c("unit", "n", "y", "n_new", "y_new", "true_theta")]
+# usethis::use_data(simdat, overwrite = TRUE)
 
 #' Simulated data without anomalies
 #'
@@ -18,4 +18,4 @@
 #' \item \emph{y_new}:           new count values of interest
 #' \item \emph{true_theta}:      true value of theta (if known)
 #' }
-"example_01"
+"simdat"

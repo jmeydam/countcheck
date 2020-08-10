@@ -123,7 +123,7 @@ theta_partpool <- function(n, y, random_seed = 200731, precis_depth = 1) {
     iter = 4000,
     seed = random_seed
   )
-  rethinking::precis(m, depth = precis_depth)
+  print(rethinking::precis(m, depth = precis_depth))
   post <- rethinking::extract.samples(m)
   post_theta_means <- apply(post$theta, 2, mean)
   # We will use the sample means as point estimates.

@@ -86,13 +86,16 @@ theta_complpool <- function(n, y) {
 #' We will use the mean of the \emph{theta} samples drawn from the posterior
 #' distribution as the partial pooling estimate for \emph{theta}.
 #'
+#' This function prints diagnostic information as a side effect.
+#'
 #' @export
 #' @param n Previous reference count values (measure of exposure),
 #'   must at least be 1
 #' @param y Previous count values of interest
 #' @param random_seed Seed value for Stan (default: 200731)
+#' @param precis_depth depth parameter for rethinking::precis() (default: 1)
 #' @return Partial-pooling estimates of \emph{theta}
-theta_partpool <- function(n, y, random_seed = 200731) {
+theta_partpool <- function(n, y, random_seed = 200731, precis_depth = 1) {
   # check arguments
   stopifnot(
     # n must be 1 or greater
@@ -120,6 +123,7 @@ theta_partpool <- function(n, y, random_seed = 200731) {
     iter = 4000,
     seed = random_seed
   )
+  precis(m, depth = precis_depth)
   post <- rethinking::extract.samples(m)
   post_theta_means <- apply(post$theta, 2, mean)
   # We will use the sample means as point estimates.

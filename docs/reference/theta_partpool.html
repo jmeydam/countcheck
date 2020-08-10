@@ -130,7 +130,7 @@ unit <em>i</em>, especially when there is little information for a particular
 unit <em>i</em>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>theta_partpool</span>(<span class='no'>n</span>, <span class='no'>y</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>)</pre>
+    <pre class="usage"><span class='fu'>theta_partpool</span>(<span class='no'>n</span>, <span class='no'>y</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>, <span class='kw'>precis_depth</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,6 +147,10 @@ must at least be 1</p></td>
     <tr>
       <th>random_seed</th>
       <td><p>Seed value for Stan (default: 200731)</p></td>
+    </tr>
+    <tr>
+      <th>precis_depth</th>
+      <td><p>depth parameter for rethinking::precis() (default: 1)</p></td>
     </tr>
     </table>
 
@@ -174,6 +178,7 @@ posterior probability distribution both for the parameter <em>alpha</em> and
 for the rate parameters <em>theta_i</em>.</p>
 <p>We will use the mean of the <em>theta</em> samples drawn from the posterior
 distribution as the partial pooling estimate for <em>theta</em>.</p>
+<p>This function prints diagnostic information as a side effect.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

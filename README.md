@@ -17,8 +17,8 @@ This prototype is related to a previous
 
 The distributions and parameters in the simulation study were chosen
 so that the generated data is comparable to certain data of interest.
-The prototype is only meant to be used for roughly the same 
-kind of data. Please refer to the
+The prototype is meant to be used for roughly the same kind of data. 
+Please refer to the
 [report](https://jmeydam.github.io/count-anomalies/simulation_study.html) 
 for details.
 
@@ -37,7 +37,7 @@ First install dependencies:
 The rethinking package needs to be installed from 
 [GitHub](https://github.com/rmcelreath/rethinking).
 
-This package can then be installed from GitHub with:
+The prototype can then be installed from GitHub with:
 ```
 > devtools::install_github("https://github.com/jmeydam/countcheck.git", 
 +                          build_vignettes = TRUE)

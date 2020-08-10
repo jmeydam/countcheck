@@ -4,7 +4,7 @@
 \alias{theta_partpool}
 \title{Partial-pooling model (Bayesian hierarchical model)}
 \usage{
-theta_partpool(n, y, random_seed = 200731)
+theta_partpool(n, y, random_seed = 200731, precis_depth = 1)
 }
 \arguments{
 \item{n}{Previous reference count values (measure of exposure),
@@ -13,6 +13,8 @@ must at least be 1}
 \item{y}{Previous count values of interest}
 
 \item{random_seed}{Seed value for Stan (default: 200731)}
+
+\item{precis_depth}{depth parameter for rethinking::precis() (default: 1)}
 }
 \value{
 Partial-pooling estimates of \emph{theta}
@@ -50,4 +52,6 @@ for the rate parameters \emph{theta_i}.
 
 We will use the mean of the \emph{theta} samples drawn from the posterior
 distribution as the partial pooling estimate for \emph{theta}.
+
+This function prints diagnostic information as a side effect.
 }

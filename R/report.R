@@ -141,7 +141,7 @@ html_table <- function(countcheck_df, unit_df, headers = NULL) {
     # colnames countcheck_df must be as expected
     colnames(countcheck_df) == c("y_new", "ucl_partpool", "unit"),
     # colnames countcheck_df must be as expected
-    colnames(unit_df) == c("unit", "unit_group_name", "unit_name", "unit_url")
+    colnames(unit_df) == c("unit", "unit_name", "unit_url", "unit_group_name")
   )
   # Escape <, >, &, " and ' in names
   unit_df$unit_group_name <- escape(unit_df$unit_group_name)
@@ -149,11 +149,11 @@ html_table <- function(countcheck_df, unit_df, headers = NULL) {
   # Table header
   table_header <- paste0(
     "<tr>",
-    "<th class=\"right\">y_new</th>",
-    "<th class=\"right\">ucl</th>",
-    "<th class=\"left\">group</th>",
-    "<th class=\"right\">unit</th>",
-    "<th class=\"left\">name</th>",
+    "<th class=\"left\">Group</th>",
+    "<th class=\"right\">Count</th>",
+    "<th class=\"right\">UCL</th>",
+    "<th class=\"right\">Unit</th>",
+    "<th class=\"left\">Name</th>",
     "</tr>\n"
   )
   # Construct table rows
@@ -165,11 +165,11 @@ html_table <- function(countcheck_df, unit_df, headers = NULL) {
     table_rows <- paste0(
       table_rows,
       "<tr>",
+      "<td class=\"left unit_group_name\">",
+      unit_rec["unit_group_name"],
+      "</td>",
       "<td class=\"right y_new\">", countcheck_rec["y_new"], "</td>",
       "<td class=\"right ucl\">", countcheck_rec["ucl_partpool"], "</td>",
-      "<td class=\"left unit_group_name\">",
-        unit_rec["unit_group_name"],
-      "</td>",
       "<td class=\"right unit\">",
         "<a href=\"", unit_rec["unit_url"], "\">", countcheck_unit, "</a>",
       "</td>",

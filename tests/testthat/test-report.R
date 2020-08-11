@@ -86,7 +86,7 @@ test_that("html_table() rejects arguments that are not plausible", {
         d = c(1, 2, 3)
       )
     ),
-    "colnames(unit_df) == c(\"unit\", \"unit_group_name\", \"unit_name\",  .... are not all TRUE",
+    "colnames(unit_df) == c(\"unit\", \"unit_name\", \"unit_url\", \"unit_group_name\") are not all TRUE",
     fixed = TRUE
   )
 })
@@ -104,4 +104,20 @@ test_that("escape() works as expected", {
     escape("&\"'"),
     "&amp;&quot;&#39;",
   )
+})
+
+test_that("HTML is valid (check generated HTML file manually)", {
+  countcheck_df <- dget(file = "../data/test_countcheck.txt")
+  unit_df <- dget(file = "../data/test_unit.txt")
+  report <- html_report(
+    countcheck_df,
+    unit_df,
+    title = "Report",
+    charset = "utf-8", lang = "en",
+    style = NULL)
+  dput(report, file = "../data/report_tmp.txt")
+  sink("../data/report_tmp.html")
+  cat(dget(file = "../data/report_tmp.txt"))
+  sink()
+  expect_equal(1, 1)
 })

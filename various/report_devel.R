@@ -31,14 +31,14 @@ units_tmp <- sort(unique(r$unit))
 
 unit_df <- data.frame(
   unit = units_tmp,
-  unit_group_name = paste("Group",
-                          rep(1:3,
-                              length.out = length(units_tmp))),
   unit_name = paste("Unit",
                     units_tmp),
   unit_url = paste0("http://units/",
                     units_tmp,
-                    ".html")
+                    ".html"),
+  unit_group_name = paste("Group",
+                          rep(1:5,
+                              length.out = length(units_tmp)))
 )
 
 dput(unit_df, file = "tests/data/test_unit.txt")
@@ -49,7 +49,3 @@ dget(file = "tests/data/test_unit.txt")
 d_df_tmp <- dget(file = "tests/data/test_d.txt")
 countcheck_df_tmp <- dget(file = "tests/data/test_countcheck.txt")
 unit_df_tmp <- dget(file = "tests/data/test_unit.txt")
-
-# Check HTML ################################################################
-
-# cat(dget(file = "tests/data/report_tmp.txt"))

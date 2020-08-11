@@ -49,3 +49,7 @@ dget(file = "tests/data/test_unit.txt")
 d_df_tmp <- dget(file = "tests/data/test_d.txt")
 countcheck_df_tmp <- dget(file = "tests/data/test_countcheck.txt")
 unit_df_tmp <- dget(file = "tests/data/test_unit.txt")
+
+# Check HTML ################################################################
+
+# cat(dget(file = "tests/data/report_tmp.txt"))

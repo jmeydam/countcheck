@@ -114,10 +114,12 @@ test_that("HTML is valid (check generated HTML file manually)", {
     unit_df,
     title = "Report",
     charset = "utf-8", lang = "en",
+    home_url = "../index.html",
     style = NULL)
   dput(report, file = "../data/report_tmp.txt")
   sink("../data/report_tmp.html")
   cat(dget(file = "../data/report_tmp.txt"))
   sink()
+  # Dummy test
   expect_equal(1, 1)
 })

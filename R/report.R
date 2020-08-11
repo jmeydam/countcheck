@@ -28,18 +28,19 @@ select_for_report <- function(d) {
 html_report <- function(countcheck_df, unit_df,
                         title = "Report",
                         charset = "utf-8", lang = "en",
+                        home_url = NULL,
                         style = NULL) {
   # check arguments
-  stopifnot(
-    # countcheck_df must be data frame (TODO later: also list of data frames, also headers)
-    is.data.frame(countcheck_df),
-    is.data.frame(unit_df)
-  )
+  # stopifnot(
+  #   # countcheck_df must be data frame (TODO later: also list of data frames, also headers)
+  #   is.data.frame(countcheck_df),
+  #   is.data.frame(unit_df)
+  # )
   paste0(
     "<!DOCTYPE html>\n",
     "<html lang=\"", lang, "\">\n",
     html_head(title, charset, style),
-    html_body(countcheck_df, unit_df),
+    html_body(countcheck_df, unit_df, home_url = home_url),
     "</html>\n"
   )
 }

@@ -4,15 +4,16 @@
 #'
 #' @export
 #' @param d Data frame as returned from \emph{countcheck()}
-#' @return Data frame to be passed as \emph{countcheck_df} to \emph{html_report()}
+#' @return Data frame to be passed in \emph{countcheck_list}
+#'   to \emph{html_report()}
 select_for_report <- function(d) {
-  r <- d[d$y_new - d$ucl_partpool > 0,
+  s <- d[d$y_new - d$ucl_partpool > 0,
          c("unit", "y_new",
            "ucl_partpool", "fe_partpool")]
-  r <- r[order(-r$fe_partpool), ]
-  r <- r[, c("y_new", "ucl_partpool", "unit")]
-  row.names(r) <- NULL
-  r
+  s <- s[order(-s$fe_partpool), ]
+  s <- s[, c("y_new", "ucl_partpool", "unit")]
+  row.names(s) <- NULL
+  s
 }
 
 #' Generate HTML report
@@ -20,27 +21,35 @@ select_for_report <- function(d) {
 #' Generates HTML report.
 #'
 #' @export
-#' @param countcheck_df Data frame with columns
+#' @param countcheck_list List of data frames with columns
 #'   \emph{y_new}, \emph{ucl_partpool}, \emph{unit}
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
 #' @return String with HTML code for report
-html_report <- function(countcheck_df, unit_df,
+html_report <- function(countcheck_list,
+                        unit_df,
                         title = "Report",
-                        charset = "utf-8", lang = "en",
+                        column_headers = c(
+                          group = "Group",
+                          count = "Count",
+                          ucl = "UCL",
+                          unit = "Unit",
+                          name = "Name"),
+                        charset = "utf-8",
+                        lang = "en",
                         home_url = NULL,
                         style = NULL) {
   # check arguments
   # stopifnot(
-  #   # countcheck_df must be data frame (TODO later: also list of data frames, also headers)
-  #   is.data.frame(countcheck_df),
+  #   # countcheck_list must be data frame (TODO later: also list of data frames, also headers)
+  #   is.data.frame(countcheck_list),
   #   is.data.frame(unit_df)
   # )
   paste0(
     "<!DOCTYPE html>\n",
     "<html lang=\"", lang, "\">\n",
     html_head(title, charset, style),
-    html_body(countcheck_df, unit_df, home_url = home_url),
+    html_body(countcheck_list, unit_df, column_headers, home_url = home_url),
     "</html>\n"
   )
 }
@@ -51,7 +60,9 @@ html_report <- function(countcheck_df, unit_df,
 #'
 #' @keywords internal
 #' @return String with HTML code for head
-html_head <- function(title, charset, style) {
+html_head <- function(title,
+                      charset,
+                      style) {
   if (is.null(style)) {
     append_style <- ""
   } else {
@@ -88,12 +99,15 @@ html_head <- function(title, charset, style) {
 #' Generates HTML body.
 #'
 #' @keywords internal
-#' @param countcheck_df Data frame with columns
+#' @param countcheck_list List of data frame with columns
 #'   \emph{y_new}, \emph{ucl_partpool}, \emph{unit}
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
 #' @return String with HTML code for body
-html_body <- function(countcheck_df, unit_df, home_url = NULL) {
+html_body <- function(countcheck_list,
+                      unit_df,
+                      column_headers,
+                      home_url = NULL) {
   if (is.null(home_url)) {
     home_link <- ""
   } else {
@@ -103,7 +117,12 @@ html_body <- function(countcheck_df, unit_df, home_url = NULL) {
       "\">Home</a></div>\n"
     )
   }
-  table <- html_table(countcheck_df, unit_df)
+  table_list <- list()
+  for (i in 1:length(countcheck_list)) {
+    caption <- countcheck_list[[i]]$caption
+    countcheck_df <- countcheck_list[[i]]$df
+    table_list[i] <- html_table(countcheck_df, unit_df, caption, column_headers)
+  }
   paste0(
     "<body>\n",
     "<div class=\"header\">\n",
@@ -111,14 +130,7 @@ html_body <- function(countcheck_df, unit_df, home_url = NULL) {
     "<h1>Units Exceeding UCLs</h1>\n",
     "</div>\n",
     "<div class=\"content\">\n",
-    "<div class=\"table\">\n",
-    "<h2>KPI 1</h2>\n",
-    table,
-    "</div>\n",
-    "<div class=\"table\">\n",
-    "<h2>KPI 2</h2>\n",
-    table,
-    "</div>\n",
+    paste(as.character(table_list), collapse = ""),
     "</div>\n",
     "<div class=\"footer\">\n",
     Sys.time(),
@@ -137,7 +149,14 @@ html_body <- function(countcheck_df, unit_df, home_url = NULL) {
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
 #' @return String with HTML code for table
-html_table <- function(countcheck_df, unit_df, headers = NULL) {
+html_table <- function(countcheck_df,
+                       unit_df,
+                       caption,
+                       headers = c(group = "Group",
+                                   count = "Count",
+                                   ucl = "UCL",
+                                   unit = "Unit",
+                                   name = "Name")) {
   # check arguments
   stopifnot(
     # countcheck_df must be data frame
@@ -160,14 +179,21 @@ html_table <- function(countcheck_df, unit_df, headers = NULL) {
   # Escape <, >, &, " and ' in names
   unit_df$unit_group_name <- escape(unit_df$unit_group_name)
   unit_df$unit_name <- escape(unit_df$unit_name)
+  caption <- escape(caption)
+  headers <- escape(headers)
+  # Before table
+  pre <- paste0(
+    "<div class=\"table\">\n",
+    "<h2>", caption, "</h2>\n"
+  )
   # Table header
   table_header <- paste0(
     "<tr>",
-    "<th class=\"left\">Group</th>",
-    "<th class=\"right\">Count</th>",
-    "<th class=\"right\">UCL</th>",
-    "<th class=\"right\">Unit</th>",
-    "<th class=\"left\">Name</th>",
+    "<th class=\"left\">", headers["group"], "</th>",
+    "<th class=\"right\">", headers["count"], "</th>",
+    "<th class=\"right\">", headers["ucl"], "</th>",
+    "<th class=\"right\">", headers["unit"], "</th>",
+    "<th class=\"left\">", headers["name"], "</th>",
     "</tr>\n"
   )
   # Construct table rows
@@ -179,20 +205,22 @@ html_table <- function(countcheck_df, unit_df, headers = NULL) {
     table_rows <- paste0(
       table_rows,
       "<tr>",
-      "<td class=\"left unit_group_name\">",
+      "<td class=\"left group\">",
       unit_rec["unit_group_name"],
       "</td>",
-      "<td class=\"right y_new\">", countcheck_rec["y_new"], "</td>",
+      "<td class=\"right count\">", countcheck_rec["y_new"], "</td>",
       "<td class=\"right ucl\">", countcheck_rec["ucl_partpool"], "</td>",
       "<td class=\"right unit\">",
         "<a href=\"", unit_rec["unit_url"], "\">", countcheck_unit, "</a>",
       "</td>",
-      "<td class=\"left unit_name\">", unit_rec["unit_name"], "</td>",
+      "<td class=\"left name\">", unit_rec["unit_name"], "</td>",
       "</tr>\n"
     )
   }
+  # After table
+  post <- "</div>\n"
   # Return string for table
-  paste0("<table>\n", table_header, table_rows, "</table>\n")
+  paste0(pre, "<table>\n", table_header, table_rows, "</table>\n", post)
 }
 
 #' Escape special characters so that string can be inserted

@@ -110,7 +110,10 @@ test_that("HTML is valid (check generated HTML file manually)", {
   countcheck_df <- dget(file = "../data/test_countcheck.txt")
   unit_df <- dget(file = "../data/test_unit.txt")
   report <- html_report(
-    countcheck_df,
+    list(list(df = countcheck_df, caption = "KPI 1"),
+         list(df = countcheck_df, caption = "KPI 2"),
+         list(df = countcheck_df, caption = "KPI 3")
+    ),
     unit_df,
     title = "Report",
     charset = "utf-8", lang = "en",

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • countcheck</title>
+<title>Escape special characters so that string can be inserted
+into HTML — escape • countcheck</title>
 
 
 <!-- jquery -->
@@ -39,7 +40,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Escape special characters so that string can be inserted
+into HTML — escape" />
+<meta property="og:description" content="Escapes special characters so that string can be inserted
+into HTML, in particular &amp;lt;, &amp;gt;, &amp;amp;, &quot; and '." />
 
 
 
@@ -58,7 +62,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,91 +112,35 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Escape special characters so that string can be inserted
+into HTML</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jmeydam/countcheck/blob/master/R/report.R'><code>R/report.R</code></a></small>
+    <div class="hidden name"><code>escape.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Escapes special characters so that string can be inserted
+into HTML, in particular &lt;, &gt;, &amp;, " and '.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>escape</span>(<span class='no'>string</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="countcheck.html">countcheck()</a></code> </p>
-        </td>
-        <td><p>Return data frame combining data and results</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="factor_exceeding.html">factor_exceeding()</a></code> </p>
-        </td>
-        <td><p>Calculate by how many standard deviations <em>y_new</em> exceeds upper
-control limit (UCL)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="html_report.html">html_report()</a></code> </p>
-        </td>
-        <td><p>Generate HTML report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="select_for_report.html">select_for_report()</a></code> </p>
-        </td>
-        <td><p>Select data for report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="simdat.html">simdat</a></code> </p>
-        </td>
-        <td><p>Simulated data without anomalies</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_complpool.html">theta_complpool()</a></code> </p>
-        </td>
-        <td><p>Complete-pooling model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_nopool.html">theta_nopool()</a></code> </p>
-        </td>
-        <td><p>No-pooling model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_partpool.html">theta_partpool()</a></code> </p>
-        </td>
-        <td><p>Partial-pooling model (Bayesian hierarchical model)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ucl.html">ucl()</a></code> </p>
-        </td>
-        <td><p>Calculate upper control limit (UCL)</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>string</th>
+      <td><p>Input string</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>String with special characters escaped</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

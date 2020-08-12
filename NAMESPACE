@@ -2,6 +2,8 @@
 
 export(countcheck)
 export(factor_exceeding)
+export(html_report)
+export(select_for_report)
 export(theta_complpool)
 export(theta_nopool)
 export(theta_partpool)

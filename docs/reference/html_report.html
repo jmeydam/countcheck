@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • countcheck</title>
+<title>Generate HTML report — html_report • countcheck</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Generate HTML report — html_report" />
+<meta property="og:description" content="Generates HTML report." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,91 +109,49 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Generate HTML report</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jmeydam/countcheck/blob/master/R/report.R'><code>R/report.R</code></a></small>
+    <div class="hidden name"><code>html_report.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Generates HTML report.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>html_report</span>(
+  <span class='no'>countcheck_list</span>,
+  <span class='no'>unit_df</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Report"</span>,
+  <span class='kw'>column_headers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"Group"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"Count"</span>, <span class='kw'>ucl</span> <span class='kw'>=</span> <span class='st'>"UCL"</span>, <span class='kw'>unit</span> <span class='kw'>=</span> <span class='st'>"Unit"</span>, <span class='kw'>name</span>
+    <span class='kw'>=</span> <span class='st'>"Name"</span>),
+  <span class='kw'>charset</span> <span class='kw'>=</span> <span class='st'>"utf-8"</span>,
+  <span class='kw'>lang</span> <span class='kw'>=</span> <span class='st'>"en"</span>,
+  <span class='kw'>home_url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="countcheck.html">countcheck()</a></code> </p>
-        </td>
-        <td><p>Return data frame combining data and results</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="factor_exceeding.html">factor_exceeding()</a></code> </p>
-        </td>
-        <td><p>Calculate by how many standard deviations <em>y_new</em> exceeds upper
-control limit (UCL)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="html_report.html">html_report()</a></code> </p>
-        </td>
-        <td><p>Generate HTML report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="select_for_report.html">select_for_report()</a></code> </p>
-        </td>
-        <td><p>Select data for report</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="simdat.html">simdat</a></code> </p>
-        </td>
-        <td><p>Simulated data without anomalies</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_complpool.html">theta_complpool()</a></code> </p>
-        </td>
-        <td><p>Complete-pooling model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_nopool.html">theta_nopool()</a></code> </p>
-        </td>
-        <td><p>No-pooling model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="theta_partpool.html">theta_partpool()</a></code> </p>
-        </td>
-        <td><p>Partial-pooling model (Bayesian hierarchical model)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ucl.html">ucl()</a></code> </p>
-        </td>
-        <td><p>Calculate upper control limit (UCL)</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>countcheck_list</th>
+      <td><p>List of data frames with columns
+<em>y_new</em>, <em>ucl_partpool</em>, <em>unit</em></p></td>
+    </tr>
+    <tr>
+      <th>unit_df</th>
+      <td><p>Data frame with columns
+<em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>, <em>unit_url</em></p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>String with HTML code for report</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

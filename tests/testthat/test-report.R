@@ -169,6 +169,7 @@ test_that("HTML is valid (check generated HTML file manually)", {
     ),
     unit_df = unit_df,
     title = "Report",
+    table_width_px = 500,
     column_headers = c(
       group = "Group",
       count = "Count",

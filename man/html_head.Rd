@@ -4,12 +4,14 @@
 \alias{html_head}
 \title{Generate HTML head}
 \usage{
-html_head(title, charset, style)
+html_head(title, charset, table_width_px, style)
 }
 \arguments{
 \item{title}{Title for HTML document}
 
 \item{charset}{Character set of data and HTML document}
+
+\item{table_width_px}{Table width in pixels (for all tables)}
 
 \item{style}{Additional CSS rules (optional)}
 }

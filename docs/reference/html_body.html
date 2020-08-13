@@ -120,7 +120,7 @@
     <p>Generates HTML body.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>html_body</span>(<span class='no'>countcheck_list</span>, <span class='no'>unit_df</span>, <span class='no'>column_headers</span>, <span class='kw'>home_url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>html_body</span>(<span class='no'>countcheck_list</span>, <span class='no'>unit_df</span>, <span class='no'>title</span>, <span class='no'>column_headers</span>, <span class='kw'>home_url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,9 +139,13 @@ the table caption.</p></td>
       <th>unit_df</th>
       <td><p>Data frame with columns
 <em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>,
-and <em>unit_url</em> (may be set to ""). Must contain one record
-for each unit in <em>countcheck_df</em> dataframes in
-<em>countcheck_list</em>.</p></td>
+and <em>unit_url</em> (may be set to "").
+Must contain exactly one record for each unit in
+<em>countcheck_df</em> dataframes in <em>countcheck_list</em>.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>for HTML document</p></td>
     </tr>
     <tr>
       <th>column_headers</th>

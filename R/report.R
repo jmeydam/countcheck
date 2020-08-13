@@ -73,10 +73,11 @@ select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
 #'   the table caption.
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to ""). Must contain one record
-#'   for each unit in \emph{countcheck_df} dataframes in
-#'   \emph{countcheck_list}.
+#'   and \emph{unit_url} (may be set to "").
+#'   Must contain exactly one record for each unit in
+#'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param title Title for HTML document
+#' @param table_width_px Table width in pixels (for all tables)
 #' @param column_headers Column headers for tables; vector with five headers -
 #'   the elements of the vector must be named \emph{group}, \emph{count},
 #'   \emph{ucl}, \emph{unit}, and \emph{name}
@@ -89,6 +90,7 @@ select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
 html_report <- function(countcheck_list,
                         unit_df,
                         title = "Report",
+                        table_width_px = 1000,
                         column_headers = c(
                           group = "Group",
                           count = "Count",
@@ -111,8 +113,8 @@ html_report <- function(countcheck_list,
   paste0(
     "<!DOCTYPE html>\n",
     "<html lang=\"", lang, "\">\n",
-    html_head(title, charset, style),
-    html_body(countcheck_list, unit_df, column_headers, home_url),
+    html_head(title, charset, table_width_px, style),
+    html_body(countcheck_list, unit_df, title, column_headers, home_url),
     "</html>\n"
   )
 }
@@ -124,10 +126,12 @@ html_report <- function(countcheck_list,
 #' @keywords internal
 #' @param title Title for HTML document
 #' @param charset Character set of data and HTML document
+#' @param table_width_px Table width in pixels (for all tables)
 #' @param style Additional CSS rules (optional)
 #' @return String with HTML code for head
 html_head <- function(title,
                       charset,
+                      table_width_px,
                       style) {
   if (is.null(style)) {
     append_style <- ""
@@ -144,7 +148,7 @@ html_head <- function(title,
     ".content {font-size: small; padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px;}\n",
     ".content .table {margin-top: 10px; margin-bottom: 30px; padding-top: 0px; padding-bottom: 0px;}\n",
     ".content .table h2 {margin-top: 0px; margin-bottom: 10px; color: #808080; font-size: x-large; text-align: center;}\n",
-    ".content .table table {border: thin #888888 solid; border-collapse: collapse; width: 1000px; margin-left: auto; margin-right: auto}\n",
+    ".content .table table {border: thin #888888 solid; border-collapse: collapse; width: ", table_width_px, "px; margin-left: auto; margin-right: auto}\n",
     ".content .table th, td {padding-top: 2px; padding-bottom: 2px; padding-left: 3px; padding-right: 5px; border: 1px #888888 solid; vertical-align: top;}\n",
     ".content .table th {background-color: #FFFFFF}\n",
     ".footer {margin-top: 0px; margin-bottom: 30px; padding-top: 0px; padding-bottom: 0px; text-align: center; font-size: small;}\n",
@@ -174,9 +178,10 @@ html_head <- function(title,
 #'   the table caption.
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to ""). Must contain one record
-#'   for each unit in \emph{countcheck_df} dataframes in
-#'   \emph{countcheck_list}.
+#'   and \emph{unit_url} (may be set to "").
+#'   Must contain exactly one record for each unit in
+#'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
+#' @param title for HTML document
 #' @param column_headers Column headers for tables; vector with five headers -
 #'   the elements of the vector must be named \emph{group}, \emph{count},
 #'   \emph{ucl}, \emph{unit}, and \emph{name}
@@ -185,6 +190,7 @@ html_head <- function(title,
 #' @return String with HTML code for body
 html_body <- function(countcheck_list,
                       unit_df,
+                      title,
                       column_headers,
                       home_url = NULL) {
   if (is.null(home_url)) {
@@ -200,13 +206,17 @@ html_body <- function(countcheck_list,
   for (i in 1:length(countcheck_list)) {
     caption <- countcheck_list[[i]]$caption
     countcheck_df <- countcheck_list[[i]]$df
-    table_list[i] <- html_table(countcheck_df, unit_df, caption, column_headers)
+    table_list[i] <- html_table(
+      countcheck_df,
+      unit_df,
+      caption,
+      column_headers)
   }
   paste0(
     "<body>\n",
     "<div class=\"header\">\n",
     home_link,
-    "<h1>Units Exceeding UCLs</h1>\n",
+    "<h1>", escape(title), "</h1>\n",
     "</div>\n",
     "<div class=\"content\">\n",
     paste(as.character(table_list), collapse = ""),
@@ -228,8 +238,9 @@ html_body <- function(countcheck_list,
 #'   as returned by \emph{select_for_report}
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to ""). Must contain one record
-#'   for each unit in \emph{countcheck_df}
+#'   and \emph{unit_url} (may be set to "").
+#'   Must contain exactly one record for each unit in
+#'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param caption Caption for table
 #' @param headers Vector with five column headers -
 #'   the elements of the vector must be named \emph{group}, \emph{count},

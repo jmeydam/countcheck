@@ -8,6 +8,7 @@ html_report(
   countcheck_list,
   unit_df,
   title = "Report",
+  table_width_px = 1000,
   column_headers = c(group = "Group", count = "Count", ucl = "UCL", unit = "Unit", name
     = "Name"),
   charset = "utf-8",
@@ -27,11 +28,13 @@ the table caption.}
 
 \item{unit_df}{Data frame with columns
 \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-and \emph{unit_url} (may be set to ""). Must contain one record
-for each unit in \emph{countcheck_df} dataframes in
-\emph{countcheck_list}.}
+and \emph{unit_url} (may be set to "").
+Must contain exactly one record for each unit in
+\emph{countcheck_df} dataframes in \emph{countcheck_list}.}
 
 \item{title}{Title for HTML document}
+
+\item{table_width_px}{Table width in pixels (for all tables)}
 
 \item{column_headers}{Column headers for tables; vector with five headers -
 the elements of the vector must be named \emph{group}, \emph{count},

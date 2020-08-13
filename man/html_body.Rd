@@ -4,7 +4,7 @@
 \alias{html_body}
 \title{Generate HTML body}
 \usage{
-html_body(countcheck_list, unit_df, column_headers, home_url = NULL)
+html_body(countcheck_list, unit_df, title, column_headers, home_url = NULL)
 }
 \arguments{
 \item{countcheck_list}{Data to be shown in report. List of lists with
@@ -17,9 +17,11 @@ the table caption.}
 
 \item{unit_df}{Data frame with columns
 \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-and \emph{unit_url} (may be set to ""). Must contain one record
-for each unit in \emph{countcheck_df} dataframes in
-\emph{countcheck_list}.}
+and \emph{unit_url} (may be set to "").
+Must contain exactly one record for each unit in
+\emph{countcheck_df} dataframes in \emph{countcheck_list}.}
+
+\item{title}{for HTML document}
 
 \item{column_headers}{Column headers for tables; vector with five headers -
 the elements of the vector must be named \emph{group}, \emph{count},

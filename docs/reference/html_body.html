@@ -127,13 +127,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>countcheck_list</th>
-      <td><p>List of data frame with columns
-<em>y_new</em>, <em>ucl_partpool</em>, <em>unit</em></p></td>
+      <td><p>Data to be shown in report. List of lists with
+two items named "caption" and "countcheck_df".
+The item <em>countcheck_df</em> in each of the nested lists is a data frame
+with columns <em>y_new</em>, <em>ucl_partpool</em>, and <em>unit</em> -
+as returned by <em>select_for_report()</em>.
+The item <em>caption</em> in each of the nested lists is used for
+the table caption.</p></td>
     </tr>
     <tr>
       <th>unit_df</th>
       <td><p>Data frame with columns
-<em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>, <em>unit_url</em></p></td>
+<em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>,
+and <em>unit_url</em> (may be set to ""). Must contain one record
+for each unit in <em>countcheck_df</em> dataframes in
+<em>countcheck_list</em>.</p></td>
+    </tr>
+    <tr>
+      <th>column_headers</th>
+      <td><p>Column headers for tables; vector with five headers -
+the elements of the vector must be named <em>group</em>, <em>count</em>,
+<em>ucl</em>, <em>unit</em>, and <em>name</em></p></td>
+    </tr>
+    <tr>
+      <th>home_url</th>
+      <td><p>URL for link to "Home" included at top of HTML document
+(optional)</p></td>
     </tr>
     </table>
 

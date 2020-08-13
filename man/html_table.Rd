@@ -14,10 +14,19 @@ html_table(
 }
 \arguments{
 \item{countcheck_df}{Data frame with columns
-\emph{y_new}, \emph{ucl_partpool}, \emph{unit}}
+\emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
+as returned by \emph{select_for_report}}
 
 \item{unit_df}{Data frame with columns
-\emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}}
+\emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+and \emph{unit_url} (may be set to ""). Must contain one record
+for each unit in \emph{countcheck_df}}
+
+\item{caption}{Caption for table}
+
+\item{headers}{Vector with five column headers -
+the elements of the vector must be named \emph{group}, \emph{count},
+\emph{ucl}, \emph{unit}, and \emph{name}}
 }
 \value{
 String with HTML code for table

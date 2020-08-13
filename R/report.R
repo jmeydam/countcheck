@@ -2,14 +2,56 @@
 #'
 #' Selects data for report.
 #'
+#' Selected columns:
+#' \itemize{
+#' \item \emph{unit}:            ID for unit
+#' \item \emph{y_new}:           new count values of interest
+#' \item \emph{ucl_partpool}:    UCL based on n_new and partial-pooling
+#'                                 estimate of theta
+#' \item \emph{fe_partpool}:     factor \emph{f}, with observed y_new
+#'                                 exceeding partial-pooling UCL by
+#'                                 \emph{f * sd(y_new)},
+#'                                 given n_new and partial-pooling estimate
+#'                                 of theta
+#' }
+#'
+#' Condition that always applies: \emph{y_new} must exceed \emph{ucl_partpool}.
+#'
+#' Additional optional conditions:
+#' \itemize{
+#' \item \emph{y_new} exceeds \emph{min_y_new} (default: 0),
+#' \item difference between \emph{y_new} and \emph{ucl_partpool}
+#'   exceeds \emph{min_diff} (default: 0).
+#' }
+#'
+#' Returned data is sorted by \emph{fe_partpool} in descending order.
+#' Therefore, items towards the top are less likely to be the result of
+#' random fluctuations, whereas items towards the bottom can usually be
+#' ignored.
+#'
 #' @export
 #' @param d Data frame as returned from \emph{countcheck()}
+#' @param min_y_new Minimum value for y_new
+#' @param min_diff Minimum difference between y_new and ucl_partpool
 #' @return Data frame to be passed in \emph{countcheck_list}
 #'   to \emph{html_report()}
-select_for_report <- function(d) {
+select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
+  # check arguments
+  stopifnot(
+    # d must be data frame
+    is.data.frame(d),
+    # min_y_new must be non-negative number
+    is.numeric(min_y_new),
+    min_y_new >= 0,
+    # min_diff must be non-negative number
+    is.numeric(min_diff),
+    min_diff >= 0
+  )
   s <- d[d$y_new - d$ucl_partpool > 0,
          c("unit", "y_new",
            "ucl_partpool", "fe_partpool")]
+  s <- s[s$y_new >= min_y_new, ]
+  s <- s[s$y_new - s$ucl_partpool >= min_diff, ]
   s <- s[order(-s$fe_partpool), ]
   s <- s[, c("y_new", "ucl_partpool", "unit")]
   row.names(s) <- NULL
@@ -18,13 +60,31 @@ select_for_report <- function(d) {
 
 #' Generate HTML report
 #'
-#' Generates HTML report.
+#' Generates HTML report for multiple tables as returned by
+#' \emph{select_for_report}.
 #'
 #' @export
-#' @param countcheck_list List of data frames with columns
-#'   \emph{y_new}, \emph{ucl_partpool}, \emph{unit}
+#' @param countcheck_list Data to be shown in report. List of lists with
+#'   two items named "caption" and "countcheck_df".
+#'   The item \emph{countcheck_df} in each of the nested lists is a data frame
+#'   with columns \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
+#'   as returned by \emph{select_for_report()}.
+#'   The item \emph{caption} in each of the nested lists is used for
+#'   the table caption.
 #' @param unit_df Data frame with columns
-#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
+#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+#'   and \emph{unit_url} (may be set to ""). Must contain one record
+#'   for each unit in \emph{countcheck_df} dataframes in
+#'   \emph{countcheck_list}.
+#' @param title Title for HTML document
+#' @param column_headers Column headers for tables; vector with five headers -
+#'   the elements of the vector must be named \emph{group}, \emph{count},
+#'   \emph{ucl}, \emph{unit}, and \emph{name}
+#' @param charset Character set of data and HTML document
+#' @param lang Language of HTML document
+#' @param home_url URL for link to "Home" included at top of HTML document
+#'   (optional)
+#' @param style Additional CSS rules (optional)
 #' @return String with HTML code for report
 html_report <- function(countcheck_list,
                         unit_df,
@@ -40,16 +100,19 @@ html_report <- function(countcheck_list,
                         home_url = NULL,
                         style = NULL) {
   # check arguments
-  # stopifnot(
-  #   # countcheck_list must be data frame (TODO later: also list of data frames, also headers)
-  #   is.data.frame(countcheck_list),
-  #   is.data.frame(unit_df)
-  # )
+  stopifnot(
+    # countcheck_list must be list
+    is.list(countcheck_list),
+    # countcheck_list must not be data frame
+    ! is.data.frame(countcheck_list),
+    # unit_df must be data frame
+    is.data.frame(unit_df)
+  )
   paste0(
     "<!DOCTYPE html>\n",
     "<html lang=\"", lang, "\">\n",
     html_head(title, charset, style),
-    html_body(countcheck_list, unit_df, column_headers, home_url = home_url),
+    html_body(countcheck_list, unit_df, column_headers, home_url),
     "</html>\n"
   )
 }
@@ -59,6 +122,9 @@ html_report <- function(countcheck_list,
 #' Generates HTML head.
 #'
 #' @keywords internal
+#' @param title Title for HTML document
+#' @param charset Character set of data and HTML document
+#' @param style Additional CSS rules (optional)
 #' @return String with HTML code for head
 html_head <- function(title,
                       charset,
@@ -72,16 +138,16 @@ html_head <- function(title,
     "body {font-family: \"Arial\", \"Lucida Sans Unicode\", \"Verdana\", \"sans-serif\";}\n",
     "a:link {color: #000000;}\n",
     "a:visited {color: #000000;}\n",
-    ".header {margin-top: 10px; padding-top: 0px; padding-bottom: 0px; margin-bottom: 0px; text-align: center;}\n",
+    ".header {margin-top: 10px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; text-align: center;}\n",
     ".header h1 {margin: 0px; color: #808080; font-size: xx-large;}\n",
     ".header .home {margin: 0px; margin-bottom: 10px; font-size: small;}\n",
     ".content {font-size: small; padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px;}\n",
-    ".content .table {margin-top: 10px; padding-top: 0px; padding-bottom: 0px; margin-bottom: 30px;}\n",
+    ".content .table {margin-top: 10px; margin-bottom: 30px; padding-top: 0px; padding-bottom: 0px;}\n",
     ".content .table h2 {margin-top: 0px; margin-bottom: 10px; color: #808080; font-size: x-large; text-align: center;}\n",
     ".content .table table {border: thin #888888 solid; border-collapse: collapse; width: 1000px; margin-left: auto; margin-right: auto}\n",
     ".content .table th, td {padding-top: 2px; padding-bottom: 2px; padding-left: 3px; padding-right: 5px; border: 1px #888888 solid; vertical-align: top;}\n",
     ".content .table th {background-color: #FFFFFF}\n",
-    ".footer {margin-top: 0px; padding-top: 0px; padding-bottom: 0px; margin-bottom: 30px; text-align: center; font-size: small;}\n",
+    ".footer {margin-top: 0px; margin-bottom: 30px; padding-top: 0px; padding-bottom: 0px; text-align: center; font-size: small;}\n",
     ".left {text-align: left}\n",
     ".right {text-align: right}\n"
   )
@@ -99,10 +165,23 @@ html_head <- function(title,
 #' Generates HTML body.
 #'
 #' @keywords internal
-#' @param countcheck_list List of data frame with columns
-#'   \emph{y_new}, \emph{ucl_partpool}, \emph{unit}
+#' @param countcheck_list Data to be shown in report. List of lists with
+#'   two items named "caption" and "countcheck_df".
+#'   The item \emph{countcheck_df} in each of the nested lists is a data frame
+#'   with columns \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
+#'   as returned by \emph{select_for_report()}.
+#'   The item \emph{caption} in each of the nested lists is used for
+#'   the table caption.
 #' @param unit_df Data frame with columns
-#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
+#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+#'   and \emph{unit_url} (may be set to ""). Must contain one record
+#'   for each unit in \emph{countcheck_df} dataframes in
+#'   \emph{countcheck_list}.
+#' @param column_headers Column headers for tables; vector with five headers -
+#'   the elements of the vector must be named \emph{group}, \emph{count},
+#'   \emph{ucl}, \emph{unit}, and \emph{name}
+#' @param home_url URL for link to "Home" included at top of HTML document
+#'   (optional)
 #' @return String with HTML code for body
 html_body <- function(countcheck_list,
                       unit_df,
@@ -145,9 +224,16 @@ html_body <- function(countcheck_list,
 #'
 #' @keywords internal
 #' @param countcheck_df Data frame with columns
-#'   \emph{y_new}, \emph{ucl_partpool}, \emph{unit}
+#'   \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
+#'   as returned by \emph{select_for_report}
 #' @param unit_df Data frame with columns
-#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}
+#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+#'   and \emph{unit_url} (may be set to ""). Must contain one record
+#'   for each unit in \emph{countcheck_df}
+#' @param caption Caption for table
+#' @param headers Vector with five column headers -
+#'   the elements of the vector must be named \emph{group}, \emph{count},
+#'   \emph{ucl}, \emph{unit}, and \emph{name}
 #' @return String with HTML code for table
 html_table <- function(countcheck_df,
                        unit_df,
@@ -174,7 +260,9 @@ html_table <- function(countcheck_df,
     # colnames countcheck_df must be as expected
     colnames(countcheck_df) == c("y_new", "ucl_partpool", "unit"),
     # colnames countcheck_df must be as expected
-    colnames(unit_df) == c("unit", "unit_name", "unit_url", "unit_group_name")
+    colnames(unit_df) == c("unit", "unit_name", "unit_url", "unit_group_name"),
+    # names of header vector must be as specified
+    names(headers) == c("group", "count", "ucl", "unit", "name")
   )
   # Escape <, >, &, " and ' in names
   unit_df$unit_group_name <- escape(unit_df$unit_group_name)
@@ -202,6 +290,17 @@ html_table <- function(countcheck_df,
     countcheck_rec <- countcheck_df[i, ]
     countcheck_unit <- as.integer(countcheck_rec["unit"])
     unit_rec <- unit_df[unit_df$unit == countcheck_unit, ]
+    if (unit_rec["unit_url"] == "") {
+      td_unit <- paste0("<td class=\"right unit\">",
+                        countcheck_unit,
+                        "</td>")
+    } else {
+      td_unit <- paste0("<td class=\"right unit\">",
+                        "<a href=\"", unit_rec["unit_url"], "\">",
+                        countcheck_unit,
+                        "</a>",
+                        "</td>")
+    }
     table_rows <- paste0(
       table_rows,
       "<tr>",
@@ -210,9 +309,7 @@ html_table <- function(countcheck_df,
       "</td>",
       "<td class=\"right count\">", countcheck_rec["y_new"], "</td>",
       "<td class=\"right ucl\">", countcheck_rec["ucl_partpool"], "</td>",
-      "<td class=\"right unit\">",
-        "<a href=\"", unit_rec["unit_url"], "\">", countcheck_unit, "</a>",
-      "</td>",
+      td_unit,
       "<td class=\"left name\">", unit_rec["unit_name"], "</td>",
       "</tr>\n"
     )

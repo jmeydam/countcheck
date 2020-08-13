@@ -120,7 +120,7 @@
     <p>Selects data for report.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>select_for_report</span>(<span class='no'>d</span>)</pre>
+    <pre class="usage"><span class='fu'>select_for_report</span>(<span class='no'>d</span>, <span class='kw'>min_y_new</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>min_diff</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,12 +129,45 @@
       <th>d</th>
       <td><p>Data frame as returned from <em>countcheck()</em></p></td>
     </tr>
+    <tr>
+      <th>min_y_new</th>
+      <td><p>Minimum value for y_new</p></td>
+    </tr>
+    <tr>
+      <th>min_diff</th>
+      <td><p>Minimum difference between y_new and ucl_partpool</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Data frame to be passed in <em>countcheck_list</em>
   to <em>html_report()</em></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Selected columns:</p><ul>
+<li><p><em>unit</em>:            ID for unit</p></li>
+<li><p><em>y_new</em>:           new count values of interest</p></li>
+<li><p><em>ucl_partpool</em>:    UCL based on n_new and partial-pooling
+                                estimate of theta</p></li>
+<li><p><em>fe_partpool</em>:     factor <em>f</em>, with observed y_new
+                                exceeding partial-pooling UCL by
+                                <em>f * sd(y_new)</em>,
+                                given n_new and partial-pooling estimate
+                                of theta</p></li>
+</ul>
+
+<p>Condition that always applies: <em>y_new</em> must exceed <em>ucl_partpool</em>.</p>
+<p>Additional optional conditions:</p><ul>
+<li><p><em>y_new</em> exceeds <em>min_y_new</em> (default: 0),</p></li>
+<li><p>difference between <em>y_new</em> and <em>ucl_partpool</em>
+  exceeds <em>min_diff</em> (default: 0).</p></li>
+</ul>
+
+<p>Returned data is sorted by <em>fe_partpool</em> in descending order.
+Therefore, items towards the top are less likely to be the result of
+random fluctuations, whereas items towards the bottom can usually be
+ignored.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

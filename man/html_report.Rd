@@ -17,15 +17,39 @@ html_report(
 )
 }
 \arguments{
-\item{countcheck_list}{List of data frames with columns
-\emph{y_new}, \emph{ucl_partpool}, \emph{unit}}
+\item{countcheck_list}{Data to be shown in report. List of lists with
+two items named "caption" and "countcheck_df".
+The item \emph{countcheck_df} in each of the nested lists is a data frame
+with columns \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
+as returned by \emph{select_for_report()}.
+The item \emph{caption} in each of the nested lists is used for
+the table caption.}
 
 \item{unit_df}{Data frame with columns
-\emph{unit}, \emph{unit_group_name}, \emph{unit_name}, \emph{unit_url}}
+\emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+and \emph{unit_url} (may be set to ""). Must contain one record
+for each unit in \emph{countcheck_df} dataframes in
+\emph{countcheck_list}.}
+
+\item{title}{Title for HTML document}
+
+\item{column_headers}{Column headers for tables; vector with five headers -
+the elements of the vector must be named \emph{group}, \emph{count},
+\emph{ucl}, \emph{unit}, and \emph{name}}
+
+\item{charset}{Character set of data and HTML document}
+
+\item{lang}{Language of HTML document}
+
+\item{home_url}{URL for link to "Home" included at top of HTML document
+(optional)}
+
+\item{style}{Additional CSS rules (optional)}
 }
 \value{
 String with HTML code for report
 }
 \description{
-Generates HTML report.
+Generates HTML report for multiple tables as returned by
+\emph{select_for_report}.
 }

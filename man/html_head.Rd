@@ -6,6 +6,13 @@
 \usage{
 html_head(title, charset, style)
 }
+\arguments{
+\item{title}{Title for HTML document}
+
+\item{charset}{Character set of data and HTML document}
+
+\item{style}{Additional CSS rules (optional)}
+}
 \value{
 String with HTML code for head
 }

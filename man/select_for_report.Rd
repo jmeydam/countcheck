@@ -4,10 +4,14 @@
 \alias{select_for_report}
 \title{Select data for report}
 \usage{
-select_for_report(d)
+select_for_report(d, min_y_new = 0, min_diff = 0)
 }
 \arguments{
 \item{d}{Data frame as returned from \emph{countcheck()}}
+
+\item{min_y_new}{Minimum value for y_new}
+
+\item{min_diff}{Minimum difference between y_new and ucl_partpool}
 }
 \value{
 Data frame to be passed in \emph{countcheck_list}
@@ -15,4 +19,32 @@ Data frame to be passed in \emph{countcheck_list}
 }
 \description{
 Selects data for report.
+}
+\details{
+Selected columns:
+\itemize{
+\item \emph{unit}:            ID for unit
+\item \emph{y_new}:           new count values of interest
+\item \emph{ucl_partpool}:    UCL based on n_new and partial-pooling
+                                estimate of theta
+\item \emph{fe_partpool}:     factor \emph{f}, with observed y_new
+                                exceeding partial-pooling UCL by
+                                \emph{f * sd(y_new)},
+                                given n_new and partial-pooling estimate
+                                of theta
+}
+
+Condition that always applies: \emph{y_new} must exceed \emph{ucl_partpool}.
+
+Additional optional conditions:
+\itemize{
+\item \emph{y_new} exceeds \emph{min_y_new} (default: 0),
+\item difference between \emph{y_new} and \emph{ucl_partpool}
+  exceeds \emph{min_diff} (default: 0).
+}
+
+Returned data is sorted by \emph{fe_partpool} in descending order.
+Therefore, items towards the top are less likely to be the result of
+random fluctuations, whereas items towards the bottom can usually be
+ignored.
 }

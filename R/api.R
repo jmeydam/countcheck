@@ -42,7 +42,7 @@
 #'                                 given n_new and partial-pooling estimate
 #'                                 of theta
 #' }
-#' If data is provided via arguments, vectors must be of equal length,
+#' If data is provided via parameters, vectors must be of equal length,
 #' with length >= 3. If \emph{unit} is NULL, all data vectors passed
 #' to this function are ignored, and the complete data set is generated
 #' in a simulation run.

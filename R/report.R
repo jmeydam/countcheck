@@ -73,7 +73,7 @@ select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
 #'   the table caption.
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to "").
+#'   and \emph{unit_url} (ignored if NA).
 #'   Must contain exactly one record for each unit in
 #'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param title Title for HTML document
@@ -178,7 +178,7 @@ html_head <- function(title,
 #'   the table caption.
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to "").
+#'   and \emph{unit_url} (ignored if NA).
 #'   Must contain exactly one record for each unit in
 #'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param title for HTML document
@@ -238,7 +238,7 @@ html_body <- function(countcheck_list,
 #'   as returned by \emph{select_for_report}
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-#'   and \emph{unit_url} (may be set to "").
+#'   and \emph{unit_url} (ignored if NA).
 #'   Must contain exactly one record for each unit in
 #'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param caption Caption for table
@@ -301,7 +301,7 @@ html_table <- function(countcheck_df,
     countcheck_rec <- countcheck_df[i, ]
     countcheck_unit <- as.integer(countcheck_rec["unit"])
     unit_rec <- unit_df[unit_df$unit == countcheck_unit, ]
-    if (unit_rec["unit_url"] == "") {
+    if (is.na(unit_rec["unit_url"])) {
       td_unit <- paste0("<td class=\"right unit\">",
                         countcheck_unit,
                         "</td>")

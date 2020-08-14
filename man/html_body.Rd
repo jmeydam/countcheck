@@ -17,7 +17,7 @@ the table caption.}
 
 \item{unit_df}{Data frame with columns
 \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
-and \emph{unit_url} (may be set to "").
+and \emph{unit_url} (ignored if NA).
 Must contain exactly one record for each unit in
 \emph{countcheck_df} dataframes in \emph{countcheck_list}.}
 

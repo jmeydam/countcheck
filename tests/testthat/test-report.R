@@ -181,9 +181,9 @@ test_that("HTML is valid (check generated HTML file manually)", {
     home_url = "../index.html",
     style = NULL)
     # style = ".header h1 {margin: 0px; color: blue; font-size: xx-large;}\n")
-  dput(report, file = "../data/report_tmp.txt")
-  sink("../data/report_tmp.html")
-  cat(dget(file = "../data/report_tmp.txt"))
+  dput(report, file = "../data/report.txt")
+  sink("../data/report.html")
+  cat(report)
   sink()
   # Dummy test
   expect_equal(1, 1)

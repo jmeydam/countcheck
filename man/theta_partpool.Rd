@@ -4,7 +4,7 @@
 \alias{theta_partpool}
 \title{Partial-pooling model (Bayesian hierarchical model)}
 \usage{
-theta_partpool(n, y, random_seed = 200731, precis_depth = 1)
+theta_partpool(n, y, beta = 0.376, random_seed = 200731, precis_depth = 1)
 }
 \arguments{
 \item{n}{Previous reference count values (measure of exposure),
@@ -12,9 +12,12 @@ must at least be 1}
 
 \item{y}{Previous count values of interest}
 
+\item{beta}{Parameter for half-normal distribution of alpha
+(default: 0.376, so that the expected value of alpha is 0.3)}
+
 \item{random_seed}{Seed value for Stan (default: 200731)}
 
-\item{precis_depth}{depth parameter for rethinking::precis() (default: 1)}
+\item{precis_depth}{Depth parameter for rethinking::precis() (default: 1)}
 }
 \value{
 Partial-pooling estimates of \emph{theta}
@@ -38,12 +41,13 @@ a rate parameter \emph{theta_i} and the exposure \emph{n_i}.
 
 We use a half-normal distribution with a parameter \emph{alpha} for the rate
 parameters \emph{theta_i}. This time, \emph{alpha} itself is also assumed to
-have a probability distribution. We choose a half-normal distribution with a
-fixed parameter 0.376, so that the expected value of \emph{alpha} is 0.3.
+have a probability distribution. We choose a half-normal distribution with
+a parameter \emph{beta}. By default, \emph{beta} is set to 0.376, so that the
+expected value of \emph{alpha} is 0.3.
 
 Note that when simulating the data we set \emph{alpha} to 0.05. The "true"
-value of \emph{alpha} is substantially lower than the value initially
-assumed by our model.
+value of \emph{alpha} is substantially lower than the default value
+initially assumed by our model.
 
 Given data in the form of reference counts \emph{n_i} (exposure) and count
 values of interest \emph{y_i}, our model will allow us to determine a

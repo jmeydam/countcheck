@@ -71,12 +71,13 @@ theta_complpool <- function(n, y) {
 #'
 #' We use a half-normal distribution with a parameter \emph{alpha} for the rate
 #' parameters \emph{theta_i}. This time, \emph{alpha} itself is also assumed to
-#' have a probability distribution. We choose a half-normal distribution with a
-#' fixed parameter 0.376, so that the expected value of \emph{alpha} is 0.3.
+#' have a probability distribution. We choose a half-normal distribution with
+#' a parameter \emph{beta}. By default, \emph{beta} is set to 0.376, so that the
+#' expected value of \emph{alpha} is 0.3.
 #'
 #' Note that when simulating the data we set \emph{alpha} to 0.05. The "true"
-#' value of \emph{alpha} is substantially lower than the value initially
-#' assumed by our model.
+#' value of \emph{alpha} is substantially lower than the default value
+#' initially assumed by our model.
 #'
 #' Given data in the form of reference counts \emph{n_i} (exposure) and count
 #' values of interest \emph{y_i}, our model will allow us to determine a
@@ -92,10 +93,16 @@ theta_complpool <- function(n, y) {
 #' @param n Previous reference count values (measure of exposure),
 #'   must at least be 1
 #' @param y Previous count values of interest
+#' @param beta Parameter for half-normal distribution of alpha
+#'   (default: 0.376, so that the expected value of alpha is 0.3)
 #' @param random_seed Seed value for Stan (default: 200731)
-#' @param precis_depth depth parameter for rethinking::precis() (default: 1)
+#' @param precis_depth Depth parameter for rethinking::precis() (default: 1)
 #' @return Partial-pooling estimates of \emph{theta}
-theta_partpool <- function(n, y, random_seed = 200731, precis_depth = 1) {
+theta_partpool <- function(n,
+                           y,
+                           beta = 0.376,
+                           random_seed = 200731,
+                           precis_depth = 1) {
   # check arguments
   stopifnot(
     # n must be 1 or greater
@@ -103,7 +110,13 @@ theta_partpool <- function(n, y, random_seed = 200731, precis_depth = 1) {
     # y must be non-negative
     sum(y < 0) == 0,
     # n and y must be vectors of same length
-    length(n) == length(y)
+    length(n) == length(y),
+    # beta must be greater than 0
+    beta > 0,
+    # random_seed must be greater than 0
+    random_seed > 0,
+    # precis_depth must be either 1 or 2
+    precis_depth %in% c(1, 2)
   )
   # The function ulam() returns samples drawn from the posterior
   # distribution of our model.
@@ -116,7 +129,7 @@ theta_partpool <- function(n, y, random_seed = 200731, precis_depth = 1) {
       y ~ dpois(lambda),
       lambda <- n * theta[unit],
       theta[unit] ~ dhalfnorm(0, alpha),
-      alpha ~ dhalfnorm(0, 0.376)
+      alpha ~ dhalfnorm(0, beta)
     ),
     data = dat,
     chains = 4,
@@ -161,9 +174,21 @@ add_theta_complpool <- function(d) {
 #'
 #' @keywords internal
 #' @param d Initialized data frame
+#' @param beta Parameter for half-normal distribution of alpha
+#'   (default: 0.376, so that the expected value of alpha is 0.3)
 #' @param random_seed Seed value for Stan (default: 200731)
+#' @param precis_depth Depth parameter for rethinking::precis() (default: 1)
 #' @return Data frame with values for \emph{theta_partpool}
-add_theta_partpool <- function(d, random_seed = 200731) {
-  d$theta_partpool <- theta_partpool(d$n, d$y, random_seed)
+add_theta_partpool <- function(d,
+                               beta = 0.376,
+                               random_seed = 200731,
+                               precis_depth = 1) {
+  d$theta_partpool <- theta_partpool(
+    d$n,
+    d$y,
+    beta = beta,
+    random_seed = random_seed,
+    precis_depth = precis_depth
+  )
   d
 }

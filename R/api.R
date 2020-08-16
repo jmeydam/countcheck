@@ -56,10 +56,15 @@
 #'   must at least be 1
 #' @param y_new New count values of interest
 #' @param true_theta True value of theta (if known; optional)
-#' @param random_seed Seed value (default: 200731) - used in simulation and
-#'   by Stan
+#' @param beta Parameter for half-normal distribution of alpha
+#'   (default: 0.376, so that the expected value of alpha is 0.3) - used
+#'   in partial-pooling model
 #' @param factor_sd Factor multiplying standard deviation (default: 3) - used
 #'   in calculation of UCLs
+#' @param random_seed Seed value (default: 200731) - used in simulation and
+#'   by Stan
+#' @param precis_depth Depth parameter for rethinking::precis() (default: 1) -
+#'   used by function for partial-pooling model
 #' @return Data frame with all columns populated
 countcheck <- function(unit = NULL,
                        n = NULL,
@@ -67,26 +72,28 @@ countcheck <- function(unit = NULL,
                        n_new = NULL,
                        y_new = NULL,
                        true_theta = NULL,
+                       beta = 0.376,
+                       factor_sd = 3,
                        random_seed = 200731,
-                       factor_sd = 3) {
+                       precis_depth = 1) {
 
   # If unit is NULL, all data vectors passed to function are ignored,
   # and simulation is used to generate data
-  simulation <- is.null(unit)
-
-  if (simulation) {
+  if (is.null(unit)) {
     # Simulate data for use in examples, demos, ...
     d <- simulate_data(units = 1000, random_seed = random_seed)
   } else {
     # Use data passed to function
     # (length of vectors must match and data must be reasonable,
     # otherwise initialize() will abort)
-    d <- initialize(unit = unit,
-                    n = n,
-                    y = y,
-                    n_new = n_new,
-                    y_new = y_new,
-                    true_theta = true_theta)
+    d <- initialize(
+      unit = unit,
+      n = n,
+      y = y,
+      n_new = n_new,
+      y_new = y_new,
+      true_theta = true_theta
+    )
   }
 
   # Add no-pooling estimate of theta to data frame
@@ -97,7 +104,12 @@ countcheck <- function(unit = NULL,
 
   # Add partial-pooling estimate of theta to data frame
   # (based on Bayesian hierarchical model)
-  d <- add_theta_partpool(d, random_seed = random_seed)
+  d <- add_theta_partpool(
+    d,
+    beta = beta,
+    random_seed = random_seed,
+    precis_depth = precis_depth
+  )
 
   # Add "true" UCL to data frame
   d <- add_ucl_true_theta(d, factor_sd = factor_sd)

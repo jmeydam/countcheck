@@ -11,8 +11,10 @@ countcheck(
   n_new = NULL,
   y_new = NULL,
   true_theta = NULL,
+  beta = 0.376,
+  factor_sd = 3,
   random_seed = 200731,
-  factor_sd = 3
+  precis_depth = 1
 )
 }
 \arguments{
@@ -30,11 +32,18 @@ must at least be 1}
 
 \item{true_theta}{True value of theta (if known; optional)}
 
-\item{random_seed}{Seed value (default: 200731) - used in simulation and
-by Stan}
+\item{beta}{Parameter for half-normal distribution of alpha
+(default: 0.376, so that the expected value of alpha is 0.3) - used
+in partial-pooling model}
 
 \item{factor_sd}{Factor multiplying standard deviation (default: 3) - used
 in calculation of UCLs}
+
+\item{random_seed}{Seed value (default: 200731) - used in simulation and
+by Stan}
+
+\item{precis_depth}{Depth parameter for rethinking::precis() (default: 1) -
+used by function for partial-pooling model}
 }
 \value{
 Data frame with all columns populated

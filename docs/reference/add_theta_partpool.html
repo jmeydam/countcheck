@@ -122,7 +122,7 @@ hierarchical model) to data frame." />
 hierarchical model) to data frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_theta_partpool</span>(<span class='no'>d</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>)</pre>
+    <pre class="usage"><span class='fu'>add_theta_partpool</span>(<span class='no'>d</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>0.376</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>, <span class='kw'>precis_depth</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,8 +132,17 @@ hierarchical model) to data frame.</p>
       <td><p>Initialized data frame</p></td>
     </tr>
     <tr>
+      <th>beta</th>
+      <td><p>Parameter for half-normal distribution of alpha
+(default: 0.376, so that the expected value of alpha is 0.3)</p></td>
+    </tr>
+    <tr>
       <th>random_seed</th>
       <td><p>Seed value for Stan (default: 200731)</p></td>
+    </tr>
+    <tr>
+      <th>precis_depth</th>
+      <td><p>Depth parameter for rethinking::precis() (default: 1)</p></td>
     </tr>
     </table>
 

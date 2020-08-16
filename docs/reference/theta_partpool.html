@@ -130,7 +130,7 @@ unit <em>i</em>, especially when there is little information for a particular
 unit <em>i</em>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>theta_partpool</span>(<span class='no'>n</span>, <span class='no'>y</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>, <span class='kw'>precis_depth</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>theta_partpool</span>(<span class='no'>n</span>, <span class='no'>y</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>0.376</span>, <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>, <span class='kw'>precis_depth</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,12 +145,17 @@ must at least be 1</p></td>
       <td><p>Previous count values of interest</p></td>
     </tr>
     <tr>
+      <th>beta</th>
+      <td><p>Parameter for half-normal distribution of alpha
+(default: 0.376, so that the expected value of alpha is 0.3)</p></td>
+    </tr>
+    <tr>
       <th>random_seed</th>
       <td><p>Seed value for Stan (default: 200731)</p></td>
     </tr>
     <tr>
       <th>precis_depth</th>
-      <td><p>depth parameter for rethinking::precis() (default: 1)</p></td>
+      <td><p>Depth parameter for rethinking::precis() (default: 1)</p></td>
     </tr>
     </table>
 
@@ -167,11 +172,12 @@ distribution with parameter <em>lambda_i</em>. <em>lambda_i</em> is a product of
 a rate parameter <em>theta_i</em> and the exposure <em>n_i</em>.</p>
 <p>We use a half-normal distribution with a parameter <em>alpha</em> for the rate
 parameters <em>theta_i</em>. This time, <em>alpha</em> itself is also assumed to
-have a probability distribution. We choose a half-normal distribution with a
-fixed parameter 0.376, so that the expected value of <em>alpha</em> is 0.3.</p>
+have a probability distribution. We choose a half-normal distribution with
+a parameter <em>beta</em>. By default, <em>beta</em> is set to 0.376, so that the
+expected value of <em>alpha</em> is 0.3.</p>
 <p>Note that when simulating the data we set <em>alpha</em> to 0.05. The "true"
-value of <em>alpha</em> is substantially lower than the value initially
-assumed by our model.</p>
+value of <em>alpha</em> is substantially lower than the default value
+initially assumed by our model.</p>
 <p>Given data in the form of reference counts <em>n_i</em> (exposure) and count
 values of interest <em>y_i</em>, our model will allow us to determine a
 posterior probability distribution both for the parameter <em>alpha</em> and

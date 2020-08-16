@@ -4,12 +4,17 @@
 \alias{add_theta_partpool}
 \title{Add partial-pooling estimate of \emph{theta} to data frame}
 \usage{
-add_theta_partpool(d, random_seed = 200731)
+add_theta_partpool(d, beta = 0.376, random_seed = 200731, precis_depth = 1)
 }
 \arguments{
 \item{d}{Initialized data frame}
 
+\item{beta}{Parameter for half-normal distribution of alpha
+(default: 0.376, so that the expected value of alpha is 0.3)}
+
 \item{random_seed}{Seed value for Stan (default: 200731)}
+
+\item{precis_depth}{Depth parameter for rethinking::precis() (default: 1)}
 }
 \value{
 Data frame with values for \emph{theta_partpool}

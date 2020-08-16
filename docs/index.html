@@ -103,7 +103,7 @@
 <p>The rethinking package needs to be installed from <a href="https://github.com/rmcelreath/rethinking">GitHub</a>.</p>
 <p>The prototype can then be installed from GitHub with:</p>
 <pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git", 
-+                          build_vignettes = TRUE)</code></pre>
++                          build_vignettes = FALSE)</code></pre>
 </div>
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
@@ -130,187 +130,140 @@
 &gt; sum(d$y_new - d$ucl_partpool &gt; 0)
 [1] 18
 
-&gt; d[d$y_new - d$ucl_partpool &gt; 0,
-+   c("n", "y", "n_new", "y_new",
-+     "true_theta", "theta_partpool",
-+     "ucl_true_theta", "ucl_partpool", "fe_partpool")]
+## Example 2
 
-       n  y n_new y_new true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool
-109   24  0    12     3 0.05812885    0.024064468            3.5          2.5  0.93044617
-228   54  1    27     4 0.11591158    0.028294979            8.5          3.5  0.57204926
-364   95  5    48     8 0.10194831    0.050662061           12.5          7.5  0.32063281
-374  100  2    50     6 0.07644745    0.026322423           10.5          5.5  0.43583497
-399  110  1    55     5 0.01644587    0.016758025            4.5          4.5  0.52080752
-462  136  2    68     8 0.04883827    0.020448365            9.5          5.5  2.12009955
-501  157  9    79    12 0.08478296    0.055070260           14.5         11.5  0.23971648
-529  171  5    86     9 0.05595134    0.032107721           11.5          8.5  0.30089574
-598  210  1   105     5 0.03900614    0.009357919           10.5          4.5  0.50441236
-613  219  2   110     6 0.01705977    0.013253719            6.5          5.5  0.41409957
-635  239 12   120    14 0.06846729    0.049781645           17.5         13.5  0.20457133
-698  289  9   145    16 0.04752106    0.033010537           15.5         11.5  2.05684808
-751  336  3   168     7 0.01771915    0.011654992            8.5          6.5  0.35732168
-805  410 39   205    33 0.15066465    0.089235197           48.5         31.5  0.35070845
-894  612 26   306    25 0.05070100    0.042802879           27.5         24.5  0.13815697
-935  802 54   401    51 0.09019851    0.066301597           54.5         42.5  1.64848403
-967 1040 26   520    25 0.03408030    0.025742256           30.5         24.5  0.13666114
-974 1124 73   562    55 0.07536090    0.064331540           62.5         54.5  0.08315529</code></pre>
-<div id="alternatively" class="section level3">
-<h3 class="hasAnchor">
-<a href="#alternatively" class="anchor"></a>Alternatively:</h3>
-<p>Using the dataset provided in the package, the same result (here without the true_theta values) can be obtained with:</p>
-<pre><code>&gt; e &lt;- simdat
-&gt; d1 &lt;- countcheck(unit = e$unit,
-+                  n = e$n,
-+                  y = e$y,
-+                  n_new = e$n_new,
-+                  y_new = e$y_new,
-+                  random_seed = 200807)
+The count data in the first example were simulated with a known, "normal"
+data-generating process. Some new count values of interest _y_new_ were 0.
 
-&gt; d1[d1$y_new - d1$ucl_partpool &gt; 0,
-+    c("n", "y", "n_new", "y_new",
-+      "true_theta", "theta_partpool",
-+      "ucl_true_theta", "ucl_partpool", "fe_partpool")]
+In this example we change _y_new_ as follows:
 
-       n  y n_new y_new true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool
-109   24  0    12     3         NA    0.024064468             NA          2.5  0.93044617
-228   54  1    27     4         NA    0.028294979             NA          3.5  0.57204926
-364   95  5    48     8         NA    0.050662061             NA          7.5  0.32063281
-374  100  2    50     6         NA    0.026322423             NA          5.5  0.43583497
-399  110  1    55     5         NA    0.016758025             NA          4.5  0.52080752
-462  136  2    68     8         NA    0.020448365             NA          5.5  2.12009955
-501  157  9    79    12         NA    0.055070260             NA         11.5  0.23971648
-529  171  5    86     9         NA    0.032107721             NA          8.5  0.30089574
-598  210  1   105     5         NA    0.009357919             NA          4.5  0.50441236
-613  219  2   110     6         NA    0.013253719             NA          5.5  0.41409957
-635  239 12   120    14         NA    0.049781645             NA         13.5  0.20457133
-698  289  9   145    16         NA    0.033010537             NA         11.5  2.05684808
-751  336  3   168     7         NA    0.011654992             NA          6.5  0.35732168
-805  410 39   205    33         NA    0.089235197             NA         31.5  0.35070845
-894  612 26   306    25         NA    0.042802879             NA         24.5  0.13815697
-935  802 54   401    51         NA    0.066301597             NA         42.5  1.64848403
-967 1040 26   520    25         NA    0.025742256             NA         24.5  0.13666114
-974 1124 73   562    55         NA    0.064331540             NA         54.5  0.08315529</code></pre>
-</div>
-</div>
-<div id="example-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-2" class="anchor"></a>Example 2</h2>
-<p>The count data in the first example were simulated with a known, “normal” data-generating process. Some new count values of interest <em>y_new</em> were 0.</p>
-<p>In this example we change <em>y_new</em> as follows:</p>
-<p><code>y_new = round(2 * ceiling(e$n_new * e$true_theta))</code></p>
-<p>This is essentially twice the expected value for <em>y_new</em>, given a new reference count value n_new (used as a measure of exposure) and a value for <em>theta</em>. We round the result up, and the lowest possible value in this example is 1.</p>
-<p>Since we use a factor of 2, it is likely that the product will often exceed the upper control limit (UCL).</p>
-<p>Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed their respective upper control limits, vs. 489 when using a no-pooling model. 310 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.</p>
-<pre><code>&gt; d2 &lt;- countcheck(unit = e$unit,
-+                  n = e$n,
-+                  y = e$y,
-+                  n_new = e$n_new,
-+                  y_new = round(2 * ceiling(e$n_new * e$true_theta)),
-+                  true_theta = e$true_theta,
-+                  random_seed = 200807)
+`y_new = round(2 * ceiling(e$n_new * e$true_theta))`
 
-&gt; # Counts exceeding UCLs
-&gt; # *********************
-&gt; # ucl_true_theta:
-&gt; sum(d2$y_new - d2$ucl_true_theta &gt; 0)
-[1] 310
-&gt; # ucl_nopool:
-&gt; sum(d2$y_new - d2$ucl_nopool &gt; 0)
-[1] 489
-&gt; # ucl_complpool:
-&gt; sum(d2$y_new - d2$ucl_complpool &gt; 0)
-[1] 343
-&gt; # ucl_partpool:
-&gt; sum(d2$y_new - d2$ucl_partpool &gt; 0)
-[1] 332
+This is essentially twice the expected value for _y_new_, given a new 
+reference count value n_new (used as a measure of exposure) and a value 
+for _theta_. We round the result up, and the lowest possible value in 
+this example is 1.
 
-&gt; head(
-+   d2[d2$y_new - d2$ucl_partpool &gt; 0,
-+      c("n", "y", "n_new", "y_new",
-+        "true_theta", "theta_partpool",
-+        "ucl_true_theta", "ucl_partpool", "fe_partpool")]
-+ )
+Since we use a factor of 2, it is likely that the product will often
+exceed the upper control limit (UCL).
 
-  n y n_new y_new  true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool
-1 1 0     1     2 0.049278162     0.03815631            1.5          1.5    2.559687
-2 1 0     1     2 0.050456677     0.03806424            1.5          1.5    2.562781
-3 1 0     1     2 0.118428974     0.03879413            1.5          1.5    2.538557
-4 2 0     1     2 0.072886179     0.03742913            1.5          1.5    2.584432
-5 2 0     1     2 0.004318677     0.03759384            0.5          1.5    2.578764
-6 2 0     1     2 0.014761557     0.03784933            0.5          1.5    2.570046
+Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed
+their respective upper control limits, vs. 489 when using a no-pooling 
+model. 310 counts exceed the UCLs based on the true value of the parameter 
+_theta_, which is known in this case.
+</code></pre>
+<blockquote>
+<p>d2 &lt;- countcheck(unit = e$unit,</p>
+</blockquote>
+<ul>
+<li><div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>             n =<span class="st"> </span>e<span class="op">$</span>n,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>             y =<span class="st"> </span>e<span class="op">$</span>y,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>             n_new =<span class="st"> </span>e<span class="op">$</span>n_new,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>             y_new =<span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">ceiling</span>(e<span class="op">$</span>n_new <span class="op">*</span><span class="st"> </span>e<span class="op">$</span>true_theta)),</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>             true_theta =<span class="st"> </span>e<span class="op">$</span>true_theta,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>             random_seed =<span class="st"> </span><span class="dv">200807</span><span class="er">)</span></span></code></pre></div></li>
+</ul>
+<blockquote>
+<h1 id="counts-exceeding-ucls">Counts exceeding UCLs</h1>
+<h1 id="section">*********************</h1>
+<h1 id="ucl_true_theta">ucl_true_theta:</h1>
+<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_true_theta &gt; 0) [1] 310</p>
+<h1 id="ucl_nopool">ucl_nopool:</h1>
+<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_nopool &gt; 0) [1] 489</p>
+<h1 id="ucl_complpool">ucl_complpool:</h1>
+<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_complpool &gt; 0) [1] 343</p>
+<h1 id="ucl_partpool">ucl_partpool:</h1>
+<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_partpool &gt; 0) [1] 332</p>
+</blockquote>
+<pre><code>
+As analyzed in detail in the
+[simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
+if we gradually increase the factor from 1 to 8 we will find that the number
+of cases exceeding the UCL is similar for the partial-pooling and true-theta 
+UCLs, but initially substantially higher for the no-pooling UCLs, as was 
+demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
+especially when the previously observed count _y_ was 0, leading to an UCL
+of 0.5.
 
-&gt; tail(
-+   d2[d2$y_new - d2$ucl_partpool &gt; 0,
-+      c("n", "y", "n_new", "y_new",
-+        "true_theta", "theta_partpool",
-+        "ucl_true_theta", "ucl_partpool", "fe_partpool")]
-+ )
+The general results are not affected when changing the seed value.
 
-        n   y n_new y_new  true_theta theta_partpool ucl_true_theta ucl_partpool fe_partpool
-995  1952 150   976   176 0.089378272    0.076146467          115.5        100.5   8.7578432
-996  2202   4  1101    10 0.003693479    0.002268037           10.5          7.5   1.5820539
-997  2334  60  1167    70 0.029640283    0.025967249           52.5         47.5   4.0872775
-998  2505  41  1253    38 0.014551266    0.016720363           31.5         35.5   0.5461873
-999  3780 238  1890   250 0.065819145    0.062777478          158.5        151.5   9.0428098
-1000 3909  63  1955    76 0.019160583    0.016331095           56.5         49.5   4.6899137</code></pre>
-<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
-<p>The general results are not affected when changing the seed value.</p>
-<p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
-<p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>
-</div>
-<div id="html-report" class="section level2">
-<h2 class="hasAnchor">
-<a href="#html-report" class="anchor"></a>HTML Report</h2>
-<p>Select data from data frame d (example 1 above) for the report:</p>
-<pre><code>&gt; countcheck_df &lt;- select_for_report(d)</code></pre>
-<p>Result:</p>
-<pre><code>&gt; str(countcheck_df)
-'data.frame':   18 obs. of  3 variables:
- $ y_new       : int  8 16 51 3 4 5 5 6 6 7 ...
- $ ucl_partpool: num  5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 ...
- $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...</code></pre>
-<p>We also need a data frame with unit master data. Here, we just simulate data:</p>
-<pre><code>&gt; units_tmp &lt;- sort(unique(countcheck_df$unit))
-&gt; unit_df &lt;- data.frame(
-+   unit = units_tmp,
-+   unit_name = paste("Unit",
-+                     units_tmp),
-+   unit_url = paste0("http://domain/units/",
-+                     units_tmp,
-+                     ".html"),
-+   unit_group_name = paste("Group",
-+                           rep(1:5,
-+                               length.out = length(units_tmp)))
-+ )</code></pre>
-<p>Result:</p>
-<pre><code>&gt; str(unit_df)
-'data.frame':   18 obs. of  4 variables:
- $ unit           : int  109 228 364 374 399 462 501 529 598 613 ...
- $ unit_name      : chr  "Unit 109" "Unit 228" "Unit 364" "Unit 374" ...
- $ unit_url       : chr  "http://domain/units/109.html" "http://domain/units/228.html" "http://domain/units/364.html" "http://domain/units/374.html" ...
- $ unit_group_name: chr  "Group 1" "Group 2" "Group 3" "Group 4" ...</code></pre>
-<p>Generate report as R string:</p>
-<pre><code>&gt; report &lt;- html_report(
-+   countcheck_list = list(
-+     list(df = countcheck_df, caption = "KPI 1")
-+   ),
-+   unit_df = unit_df,
-+   title = "Report",
-+   table_width_px = 500,
-+   column_headers = c(
-+     group = "Group",
-+     count = "Count",
-+     ucl = "UCL",
-+     unit = "Unit",
-+     name = "Name"),
-+   charset = "utf-8",
-+   lang = "en",
-+   home_url = "https://github.com/jmeydam/countcheck")</code></pre>
-<p>Save HTML report to disk:</p>
-<pre><code>&gt; sink("report.html")
-&gt; cat(report)
-&gt; sink()</code></pre>
-<p><a href="https://github.com/jmeydam/countcheck/report.html">Example</a></p>
+In a realistic scenario it is not possible to assess performance by
+comparison with "true" values. The true values of _theta_ are generally 
+not known, and the probability distributions assumed for the Bayesian 
+hierarchical model (the no-pooling model) may in fact be inappropriate.
+
+On the other hand, in a realistic scenario it is often possible to assess 
+performance by investigating individual cases.
+
+## HTML Report
+
+Select data from data frame d (example 1 above) for the report:
+</code></pre>
+<blockquote>
+<p>countcheck_df &lt;- select_for_report(d)</p>
+</blockquote>
+<pre><code>
+Result:
+</code></pre>
+<blockquote>
+<p>str(countcheck_df) ‘data.frame’: 18 obs. of 3 variables: $ y_new : int 8 16 51 3 4 5 5 6 6 7 … $ ucl_partpool: num 5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 … $ unit : int 462 698 935 109 228 399 598 374 613 751 …</p>
+</blockquote>
+<pre><code>
+We also need a data frame with unit master data.
+Here, we just simulate data:
+</code></pre>
+<blockquote>
+<p>units_tmp &lt;- sort(unique(countcheck_df$unit)) unit_df &lt;- data.frame(</p>
+</blockquote>
+<ul>
+<li>unit = units_tmp,</li>
+<li>unit_name = paste(“Unit”,</li>
+<li><div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>                units_tmp<span class="er">)</span>,</span></code></pre></div></li>
+<li>unit_url = paste0(“<a href="http://domain/units/" class="uri">http://domain/units/</a>”,</li>
+<li><div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>                units_tmp,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>                <span class="st">".html"</span><span class="er">)</span>,</span></code></pre></div></li>
+<li>unit_group_name = paste(“Group”,</li>
+<li><div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>                      <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>                          length.out =<span class="st"> </span><span class="kw">length</span>(units_tmp)<span class="er">))</span></span></code></pre></div></li>
+<li>)</li>
+</ul>
+<pre><code>
+Result:
+</code></pre>
+<blockquote>
+<p>str(unit_df) ‘data.frame’: 18 obs. of 4 variables: $ unit : int 109 228 364 374 399 462 501 529 598 613 … $ unit_name : chr “Unit 109” “Unit 228” “Unit 364” “Unit 374” … $ unit_url : chr “<a href="http://domain/units/109.html" class="uri">http://domain/units/109.html</a>” “<a href="http://domain/units/228.html" class="uri">http://domain/units/228.html</a>” “<a href="http://domain/units/364.html" class="uri">http://domain/units/364.html</a>” “<a href="http://domain/units/374.html" class="uri">http://domain/units/374.html</a>” … $ unit_group_name: chr “Group 1” “Group 2” “Group 3” “Group 4” …</p>
+</blockquote>
+<pre><code>
+Generate report as R string:
+</code></pre>
+<blockquote>
+<p>report &lt;- html_report(</p>
+</blockquote>
+<ul>
+<li>countcheck_list = list(</li>
+<li><div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">list</span>(<span class="dt">df =</span> countcheck_df, <span class="dt">caption =</span> <span class="st">"KPI 1"</span>)</span></code></pre></div></li>
+<li>),</li>
+<li>unit_df = unit_df,</li>
+<li>title = “Report”,</li>
+<li>table_width_px = 500,</li>
+<li>column_headers = c(</li>
+<li><div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>group =<span class="st"> "Group"</span>,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>count =<span class="st"> "Count"</span>,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>ucl =<span class="st"> "UCL"</span>,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>unit =<span class="st"> "Unit"</span>,</span></code></pre></div></li>
+<li><div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>name =<span class="st"> "Name"</span><span class="er">)</span>,</span></code></pre></div></li>
+<li>charset = “utf-8”,</li>
+<li>lang = “en”,</li>
+<li>home_url = “<a href="https://github.com/jmeydam/countcheck" class="uri">https://github.com/jmeydam/countcheck</a>”)</li>
+</ul>
+<pre><code>
+Save HTML report to disk:
+</code></pre>
+<blockquote>
+<p>sink(“report.html”) cat(report) sink() ```</p>
+</blockquote>
+<p><a href="https://raw.githubusercontent.com/jmeydam/countcheck/master/report.html">View HTML code</a></p>
+<p><a href="https://jmeydam.github.io/countcheck/report.html">View report</a></p>
 </div>
 </div>
   </div>

@@ -56,7 +56,10 @@
 #'   must at least be 1
 #' @param y_new New count values of interest
 #' @param true_theta True value of theta (if known; optional)
-#' @param random_seed Seed value (optional) - used in simulation and by Stan
+#' @param random_seed Seed value (default: 200731) - used in simulation and
+#'   by Stan
+#' @param factor_sd Factor multiplying standard deviation (default: 3) - used
+#'   in calculation of UCLs
 #' @return Data frame with all columns populated
 countcheck <- function(unit = NULL,
                        n = NULL,
@@ -64,7 +67,8 @@ countcheck <- function(unit = NULL,
                        n_new = NULL,
                        y_new = NULL,
                        true_theta = NULL,
-                       random_seed = 200731) {
+                       random_seed = 200731,
+                       factor_sd = 3) {
 
   # If unit is NULL, all data vectors passed to function are ignored,
   # and simulation is used to generate data
@@ -96,17 +100,17 @@ countcheck <- function(unit = NULL,
   d <- add_theta_partpool(d, random_seed = random_seed)
 
   # Add "true" UCL to data frame
-  d <- add_ucl_true_theta(d)
+  d <- add_ucl_true_theta(d, factor_sd = factor_sd)
 
   # Add no-pooling UCL to data frame
-  d <- add_ucl_nopool(d)
+  d <- add_ucl_nopool(d, factor_sd = factor_sd)
 
   # Add complete-pooling UCL to data frame
-  d <- add_ucl_complpool(d)
+  d <- add_ucl_complpool(d, factor_sd = factor_sd)
 
   # Add partial-pooling UCL to data frame
   # (based on Bayesian hierarchical model)
-  d <- add_ucl_partpool(d)
+  d <- add_ucl_partpool(d, factor_sd = factor_sd)
 
   # Add fe (factor_exceeding) based on "true" UCL to data frame
   d <- add_fe_true_theta(d)

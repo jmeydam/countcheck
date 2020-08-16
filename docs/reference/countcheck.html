@@ -213,7 +213,8 @@ in a simulation run.</p>
   <span class='kw'>n_new</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>y_new</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>true_theta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>
+  <span class='kw'>random_seed</span> <span class='kw'>=</span> <span class='fl'>200731</span>,
+  <span class='kw'>factor_sd</span> <span class='kw'>=</span> <span class='fl'>3</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,7 +248,13 @@ must at least be 1</p></td>
     </tr>
     <tr>
       <th>random_seed</th>
-      <td><p>Seed value (optional) - used in simulation and by Stan</p></td>
+      <td><p>Seed value (default: 200731) - used in simulation and
+by Stan</p></td>
+    </tr>
+    <tr>
+      <th>factor_sd</th>
+      <td><p>Factor multiplying standard deviation (default: 3) - used
+in calculation of UCLs</p></td>
     </tr>
     </table>
 

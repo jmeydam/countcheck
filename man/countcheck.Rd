@@ -11,7 +11,8 @@ countcheck(
   n_new = NULL,
   y_new = NULL,
   true_theta = NULL,
-  random_seed = 200731
+  random_seed = 200731,
+  factor_sd = 3
 )
 }
 \arguments{
@@ -29,7 +30,11 @@ must at least be 1}
 
 \item{true_theta}{True value of theta (if known; optional)}
 
-\item{random_seed}{Seed value (optional) - used in simulation and by Stan}
+\item{random_seed}{Seed value (default: 200731) - used in simulation and
+by Stan}
+
+\item{factor_sd}{Factor multiplying standard deviation (default: 3) - used
+in calculation of UCLs}
 }
 \value{
 Data frame with all columns populated

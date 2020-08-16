@@ -88,3 +88,48 @@ tail(
        "true_theta", "theta_partpool",
        "ucl_true_theta", "ucl_partpool", "fe_partpool")]
 )
+
+# HTML Report ###############################################################
+
+# Select data from data frame d for the report
+countcheck_df <- select_for_report(d)
+str(countcheck_df)
+
+# We also need a data frame with unit master data
+# Here, we just simulate data
+units_tmp <- sort(unique(countcheck_df$unit))
+unit_df <- data.frame(
+  unit = units_tmp,
+  unit_name = paste("Unit",
+                    units_tmp),
+  unit_url = paste0("http://domain/units/",
+                    units_tmp,
+                    ".html"),
+  unit_group_name = paste("Group",
+                          rep(1:5,
+                              length.out = length(units_tmp)))
+)
+str(unit_df)
+
+# Generate report as R string
+report <- html_report(
+  countcheck_list = list(
+    list(df = countcheck_df, caption = "KPI 1")
+  ),
+  unit_df = unit_df,
+  title = "Report",
+  table_width_px = 500,
+  column_headers = c(
+    group = "Group",
+    count = "Count",
+    ucl = "UCL",
+    unit = "Unit",
+    name = "Name"),
+  charset = "utf-8",
+  lang = "en",
+  home_url = "https://github.com/jmeydam/countcheck")
+
+# Example code for saving HTML report to disk
+sink("report.html")
+cat(report)
+sink()

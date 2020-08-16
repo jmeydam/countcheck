@@ -237,3 +237,81 @@ hierarchical model (the no-pooling model) may in fact be inappropriate.
 
 On the other hand, in a realistic scenario it is often possible to assess 
 performance by investigating individual cases.
+
+## HTML Report
+
+Select data from data frame d (example 1 above) for the report:
+
+```
+> countcheck_df <- select_for_report(d)
+```
+
+Result:
+
+```
+> str(countcheck_df)
+'data.frame':	18 obs. of  3 variables:
+ $ y_new       : int  8 16 51 3 4 5 5 6 6 7 ...
+ $ ucl_partpool: num  5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 ...
+ $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...
+```
+
+We also need a data frame with unit master data.
+Here, we just simulate data:
+
+```
+> units_tmp <- sort(unique(countcheck_df$unit))
+> unit_df <- data.frame(
++   unit = units_tmp,
++   unit_name = paste("Unit",
++                     units_tmp),
++   unit_url = paste0("http://domain/units/",
++                     units_tmp,
++                     ".html"),
++   unit_group_name = paste("Group",
++                           rep(1:5,
++                               length.out = length(units_tmp)))
++ )
+```
+
+Result:
+
+```
+> str(unit_df)
+'data.frame':	18 obs. of  4 variables:
+ $ unit           : int  109 228 364 374 399 462 501 529 598 613 ...
+ $ unit_name      : chr  "Unit 109" "Unit 228" "Unit 364" "Unit 374" ...
+ $ unit_url       : chr  "http://domain/units/109.html" "http://domain/units/228.html" "http://domain/units/364.html" "http://domain/units/374.html" ...
+ $ unit_group_name: chr  "Group 1" "Group 2" "Group 3" "Group 4" ...
+```
+
+Generate report as R string:
+
+```
+> report <- html_report(
++   countcheck_list = list(
++     list(df = countcheck_df, caption = "KPI 1")
++   ),
++   unit_df = unit_df,
++   title = "Report",
++   table_width_px = 500,
++   column_headers = c(
++     group = "Group",
++     count = "Count",
++     ucl = "UCL",
++     unit = "Unit",
++     name = "Name"),
++   charset = "utf-8",
++   lang = "en",
++   home_url = "https://github.com/jmeydam/countcheck")
+```
+
+Save HTML report to disk:
+
+```
+> sink("report.html")
+> cat(report)
+> sink()
+```
+
+[Example](https://github.com/jmeydam/countcheck/report.html)

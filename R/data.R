@@ -1,3 +1,4 @@
+# d <- countcheck(random_seed = 200807)
 # str(d)
 # simdat <- d[, c("unit", "n", "y", "n_new", "y_new", "true_theta")]
 # usethis::use_data(simdat, overwrite = TRUE)

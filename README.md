@@ -314,4 +314,4 @@ Save HTML report to disk:
 > sink()
 ```
 
-[Example](https://github.com/jmeydam/countcheck/report.html)
+[View HTML code of example](https://github.com/jmeydam/countcheck/blob/master/report.html)

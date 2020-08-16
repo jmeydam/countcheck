@@ -22,7 +22,8 @@ Factor \emph{f}, with observed \emph{y_new} exceeding UCL by
 }
 \description{
 Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-  \emph{f * sd(y_new)}.
+\emph{f * sd(y_new)}. Returns negative value if observed \emph{y_new}
+is lower than \emph{ucl}. Returns Inf if \emph{theta_hat} is 0.
 }
 \details{
 Assuming a Poisson distribution with

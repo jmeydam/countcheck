@@ -9,9 +9,10 @@ select_for_report(d, min_y_new = 0, min_diff = 0)
 \arguments{
 \item{d}{Data frame as returned from \emph{countcheck()}}
 
-\item{min_y_new}{Minimum value for y_new}
+\item{min_y_new}{Minimum value for y_new (default: 0)}
 
-\item{min_diff}{Minimum difference between y_new and ucl_partpool}
+\item{min_diff}{Minimum difference between y_new and ucl_partpool
+(default: 0)}
 }
 \value{
 Data frame to be passed in \emph{countcheck_list}

@@ -144,6 +144,15 @@ test_that("factor_exceeding() calculates factor as expected", {
   ))
   expect_equal(
     factor_exceeding(
+      theta_hat = 0,
+      n_new = 8,
+      y_new = 14,
+      ucl = 10.5
+    ),
+    Inf
+  )
+  expect_equal(
+    factor_exceeding(
       theta_hat = 0.5,
       n_new = 8,
       y_new = 12,

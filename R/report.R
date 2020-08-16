@@ -31,8 +31,9 @@
 #'
 #' @export
 #' @param d Data frame as returned from \emph{countcheck()}
-#' @param min_y_new Minimum value for y_new
+#' @param min_y_new Minimum value for y_new (default: 0)
 #' @param min_diff Minimum difference between y_new and ucl_partpool
+#'   (default: 0)
 #' @return Data frame to be passed in \emph{countcheck_list}
 #'   to \emph{html_report()}
 select_for_report <- function(d, min_y_new = 0, min_diff = 0) {

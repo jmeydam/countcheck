@@ -38,7 +38,8 @@ ucl <- function(theta_hat, n_new, factor_sd = 3) {
 #' control limit (UCL)
 #'
 #' Calculates factor \emph{f}, with observed \emph{y_new} exceeding UCL by
-#'   \emph{f * sd(y_new)}.
+#' \emph{f * sd(y_new)}. Returns negative value if observed \emph{y_new}
+#' is lower than \emph{ucl}. Returns Inf if \emph{theta_hat} is 0.
 #'
 #' Assuming a Poisson distribution with
 #' \emph{lambda_hat = theta_hat * n_new},

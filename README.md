@@ -78,6 +78,21 @@ _theta_, which is known in this case.)
 [1] 18
 ```
 
+### Alternatively:
+
+Using the dataset provided in the package, the same result (here without the 
+true_theta values) can be obtained with:
+
+```
+> e <- simdat
+> d1 <- countcheck(unit = e$unit,
++                  n = e$n,
++                  y = e$y,
++                  n_new = e$n_new,
++                  y_new = e$y_new,
++                  random_seed = 200807)
+```
+
 ## Example 2
 
 The count data in the first example were simulated with a known, "normal"
@@ -152,16 +167,6 @@ Select data from data frame d (example 1 above) for the report:
 > countcheck_df <- select_for_report(d)
 ```
 
-Result:
-
-```
-> str(countcheck_df)
-'data.frame':	18 obs. of  3 variables:
- $ y_new       : int  8 16 51 3 4 5 5 6 6 7 ...
- $ ucl_partpool: num  5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 ...
- $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...
-```
-
 We also need a data frame with unit master data.
 Here, we just simulate data:
 
@@ -178,17 +183,6 @@ Here, we just simulate data:
 +                           rep(1:5,
 +                               length.out = length(units_tmp)))
 + )
-```
-
-Result:
-
-```
-> str(unit_df)
-'data.frame':	18 obs. of  4 variables:
- $ unit           : int  109 228 364 374 399 462 501 529 598 613 ...
- $ unit_name      : chr  "Unit 109" "Unit 228" "Unit 364" "Unit 374" ...
- $ unit_url       : chr  "http://domain/units/109.html" "http://domain/units/228.html" "http://domain/units/364.html" "http://domain/units/374.html" ...
- $ unit_group_name: chr  "Group 1" "Group 2" "Group 3" "Group 4" ...
 ```
 
 Generate report as R string:
@@ -222,4 +216,4 @@ Save HTML report to disk:
 
 [View HTML report](https://jmeydam.github.io/countcheck/report.html)
 
-<br/><br/>
+<br/>

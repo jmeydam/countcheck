@@ -128,142 +128,97 @@
 [1] 74
 &gt; # ucl_partpool:
 &gt; sum(d$y_new - d$ucl_partpool &gt; 0)
-[1] 18
+[1] 18</code></pre>
+<div id="alternatively" class="section level3">
+<h3 class="hasAnchor">
+<a href="#alternatively" class="anchor"></a>Alternatively:</h3>
+<p>Using the dataset provided in the package, the same result (here without the true_theta values) can be obtained with:</p>
+<pre><code>&gt; e &lt;- simdat
+&gt; d1 &lt;- countcheck(unit = e$unit,
++                  n = e$n,
++                  y = e$y,
++                  n_new = e$n_new,
++                  y_new = e$y_new,
++                  random_seed = 200807)</code></pre>
+</div>
+</div>
+<div id="example-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-2" class="anchor"></a>Example 2</h2>
+<p>The count data in the first example were simulated with a known, “normal” data-generating process. Some new count values of interest <em>y_new</em> were 0.</p>
+<p>In this example we change <em>y_new</em> as follows:</p>
+<p><code>y_new = round(2 * ceiling(e$n_new * e$true_theta))</code></p>
+<p>This is essentially twice the expected value for <em>y_new</em>, given a new reference count value n_new (used as a measure of exposure) and a value for <em>theta</em>. We round the result up, and the lowest possible value in this example is 1.</p>
+<p>Since we use a factor of 2, it is likely that the product will often exceed the upper control limit (UCL).</p>
+<p>Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed their respective upper control limits, vs. 489 when using a no-pooling model. 310 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.</p>
+<pre><code>&gt; d2 &lt;- countcheck(unit = e$unit,
++                  n = e$n,
++                  y = e$y,
++                  n_new = e$n_new,
++                  y_new = round(2 * ceiling(e$n_new * e$true_theta)),
++                  true_theta = e$true_theta,
++                  random_seed = 200807)
 
-## Example 2
-
-The count data in the first example were simulated with a known, "normal"
-data-generating process. Some new count values of interest _y_new_ were 0.
-
-In this example we change _y_new_ as follows:
-
-`y_new = round(2 * ceiling(e$n_new * e$true_theta))`
-
-This is essentially twice the expected value for _y_new_, given a new 
-reference count value n_new (used as a measure of exposure) and a value 
-for _theta_. We round the result up, and the lowest possible value in 
-this example is 1.
-
-Since we use a factor of 2, it is likely that the product will often
-exceed the upper control limit (UCL).
-
-Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed
-their respective upper control limits, vs. 489 when using a no-pooling 
-model. 310 counts exceed the UCLs based on the true value of the parameter 
-_theta_, which is known in this case.
-</code></pre>
-<blockquote>
-<p>d2 &lt;- countcheck(unit = e$unit,</p>
-</blockquote>
-<ul>
-<li><div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>             n =<span class="st"> </span>e<span class="op">$</span>n,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>             y =<span class="st"> </span>e<span class="op">$</span>y,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>             n_new =<span class="st"> </span>e<span class="op">$</span>n_new,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>             y_new =<span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">ceiling</span>(e<span class="op">$</span>n_new <span class="op">*</span><span class="st"> </span>e<span class="op">$</span>true_theta)),</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>             true_theta =<span class="st"> </span>e<span class="op">$</span>true_theta,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>             random_seed =<span class="st"> </span><span class="dv">200807</span><span class="er">)</span></span></code></pre></div></li>
-</ul>
-<blockquote>
-<h1 id="counts-exceeding-ucls">Counts exceeding UCLs</h1>
-<h1 id="section">*********************</h1>
-<h1 id="ucl_true_theta">ucl_true_theta:</h1>
-<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_true_theta &gt; 0) [1] 310</p>
-<h1 id="ucl_nopool">ucl_nopool:</h1>
-<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_nopool &gt; 0) [1] 489</p>
-<h1 id="ucl_complpool">ucl_complpool:</h1>
-<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_complpool &gt; 0) [1] 343</p>
-<h1 id="ucl_partpool">ucl_partpool:</h1>
-<p>sum(d2<span class="math inline"><em>y</em><sub><em>n</em></sub><em>e</em><em>w</em> − <em>d</em>2</span>ucl_partpool &gt; 0) [1] 332</p>
-</blockquote>
-<pre><code>
-As analyzed in detail in the
-[simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
-if we gradually increase the factor from 1 to 8 we will find that the number
-of cases exceeding the UCL is similar for the partial-pooling and true-theta 
-UCLs, but initially substantially higher for the no-pooling UCLs, as was 
-demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
-especially when the previously observed count _y_ was 0, leading to an UCL
-of 0.5.
-
-The general results are not affected when changing the seed value.
-
-In a realistic scenario it is not possible to assess performance by
-comparison with "true" values. The true values of _theta_ are generally 
-not known, and the probability distributions assumed for the Bayesian 
-hierarchical model (the no-pooling model) may in fact be inappropriate.
-
-On the other hand, in a realistic scenario it is often possible to assess 
-performance by investigating individual cases.
-
-## HTML Report
-
-Select data from data frame d (example 1 above) for the report:
-</code></pre>
-<blockquote>
-<p>countcheck_df &lt;- select_for_report(d)</p>
-</blockquote>
-<pre><code>
-Result:
-</code></pre>
-<blockquote>
-<p>str(countcheck_df) ‘data.frame’: 18 obs. of 3 variables: $ y_new : int 8 16 51 3 4 5 5 6 6 7 … $ ucl_partpool: num 5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 … $ unit : int 462 698 935 109 228 399 598 374 613 751 …</p>
-</blockquote>
-<pre><code>
-We also need a data frame with unit master data.
-Here, we just simulate data:
-</code></pre>
-<blockquote>
-<p>units_tmp &lt;- sort(unique(countcheck_df$unit)) unit_df &lt;- data.frame(</p>
-</blockquote>
-<ul>
-<li>unit = units_tmp,</li>
-<li>unit_name = paste(“Unit”,</li>
-<li><div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>                units_tmp<span class="er">)</span>,</span></code></pre></div></li>
-<li>unit_url = paste0(“<a href="http://domain/units/" class="uri">http://domain/units/</a>”,</li>
-<li><div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>                units_tmp,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>                <span class="st">".html"</span><span class="er">)</span>,</span></code></pre></div></li>
-<li>unit_group_name = paste(“Group”,</li>
-<li><div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>                      <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>                          length.out =<span class="st"> </span><span class="kw">length</span>(units_tmp)<span class="er">))</span></span></code></pre></div></li>
-<li>)</li>
-</ul>
-<pre><code>
-Result:
-</code></pre>
-<blockquote>
-<p>str(unit_df) ‘data.frame’: 18 obs. of 4 variables: $ unit : int 109 228 364 374 399 462 501 529 598 613 … $ unit_name : chr “Unit 109” “Unit 228” “Unit 364” “Unit 374” … $ unit_url : chr “<a href="http://domain/units/109.html" class="uri">http://domain/units/109.html</a>” “<a href="http://domain/units/228.html" class="uri">http://domain/units/228.html</a>” “<a href="http://domain/units/364.html" class="uri">http://domain/units/364.html</a>” “<a href="http://domain/units/374.html" class="uri">http://domain/units/374.html</a>” … $ unit_group_name: chr “Group 1” “Group 2” “Group 3” “Group 4” …</p>
-</blockquote>
-<pre><code>
-Generate report as R string:
-</code></pre>
-<blockquote>
-<p>report &lt;- html_report(</p>
-</blockquote>
-<ul>
-<li>countcheck_list = list(</li>
-<li><div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">list</span>(<span class="dt">df =</span> countcheck_df, <span class="dt">caption =</span> <span class="st">"KPI 1"</span>)</span></code></pre></div></li>
-<li>),</li>
-<li>unit_df = unit_df,</li>
-<li>title = “Report”,</li>
-<li>table_width_px = 500,</li>
-<li>column_headers = c(</li>
-<li><div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>group =<span class="st"> "Group"</span>,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>count =<span class="st"> "Count"</span>,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>ucl =<span class="st"> "UCL"</span>,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>unit =<span class="st"> "Unit"</span>,</span></code></pre></div></li>
-<li><div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>name =<span class="st"> "Name"</span><span class="er">)</span>,</span></code></pre></div></li>
-<li>charset = “utf-8”,</li>
-<li>lang = “en”,</li>
-<li>home_url = “<a href="https://github.com/jmeydam/countcheck" class="uri">https://github.com/jmeydam/countcheck</a>”)</li>
-</ul>
-<pre><code>
-Save HTML report to disk:
-</code></pre>
-<blockquote>
-<p>sink(“report.html”) cat(report) sink() ```</p>
-</blockquote>
-<p><a href="https://raw.githubusercontent.com/jmeydam/countcheck/master/report.html">View HTML code</a></p>
-<p><a href="https://jmeydam.github.io/countcheck/report.html">View report</a></p>
+&gt; # Counts exceeding UCLs
+&gt; # *********************
+&gt; # ucl_true_theta:
+&gt; sum(d2$y_new - d2$ucl_true_theta &gt; 0)
+[1] 310
+&gt; # ucl_nopool:
+&gt; sum(d2$y_new - d2$ucl_nopool &gt; 0)
+[1] 489
+&gt; # ucl_complpool:
+&gt; sum(d2$y_new - d2$ucl_complpool &gt; 0)
+[1] 343
+&gt; # ucl_partpool:
+&gt; sum(d2$y_new - d2$ucl_partpool &gt; 0)
+[1] 332</code></pre>
+<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
+<p>The general results are not affected when changing the seed value.</p>
+<p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
+<p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>
+</div>
+<div id="html-report" class="section level2">
+<h2 class="hasAnchor">
+<a href="#html-report" class="anchor"></a>HTML Report</h2>
+<p>Select data from data frame d (example 1 above) for the report:</p>
+<pre><code>&gt; countcheck_df &lt;- select_for_report(d)</code></pre>
+<p>We also need a data frame with unit master data. Here, we just simulate data:</p>
+<pre><code>&gt; units_tmp &lt;- sort(unique(countcheck_df$unit))
+&gt; unit_df &lt;- data.frame(
++   unit = units_tmp,
++   unit_name = paste("Unit",
++                     units_tmp),
++   unit_url = paste0("http://domain/units/",
++                     units_tmp,
++                     ".html"),
++   unit_group_name = paste("Group",
++                           rep(1:5,
++                               length.out = length(units_tmp)))
++ )</code></pre>
+<p>Generate report as R string:</p>
+<pre><code>&gt; report &lt;- html_report(
++   countcheck_list = list(
++     list(df = countcheck_df, caption = "KPI 1")
++   ),
++   unit_df = unit_df,
++   title = "Report",
++   table_width_px = 500,
++   column_headers = c(
++     group = "Group",
++     count = "Count",
++     ucl = "UCL",
++     unit = "Unit",
++     name = "Name"),
++   charset = "utf-8",
++   lang = "en",
++   home_url = "https://github.com/jmeydam/countcheck")</code></pre>
+<p>Save HTML report to disk:</p>
+<pre><code>&gt; sink("report.html")
+&gt; cat(report)
+&gt; sink()</code></pre>
+<p><a href="https://jmeydam.github.io/countcheck/report.html">View HTML report</a></p>
+<p><br></p>
 </div>
 </div>
   </div>

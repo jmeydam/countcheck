@@ -145,6 +145,7 @@ two items named "caption" and "countcheck_df".
 The item <em>countcheck_df</em> in each of the nested lists is a data frame
 with columns <em>y_new</em>, <em>ucl_partpool</em>, and <em>unit</em> -
 as returned by <em>select_for_report()</em>.
+Each <em>countcheck_df</em> must contain at least one row.
 The item <em>caption</em> in each of the nested lists is used for
 the table caption.</p></td>
     </tr>
@@ -153,7 +154,7 @@ the table caption.</p></td>
       <td><p>Data frame with columns
 <em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>,
 and <em>unit_url</em> (ignored if NA).
-Must contain exactly one record for each unit in
+Must contain exactly one record for each distinct unit in
 <em>countcheck_df</em> dataframes in <em>countcheck_list</em>.</p></td>
     </tr>
     <tr>

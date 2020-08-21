@@ -75,8 +75,8 @@ select_for_report <- function(d,
   s <- s[, c("y_new", "ucl_partpool", "unit")]
   # filter by unit group name only if both unit_df and unit_group_name
   # have been passed to function
-  if (! is.null(unit_df) & ! is.null(unit_group_name)) {
-    s <- s[matching_unit_group(s,unit_df, unit_group_name), ]
+  if (nrow(s) > 0 & ! is.null(unit_df) & ! is.null(unit_group_name)) {
+    s <- s[matching_unit_group(s, unit_df, unit_group_name), ]
   }
   row.names(s) <- NULL
   s
@@ -102,14 +102,16 @@ matching_unit_group <- function(s,
                                 unit_df,
                                 unit_group_name) {
   include <- logical(nrow(s))
-  for (i in 1:nrow(s)) {
-    countcheck_rec <- s[i, ]
-    countcheck_unit <- as.integer(countcheck_rec["unit"])
-    unit_rec <- unit_df[unit_df$unit == countcheck_unit, ]
-    include[i] <-
-      grepl(unit_group_name,
-            unit_rec["unit_group_name"],
-            fixed = TRUE)
+  if (nrow(s) > 0) {
+    for (i in 1:nrow(s)) {
+      countcheck_rec <- s[i, ]
+      countcheck_unit <- as.integer(countcheck_rec["unit"])
+      unit_rec <- unit_df[unit_df$unit == countcheck_unit, ]
+      include[i] <-
+        grepl(unit_group_name,
+              unit_rec["unit_group_name"],
+              fixed = TRUE)
+    }
   }
   include
 }
@@ -125,12 +127,13 @@ matching_unit_group <- function(s,
 #'   The item \emph{countcheck_df} in each of the nested lists is a data frame
 #'   with columns \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
 #'   as returned by \emph{select_for_report()}.
+#'   Each \emph{countcheck_df} must contain at least one row.
 #'   The item \emph{caption} in each of the nested lists is used for
 #'   the table caption.
 #' @param unit_df Data frame with columns
 #'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
 #'   and \emph{unit_url} (ignored if NA).
-#'   Must contain exactly one record for each unit in
+#'   Must contain exactly one record for each distinct unit in
 #'   \emph{countcheck_df} dataframes in \emph{countcheck_list}.
 #' @param title Title for HTML document
 #' @param table_width_px Table width in pixels (for all tables)

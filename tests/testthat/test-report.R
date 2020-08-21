@@ -34,6 +34,13 @@ test_that("select_for_report() works as expected", {
     select_for_report(d = d_df),
     countcheck_df
   )
+  expect_true(
+    is.data.frame(select_for_report(d = d_df[1 == 2, ]))
+  )
+  expect_equal(
+    nrow(select_for_report(d = d_df[1 == 2, ])),
+    0
+  )
   expect_equal(
     nrow(select_for_report(d = d_df, min_y_new = 8)),
     nrow(countcheck_df[countcheck_df$y_new >= 8, ])
@@ -52,22 +59,38 @@ test_that("select_for_report() works as expected", {
     select_for_report(d = d_df, unit_group_name = "xyz"),
     countcheck_df
   )
-  expect_equal(
-    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "xyz")),
-    0
-  )
-  expect_equal(
-    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "Group 1")),
-    4
-  )
-  expect_equal(
-    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "1")),
-    4
-  )
-  expect_equal(
-    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "Group")),
-    nrow(countcheck_df)
-  )
+  expect_equal(nrow(
+    select_for_report(
+      d = d_df,
+      unit_df = unit_df,
+      unit_group_name = "xyz"
+    )
+  ),
+  0)
+  expect_equal(nrow(
+    select_for_report(
+      d = d_df,
+      unit_df = unit_df,
+      unit_group_name = "Group 1"
+    )
+  ),
+  4)
+  expect_equal(nrow(
+    select_for_report(
+      d = d_df,
+      unit_df = unit_df,
+      unit_group_name = "1"
+    )
+  ),
+  4)
+  expect_equal(nrow(
+    select_for_report(
+      d = d_df,
+      unit_df = unit_df,
+      unit_group_name = "Group"
+    )
+  ),
+  nrow(countcheck_df))
 })
 
 test_that("html_table() rejects arguments that are not plausible", {

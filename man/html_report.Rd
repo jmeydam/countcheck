@@ -23,13 +23,14 @@ two items named "caption" and "countcheck_df".
 The item \emph{countcheck_df} in each of the nested lists is a data frame
 with columns \emph{y_new}, \emph{ucl_partpool}, and \emph{unit} -
 as returned by \emph{select_for_report()}.
+Each \emph{countcheck_df} must contain at least one row.
 The item \emph{caption} in each of the nested lists is used for
 the table caption.}
 
 \item{unit_df}{Data frame with columns
 \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
 and \emph{unit_url} (ignored if NA).
-Must contain exactly one record for each unit in
+Must contain exactly one record for each distinct unit in
 \emph{countcheck_df} dataframes in \emph{countcheck_list}.}
 
 \item{title}{Title for HTML document}

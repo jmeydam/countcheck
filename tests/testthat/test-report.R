@@ -14,11 +14,22 @@ test_that("select_for_report() rejects arguments that are not plausible", {
     "min_y_new >= 0 is not TRUE",
     fixed = TRUE
   )
+  expect_error(
+    select_for_report(d = d_df, unit_df = 1),
+    "is.null(unit_df) | is.data.frame(unit_df) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    select_for_report(d = d_df, unit_group_name = 1),
+    "is.null(unit_group_name) | is.character(unit_group_name) is not TRUE",
+    fixed = TRUE
+  )
 })
 
 test_that("select_for_report() works as expected", {
   d_df <- dget(file = "../data/test_d.txt")
   countcheck_df <- dget(file = "../data/test_countcheck.txt")
+  unit_df <- dget(file = "../data/test_unit.txt")
   expect_equal(
     select_for_report(d = d_df),
     countcheck_df
@@ -32,6 +43,30 @@ test_that("select_for_report() works as expected", {
     nrow(
       countcheck_df[countcheck_df$y_new - countcheck_df$ucl_partpool >= 3, ]
     )
+  )
+  expect_equal(
+    select_for_report(d = d_df, unit_df = unit_df),
+    countcheck_df
+  )
+  expect_equal(
+    select_for_report(d = d_df, unit_group_name = "xyz"),
+    countcheck_df
+  )
+  expect_equal(
+    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "xyz")),
+    0
+  )
+  expect_equal(
+    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "Group 1")),
+    4
+  )
+  expect_equal(
+    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "1")),
+    4
+  )
+  expect_equal(
+    nrow(select_for_report(d = d_df, unit_df = unit_df, unit_group_name = "Group")),
+    nrow(countcheck_df)
   )
 })
 

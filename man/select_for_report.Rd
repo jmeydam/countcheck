@@ -4,10 +4,27 @@
 \alias{select_for_report}
 \title{Select data for report}
 \usage{
-select_for_report(d, min_y_new = 0, min_diff = 0)
+select_for_report(
+  d,
+  unit_df = NULL,
+  unit_group_name = NULL,
+  min_y_new = 0,
+  min_diff = 0
+)
 }
 \arguments{
 \item{d}{Data frame as returned from \emph{countcheck()}}
+
+\item{unit_df}{Data frame with columns
+\emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+and \emph{unit_url} (ignored if NA).
+Must contain exactly one record for each unit in
+\emph{d}.
+(default: NULL)}
+
+\item{unit_group_name}{Name of unit group for which data
+should be returned. Can be part of name (substring).
+(default: NULL)}
 
 \item{min_y_new}{Minimum value for y_new (default: 0)}
 
@@ -39,13 +56,14 @@ Condition that always applies: \emph{y_new} must exceed \emph{ucl_partpool}.
 
 Additional optional conditions:
 \itemize{
-\item \emph{y_new} exceeds \emph{min_y_new} (default: 0),
+\item \emph{y_new} exceeds \emph{min_y_new} (default: 0)
 \item difference between \emph{y_new} and \emph{ucl_partpool}
-  exceeds \emph{min_diff} (default: 0).
+  exceeds \emph{min_diff} (default: 0)
+\item \emph{unit_group_name} (if present) matches part of group name
+  in \emph{unit_df} (if present) for units in \emph{d}
 }
 
 Returned data is sorted by \emph{fe_partpool} in descending order.
 Therefore, items towards the top are less likely to be the result of
-random fluctuations, whereas items towards the bottom can usually be
-ignored.
+random fluctuations.
 }

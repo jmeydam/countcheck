@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select data for report — select_for_report • countcheck</title>
+<title>Selects rows with matching unit group — matching_unit_group • countcheck</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Select data for report — select_for_report" />
-<meta property="og:description" content="Selects data for report." />
+<meta property="og:title" content="Selects rows with matching unit group — matching_unit_group" />
+<meta property="og:description" content="Selects rows with matching unit group - helper function used
+in select_for_report(). Condition: unit_group_name
+matches part of group name in unit_df for units in s." />
 
 
 
@@ -111,29 +113,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select data for report</h1>
+    <h1>Selects rows with matching unit group</h1>
     <small class="dont-index">Source: <a href='https://github.com/jmeydam/countcheck/blob/master/R/report.R'><code>R/report.R</code></a></small>
-    <div class="hidden name"><code>select_for_report.Rd</code></div>
+    <div class="hidden name"><code>matching_unit_group.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Selects data for report.</p>
+    <p>Selects rows with matching unit group - helper function used
+in select_for_report(). Condition: <em>unit_group_name</em>
+matches part of group name in <em>unit_df</em> for units in <em>s</em>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>select_for_report</span>(
-  <span class='no'>d</span>,
-  <span class='kw'>unit_df</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>unit_group_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>min_y_new</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>min_diff</span> <span class='kw'>=</span> <span class='fl'>0</span>
-)</pre>
+    <pre class="usage"><span class='fu'>matching_unit_group</span>(<span class='no'>s</span>, <span class='no'>unit_df</span>, <span class='no'>unit_group_name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>d</th>
-      <td><p>Data frame as returned from <em>countcheck()</em></p></td>
+      <th>s</th>
+      <td><p>Data frame of same type as returned by <em>select_for_report()</em></p></td>
     </tr>
     <tr>
       <th>unit_df</th>
@@ -141,56 +139,18 @@
 <em>unit</em>, <em>unit_group_name</em>, <em>unit_name</em>,
 and <em>unit_url</em> (ignored if NA).
 Must contain exactly one record for each unit in
-<em>d</em>.
-(default: NULL)</p></td>
+<em>s</em>.</p></td>
     </tr>
     <tr>
       <th>unit_group_name</th>
       <td><p>Name of unit group for which data
-should be returned. Can be part of name (substring).
-(default: NULL)</p></td>
-    </tr>
-    <tr>
-      <th>min_y_new</th>
-      <td><p>Minimum value for y_new (default: 0)</p></td>
-    </tr>
-    <tr>
-      <th>min_diff</th>
-      <td><p>Minimum difference between y_new and ucl_partpool
-(default: 0)</p></td>
+should be returned. Can be part of name (substring).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame to be passed in <em>countcheck_list</em>
-  to <em>html_report()</em></p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Selected columns:</p><ul>
-<li><p><em>unit</em>:            ID for unit</p></li>
-<li><p><em>y_new</em>:           new count values of interest</p></li>
-<li><p><em>ucl_partpool</em>:    UCL based on n_new and partial-pooling
-                                estimate of theta</p></li>
-<li><p><em>fe_partpool</em>:     factor <em>f</em>, with observed y_new
-                                exceeding partial-pooling UCL by
-                                <em>f * sd(y_new)</em>,
-                                given n_new and partial-pooling estimate
-                                of theta</p></li>
-</ul>
-
-<p>Condition that always applies: <em>y_new</em> must exceed <em>ucl_partpool</em>.</p>
-<p>Additional optional conditions:</p><ul>
-<li><p><em>y_new</em> exceeds <em>min_y_new</em> (default: 0)</p></li>
-<li><p>difference between <em>y_new</em> and <em>ucl_partpool</em>
-  exceeds <em>min_diff</em> (default: 0)</p></li>
-<li><p><em>unit_group_name</em> (if present) matches part of group name
-  in <em>unit_df</em> (if present) for units in <em>d</em></p></li>
-</ul>
-
-<p>Returned data is sorted by <em>fe_partpool</em> in descending order.
-Therefore, items towards the top are less likely to be the result of
-random fluctuations.</p>
+    <p>Vector of type logical</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

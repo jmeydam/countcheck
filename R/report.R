@@ -19,28 +19,46 @@
 #'
 #' Additional optional conditions:
 #' \itemize{
-#' \item \emph{y_new} exceeds \emph{min_y_new} (default: 0),
+#' \item \emph{y_new} exceeds \emph{min_y_new} (default: 0)
 #' \item difference between \emph{y_new} and \emph{ucl_partpool}
-#'   exceeds \emph{min_diff} (default: 0).
+#'   exceeds \emph{min_diff} (default: 0)
+#' \item \emph{unit_group_name} (if present) matches part of group name
+#'   in \emph{unit_df} (if present) for units in \emph{d}
 #' }
 #'
 #' Returned data is sorted by \emph{fe_partpool} in descending order.
 #' Therefore, items towards the top are less likely to be the result of
-#' random fluctuations, whereas items towards the bottom can usually be
-#' ignored.
+#' random fluctuations.
 #'
 #' @export
 #' @param d Data frame as returned from \emph{countcheck()}
+#' @param unit_df Data frame with columns
+#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+#'   and \emph{unit_url} (ignored if NA).
+#'   Must contain exactly one record for each unit in
+#'   \emph{d}.
+#'   (default: NULL)
+#' @param unit_group_name Name of unit group for which data
+#'   should be returned. Can be part of name (substring).
+#'   (default: NULL)
 #' @param min_y_new Minimum value for y_new (default: 0)
 #' @param min_diff Minimum difference between y_new and ucl_partpool
 #'   (default: 0)
 #' @return Data frame to be passed in \emph{countcheck_list}
 #'   to \emph{html_report()}
-select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
+select_for_report <- function(d,
+                              unit_df = NULL,
+                              unit_group_name = NULL,
+                              min_y_new = 0,
+                              min_diff = 0) {
   # check arguments
   stopifnot(
     # d must be data frame
     is.data.frame(d),
+    # unit_df must be data frame or NULL
+    is.null(unit_df) | is.data.frame(unit_df),
+    # unit_group_name must be string or NULL
+    is.null(unit_group_name) | is.character(unit_group_name),
     # min_y_new must be non-negative number
     is.numeric(min_y_new),
     min_y_new >= 0,
@@ -55,8 +73,45 @@ select_for_report <- function(d, min_y_new = 0, min_diff = 0) {
   s <- s[s$y_new - s$ucl_partpool >= min_diff, ]
   s <- s[order(-s$fe_partpool), ]
   s <- s[, c("y_new", "ucl_partpool", "unit")]
+  # filter by unit group name only if both unit_df and unit_group_name
+  # have been passed to function
+  if (! is.null(unit_df) & ! is.null(unit_group_name)) {
+    s <- s[matching_unit_group(s,unit_df, unit_group_name), ]
+  }
   row.names(s) <- NULL
   s
+}
+
+#' Selects rows with matching unit group
+#'
+#' Selects rows with matching unit group - helper function used
+#' in select_for_report(). Condition: \emph{unit_group_name}
+#' matches part of group name in \emph{unit_df} for units in \emph{s}.
+#'
+#' @keywords internal
+#' @param s Data frame of same type as returned by \emph{select_for_report()}
+#' @param unit_df Data frame with columns
+#'   \emph{unit}, \emph{unit_group_name}, \emph{unit_name},
+#'   and \emph{unit_url} (ignored if NA).
+#'   Must contain exactly one record for each unit in
+#'   \emph{s}.
+#' @param unit_group_name Name of unit group for which data
+#'   should be returned. Can be part of name (substring).
+#' @return Vector of type logical
+matching_unit_group <- function(s,
+                                unit_df,
+                                unit_group_name) {
+  include <- logical(nrow(s))
+  for (i in 1:nrow(s)) {
+    countcheck_rec <- s[i, ]
+    countcheck_unit <- as.integer(countcheck_rec["unit"])
+    unit_rec <- unit_df[unit_df$unit == countcheck_unit, ]
+    include[i] <-
+      grepl(unit_group_name,
+            unit_rec["unit_group_name"],
+            fixed = TRUE)
+  }
+  include
 }
 
 #' Generate HTML report

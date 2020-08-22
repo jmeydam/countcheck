@@ -1,4 +1,5 @@
-devtools::install_github("https://github.com/jmeydam/countcheck.git", build_vignettes = TRUE)
+devtools::install_github("https://github.com/jmeydam/countcheck.git",
+                         build_vignettes = FALSE)
 library(countcheck)
 
 # Example 1 #################################################################

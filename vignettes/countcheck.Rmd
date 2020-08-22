@@ -27,8 +27,8 @@ Prototype (R package).
 * HTML reports
 
 Model and code are based on examples in 
-[McElreath (2020)](https://xcelab.net/rm/statistical-rethinking/) and
-[Gelman et al. (2014)](https://www.stat.columbia.edu/~gelman/book/).
+[Gelman et al. (2014)](https://www.stat.columbia.edu/~gelman/book/) and
+[McElreath (2020)](https://xcelab.net/rm/statistical-rethinking/).
 
 This prototype is related to a previous 
 [simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html).
@@ -63,18 +63,16 @@ devtools::install_github("https://github.com/jmeydam/countcheck.git",
 
 ## Example 1
 
-Count data for 1000 observational units are simulated, assuming a "normal"
+We simulate count data for 1000 observational units, assuming a "normal"
 data-generating process.
 
 Since the data-generating process is free of anomalies, all counts exceeding 
 their respective upper control limits (UCLs) are false positives. Other things 
 being equal it is desirable to have as few false positives as possible.
 
-Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed
-their respective upper control limits, vs. 68 when using a no-pooling 
-model. (4 counts exceed the UCLs based on the true value of the parameter 
-_theta_, which is known in this case.)
-
+When we compare the results for the partial-pooling and complete pooling models
+we tend to find that using a Bayesian hierarchical model with partial pooling 
+far fewer new counts exceed their respective upper control limits.
 
 ```{r}
 d <- countcheck(random_seed = 200807)
@@ -141,11 +139,6 @@ this example is 1.
 Since we use a factor of 2, it is likely that the product will often
 exceed the upper control limit (UCL).
 
-Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed
-their respective upper control limits, vs. 489 when using a no-pooling 
-model. 310 counts exceed the UCLs based on the true value of the parameter 
-_theta_, which is known in this case.
-
 ```{r}
 d2 <- countcheck(unit = e$unit,
                  n = e$n,
@@ -189,8 +182,8 @@ As analyzed in detail in the
 [simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
 if we gradually increase the factor from 1 to 8 we will find that the number
 of cases exceeding the UCL is similar for the partial-pooling and true-theta 
-UCLs, but initially substantially higher for the no-pooling UCLs, as was 
-demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
+UCLs, but initially substantially higher for the no-pooling UCLs, as can be 
+observed here for a factor of 2. The no-pooling UCL performs poorly 
 especially when the previously observed count _y_ was 0, leading to an UCL
 of 0.5.
 
@@ -219,7 +212,7 @@ str(countcheck_df)
 ```
 
 We also need a data frame with unit master data.
-Here, we just simulate data:
+Here, we just generate some data:
 
 ```{r}
 units_tmp <- sort(unique(countcheck_df$unit))

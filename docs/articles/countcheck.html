@@ -90,7 +90,7 @@
 <li>Reasonable results also in cases with few or no observed events</li>
 <li>HTML reports</li>
 </ul>
-<p>Model and code are based on examples in <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a> and <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a>.</p>
+<p>Model and code are based on examples in <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a> and <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a>.</p>
 <p>This prototype is related to a previous <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>.</p>
 <p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
 <p>The package documentation can be accessed via the <a href="https://jmeydam.github.io/countcheck/">package website</a>.</p>
@@ -113,15 +113,15 @@
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example 1</h2>
-<p>Count data for 1000 observational units are simulated, assuming a “normal” data-generating process.</p>
+<p>We simulate count data for 1000 observational units, assuming a “normal” data-generating process.</p>
 <p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
-<p>Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed their respective upper control limits, vs. 68 when using a no-pooling model. (4 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.)</p>
+<p>When we compare the results for the partial-pooling and complete pooling models we tend to find that using a Bayesian hierarchical model with partial pooling far fewer new counts exceed their respective upper control limits.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span>(<span class="kw">random_seed</span> <span class="kw">=</span> <span class="fl">200807</span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000166 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.66 seconds.</span>
+<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000209 seconds</span>
+<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.09 seconds.</span>
 <span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; Chain 1: </span>
@@ -138,15 +138,15 @@
 <span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 12.0429 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                8.30857 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                20.3514 seconds (Total)</span>
+<span class="co">#&gt; Chain 1:  Elapsed Time: 12.4623 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 1:                8.4943 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 1:                20.9566 seconds (Total)</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
 <span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000109 seconds</span>
-<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.09 seconds.</span>
+<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000121 seconds</span>
+<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.21 seconds.</span>
 <span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 2: </span>
 <span class="co">#&gt; Chain 2: </span>
@@ -163,15 +163,15 @@
 <span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 12.1308 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                16.3306 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                28.4614 seconds (Total)</span>
+<span class="co">#&gt; Chain 2:  Elapsed Time: 12.7019 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 2:                17.5454 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 2:                30.2473 seconds (Total)</span>
 <span class="co">#&gt; Chain 2: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000105 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.05 seconds.</span>
+<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000107 seconds</span>
+<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.07 seconds.</span>
 <span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; Chain 3: </span>
@@ -188,15 +188,15 @@
 <span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 11.8523 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                8.33819 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                20.1905 seconds (Total)</span>
+<span class="co">#&gt; Chain 3:  Elapsed Time: 12.3035 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 3:                8.57375 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 3:                20.8772 seconds (Total)</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000107 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.07 seconds.</span>
+<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000112 seconds</span>
+<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.12 seconds.</span>
 <span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 4: </span>
 <span class="co">#&gt; Chain 4: </span>
@@ -213,9 +213,9 @@
 <span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 11.7321 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                8.31391 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                20.046 seconds (Total)</span>
+<span class="co">#&gt; Chain 4:  Elapsed Time: 11.9814 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 4:                8.25173 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 4:                20.2331 seconds (Total)</span>
 <span class="co">#&gt; Chain 4:</span>
 <span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
 <span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
@@ -275,8 +275,8 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000243 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.43 seconds.</span>
+<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000246 seconds</span>
+<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.46 seconds.</span>
 <span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; Chain 1: </span>
@@ -293,15 +293,15 @@
 <span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 12.1637 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                8.34306 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                20.5068 seconds (Total)</span>
+<span class="co">#&gt; Chain 1:  Elapsed Time: 13.0277 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 1:                9.04288 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 1:                22.0706 seconds (Total)</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
 <span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000106 seconds</span>
-<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.06 seconds.</span>
+<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000108 seconds</span>
+<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.08 seconds.</span>
 <span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 2: </span>
 <span class="co">#&gt; Chain 2: </span>
@@ -318,15 +318,15 @@
 <span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 12.1797 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                16.3695 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                28.5492 seconds (Total)</span>
+<span class="co">#&gt; Chain 2:  Elapsed Time: 13.3059 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 2:                18.2108 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 2:                31.5166 seconds (Total)</span>
 <span class="co">#&gt; Chain 2: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000118 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.</span>
+<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000105 seconds</span>
+<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.05 seconds.</span>
 <span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; Chain 3: </span>
@@ -343,15 +343,15 @@
 <span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 11.8775 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                8.34045 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                20.218 seconds (Total)</span>
+<span class="co">#&gt; Chain 3:  Elapsed Time: 12.1187 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 3:                8.82116 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 3:                20.9399 seconds (Total)</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000104 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.04 seconds.</span>
+<span class="co">#&gt; Chain 4: Gradient evaluation took 0.00013 seconds</span>
+<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.3 seconds.</span>
 <span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 4: </span>
 <span class="co">#&gt; Chain 4: </span>
@@ -368,9 +368,9 @@
 <span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 11.7822 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                8.34658 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                20.1288 seconds (Total)</span>
+<span class="co">#&gt; Chain 4:  Elapsed Time: 11.6537 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 4:                8.70017 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 4:                20.3538 seconds (Total)</span>
 <span class="co">#&gt; Chain 4:</span>
 <span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
 <span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
@@ -409,7 +409,6 @@
 <p><code>y_new = round(2 * ceiling(e$n_new * e$true_theta))</code></p>
 <p>This is essentially twice the expected value for <em>y_new</em>, given a new reference count value n_new (used as a measure of exposure) and a value for <em>theta</em>. We round the result up, and the lowest possible value in this example is 1.</p>
 <p>Since we use a factor of 2, it is likely that the product will often exceed the upper control limit (UCL).</p>
-<p>Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed their respective upper control limits, vs. 489 when using a no-pooling model. 310 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">d2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span>(<span class="kw">unit</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">unit</span>,
                  <span class="kw">n</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">n</span>,
                  <span class="kw">y</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">y</span>,
@@ -421,8 +420,8 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000163 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.63 seconds.</span>
+<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000289 seconds</span>
+<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.89 seconds.</span>
 <span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; Chain 1: </span>
@@ -439,9 +438,9 @@
 <span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 12.3674 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                8.30549 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                20.6729 seconds (Total)</span>
+<span class="co">#&gt; Chain 1:  Elapsed Time: 12.7238 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 1:                8.61103 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 1:                21.3348 seconds (Total)</span>
 <span class="co">#&gt; Chain 1: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
@@ -464,15 +463,15 @@
 <span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 12.1128 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                16.4897 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                28.6025 seconds (Total)</span>
+<span class="co">#&gt; Chain 2:  Elapsed Time: 12.2159 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 2:                16.7007 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 2:                28.9166 seconds (Total)</span>
 <span class="co">#&gt; Chain 2: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.00011 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.1 seconds.</span>
+<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000121 seconds</span>
+<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.21 seconds.</span>
 <span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; Chain 3: </span>
@@ -489,15 +488,15 @@
 <span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 12.0804 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                8.40242 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                20.4828 seconds (Total)</span>
+<span class="co">#&gt; Chain 3:  Elapsed Time: 12.4446 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 3:                8.85749 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 3:                21.3021 seconds (Total)</span>
 <span class="co">#&gt; Chain 3: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000116 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.16 seconds.</span>
+<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000177 seconds</span>
+<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.77 seconds.</span>
 <span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
 <span class="co">#&gt; Chain 4: </span>
 <span class="co">#&gt; Chain 4: </span>
@@ -514,9 +513,9 @@
 <span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
 <span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 11.7964 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                8.72984 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                20.5262 seconds (Total)</span>
+<span class="co">#&gt; Chain 4:  Elapsed Time: 12.4197 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 4:                8.62942 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 4:                21.0492 seconds (Total)</span>
 <span class="co">#&gt; Chain 4:</span>
 <span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
 <span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
@@ -571,7 +570,7 @@
 <span class="co">#&gt; 998          35.5</span>
 <span class="co">#&gt; 999         151.5</span>
 <span class="co">#&gt; 1000         49.5</span></pre></body></html></div>
-<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
+<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as can be observed here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
 <p>The general results are not affected when changing the seed value.</p>
 <p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
 <p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>
@@ -587,7 +586,7 @@
 <span class="co">#&gt;  $ y_new       : int  8 16 51 3 4 5 5 6 6 7 ...</span>
 <span class="co">#&gt;  $ ucl_partpool: num  5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 ...</span>
 <span class="co">#&gt;  $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...</span></pre></body></html></div>
-<p>We also need a data frame with unit master data. Here, we just simulate data:</p>
+<p>We also need a data frame with unit master data. Here, we just generate some data:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">units_tmp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">countcheck_df</span>$<span class="no">unit</span>))
 <span class="no">unit_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
   <span class="kw">unit</span> <span class="kw">=</span> <span class="no">units_tmp</span>,

@@ -9,8 +9,8 @@ Prototype (R package).
 * HTML reports
 
 Model and code are based on examples in 
-[McElreath (2020)](https://xcelab.net/rm/statistical-rethinking/) and
-[Gelman et al. (2014)](https://www.stat.columbia.edu/~gelman/book/).
+[Gelman et al. (2014)](https://www.stat.columbia.edu/~gelman/book/) and
+[McElreath (2020)](https://xcelab.net/rm/statistical-rethinking/).
 
 This prototype is related to a previous 
 [simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html).
@@ -45,7 +45,7 @@ The prototype can then be installed from GitHub with:
 
 ## Example 1
 
-Count data for 1000 observational units are simulated, assuming a "normal"
+We simulate count data for 1000 observational units, assuming a "normal"
 data-generating process.
 
 Since the data-generating process is free of anomalies, all counts exceeding 
@@ -168,7 +168,7 @@ Select data from data frame d (example 1 above) for the report:
 ```
 
 We also need a data frame with unit master data.
-Here, we just simulate data:
+Here, we just generate some data:
 
 ```
 > units_tmp <- sort(unique(countcheck_df$unit))

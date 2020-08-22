@@ -85,7 +85,7 @@
 <li>Reasonable results also in cases with few or no observed events</li>
 <li>HTML reports</li>
 </ul>
-<p>Model and code are based on examples in <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a> and <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a>.</p>
+<p>Model and code are based on examples in <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a> and <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a>.</p>
 <p>This prototype is related to a previous <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>.</p>
 <p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
 <p>The package documentation can be accessed via the <a href="https://jmeydam.github.io/countcheck/">package website</a>.</p>
@@ -108,7 +108,7 @@
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example 1</h2>
-<p>Count data for 1000 observational units are simulated, assuming a “normal” data-generating process.</p>
+<p>We simulate count data for 1000 observational units, assuming a “normal” data-generating process.</p>
 <p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
 <p>Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed their respective upper control limits, vs. 68 when using a no-pooling model. (4 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.)</p>
 <pre><code>&gt; library(countcheck)
@@ -183,7 +183,7 @@
 <a href="#html-report" class="anchor"></a>HTML Report</h2>
 <p>Select data from data frame d (example 1 above) for the report:</p>
 <pre><code>&gt; countcheck_df &lt;- select_for_report(d)</code></pre>
-<p>We also need a data frame with unit master data. Here, we just simulate data:</p>
+<p>We also need a data frame with unit master data. Here, we just generate some data:</p>
 <pre><code>&gt; units_tmp &lt;- sort(unique(countcheck_df$unit))
 &gt; unit_df &lt;- data.frame(
 +   unit = units_tmp,

@@ -119,7 +119,7 @@ matching_unit_group <- function(s,
 #' Generate HTML report
 #'
 #' Generates HTML report for multiple tables as returned by
-#' \emph{select_for_report}.
+#' \emph{select_for_report()}.
 #'
 #' @export
 #' @param countcheck_list Data to be shown in report. List of lists with
@@ -141,6 +141,7 @@ matching_unit_group <- function(s,
 #'   the elements of the vector must be named \emph{group}, \emph{count},
 #'   \emph{ucl}, \emph{unit}, and \emph{name}
 #' @param charset Character set of data and HTML document
+#'   (must contain ASCII as subset)
 #' @param lang Language of HTML document
 #' @param home_url URL for link to "Home" included at top of HTML document
 #'   (optional)

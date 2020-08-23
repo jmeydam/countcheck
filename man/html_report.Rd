@@ -41,7 +41,8 @@ Must contain exactly one record for each distinct unit in
 the elements of the vector must be named \emph{group}, \emph{count},
 \emph{ucl}, \emph{unit}, and \emph{name}}
 
-\item{charset}{Character set of data and HTML document}
+\item{charset}{Character set of data and HTML document
+(must contain ASCII as subset)}
 
 \item{lang}{Language of HTML document}
 
@@ -55,5 +56,5 @@ String with HTML code for report
 }
 \description{
 Generates HTML report for multiple tables as returned by
-\emph{select_for_report}.
+\emph{select_for_report()}.
 }

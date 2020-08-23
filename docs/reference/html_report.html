@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Generate HTML report — html_report" />
 <meta property="og:description" content="Generates HTML report for multiple tables as returned by
-select_for_report." />
+select_for_report()." />
 
 
 
@@ -119,7 +119,7 @@ select_for_report." />
 
     <div class="ref-description">
     <p>Generates HTML report for multiple tables as returned by
-<em>select_for_report</em>.</p>
+<em>select_for_report()</em>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>html_report</span>(
@@ -173,7 +173,8 @@ the elements of the vector must be named <em>group</em>, <em>count</em>,
     </tr>
     <tr>
       <th>charset</th>
-      <td><p>Character set of data and HTML document</p></td>
+      <td><p>Character set of data and HTML document
+(must contain ASCII as subset)</p></td>
     </tr>
     <tr>
       <th>lang</th>

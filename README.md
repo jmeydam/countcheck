@@ -203,7 +203,8 @@ Generate report as R string:
 +     name = "Name"),
 +   charset = "utf-8",
 +   lang = "en",
-+   home_url = "https://github.com/jmeydam/countcheck")
++   home_url = "https://github.com/jmeydam/countcheck"
++ )
 ```
 
 Save HTML report to disk:

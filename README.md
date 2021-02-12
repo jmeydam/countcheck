@@ -18,7 +18,7 @@ This prototype is related to a previous
 The distributions and parameters in the simulation study were chosen
 so that the generated data is comparable to certain data of interest.
 The prototype is meant to be used for roughly the same kind of data. 
-Please refer to the
+Please refer to this
 [report](https://jmeydam.github.io/count-anomalies/simulation_study.html) 
 for details.
 
@@ -27,28 +27,44 @@ The package documentation can be accessed via the
 
 ## Installation
 
-First install dependencies:
+First install dependencies.
+
+To get a working C++ toolchain on macOS Big Sur (version 11.2.1 or higher), 
+install Xcode from the App Store or install Xcode command line tools in a shell:
+
+```
+% xcode-select --install
+```
+
+Follow the instructions for cmdstanr. The macOS [R toolchain installer](https://github.com/rmacoslib/r-macos-rtools)
+referred to in the 
+[RStan documentation](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
+is then not needed.
+
+Next, install the following R packages and their dependencies in this order:
 
 * actuar
 * extraDistr
-* rstan ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started))
-* rethinking (>= 2.01)
+* knitr
+* cmdstanr ([instructions](https://mc-stan.org/cmdstanr/articles/cmdstanr.html), also for installing CmdStan)
+* rstan ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) - on macOS skip section on toolchain)
+* rethinking (>= 2.13)
 
 The rethinking package needs to be installed from 
 [GitHub](https://github.com/rmcelreath/rethinking).
 
 The prototype can then be installed from GitHub with:
 ```
-> devtools::install_github("https://github.com/jmeydam/countcheck.git", 
-+                          build_vignettes = FALSE)
+devtools::install_github("https://github.com/jmeydam/countcheck.git", 
+                         build_vignettes = FALSE)
 ```
 
-## Example 1
+## Example
 
-We simulate count data for 1000 observational units, assuming a "normal"
+We simulate count data for 1000 observational units, assuming a certain known
 data-generating process.
 
-Since the data-generating process is free of anomalies, all counts exceeding 
+The data-generating process is free of anomalies, and all counts exceeding 
 their respective upper control limits (UCLs) are false positives. Other things 
 being equal it is desirable to have as few false positives as possible.
 
@@ -93,64 +109,6 @@ true_theta values) can be obtained with:
 +                  random_seed = 200807)
 ```
 
-## Example 2
-
-The count data in the first example were simulated with a known, "normal"
-data-generating process. Some new count values of interest _y_new_ were 0.
-
-In this example we change _y_new_ as follows:
-
-`y_new = round(2 * ceiling(e$n_new * e$true_theta))`
-
-This is essentially twice the expected value for _y_new_, given a new 
-reference count value n_new (used as a measure of exposure) and a value 
-for _theta_. We round the result up, and the lowest possible value in 
-this example is 1.
-
-Since we use a factor of 2, it is likely that the product will often
-exceed the upper control limit (UCL).
-
-Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed
-their respective upper control limits, vs. 489 when using a no-pooling 
-model. 310 counts exceed the UCLs based on the true value of the parameter 
-_theta_, which is known in this case.
-
-```
-> d2 <- countcheck(unit = e$unit,
-+                  n = e$n,
-+                  y = e$y,
-+                  n_new = e$n_new,
-+                  y_new = round(2 * ceiling(e$n_new * e$true_theta)),
-+                  true_theta = e$true_theta,
-+                  random_seed = 200807)
-
-> # Counts exceeding UCLs
-> # *********************
-> # ucl_true_theta:
-> sum(d2$y_new - d2$ucl_true_theta > 0)
-[1] 310
-> # ucl_nopool:
-> sum(d2$y_new - d2$ucl_nopool > 0)
-[1] 489
-> # ucl_complpool:
-> sum(d2$y_new - d2$ucl_complpool > 0)
-[1] 343
-> # ucl_partpool:
-> sum(d2$y_new - d2$ucl_partpool > 0)
-[1] 332
-```
-
-As analyzed in detail in the
-[simulation study](https://jmeydam.github.io/count-anomalies/simulation_study.html),
-if we gradually increase the factor from 1 to 8 we will find that the number
-of cases exceeding the UCL is similar for the partial-pooling and true-theta 
-UCLs, but initially substantially higher for the no-pooling UCLs, as was 
-demonstrated here for a factor of 2. The no-pooling UCL performs poorly 
-especially when the previously observed count _y_ was 0, leading to an UCL
-of 0.5.
-
-The general results are not affected when changing the seed value.
-
 In a realistic scenario it is not possible to assess performance by
 comparison with "true" values. The true values of _theta_ are generally 
 not known, and the probability distributions assumed for the Bayesian 
@@ -161,7 +119,7 @@ performance by investigating individual cases.
 
 ## HTML Report
 
-Select data from data frame d (example 1 above) for the report:
+Select data from data frame d (example above) for the report:
 
 ```
 > countcheck_df <- select_for_report(d)

@@ -43,7 +43,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -57,7 +57,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jmeydam/countcheck/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -87,29 +87,35 @@
 </ul>
 <p>Model and code are based on examples in <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a> and <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a>.</p>
 <p>This prototype is related to a previous <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>.</p>
-<p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
+<p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to this <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
 <p>The package documentation can be accessed via the <a href="https://jmeydam.github.io/countcheck/">package website</a>.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>First install dependencies:</p>
+<p>First install dependencies.</p>
+<p>To get a working C++ toolchain on macOS Big Sur (version 11.2.1 or higher), install Xcode from the App Store or install Xcode command line tools in a shell:</p>
+<pre><code>% xcode-select --install</code></pre>
+<p>Follow the instructions for cmdstanr. The macOS <a href="https://github.com/rmacoslib/r-macos-rtools">R toolchain installer</a> referred to in the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan documentation</a> is then not needed.</p>
+<p>Next, install the following R packages and their dependencies in this order:</p>
 <ul>
 <li>actuar</li>
 <li>extraDistr</li>
-<li>rstan (<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">instructions</a>)</li>
-<li>rethinking (&gt;= 2.01)</li>
+<li>knitr</li>
+<li>cmdstanr (<a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html">instructions</a>, also for installing CmdStan)</li>
+<li>rstan (<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">instructions</a> - on macOS skip section on toolchain)</li>
+<li>rethinking (&gt;= 2.13)</li>
 </ul>
 <p>The rethinking package needs to be installed from <a href="https://github.com/rmcelreath/rethinking">GitHub</a>.</p>
 <p>The prototype can then be installed from GitHub with:</p>
-<pre><code>&gt; devtools::install_github("https://github.com/jmeydam/countcheck.git", 
-+                          build_vignettes = FALSE)</code></pre>
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/jmeydam/countcheck.git", 
+                         build_vignettes = FALSE)</a></code></pre>
 </div>
-<div id="example-1" class="section level2">
+<div id="example" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example-1" class="anchor"></a>Example 1</h2>
-<p>We simulate count data for 1000 observational units, assuming a “normal” data-generating process.</p>
-<p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
+<a href="#example" class="anchor"></a>Example</h2>
+<p>We simulate count data for 1000 observational units, assuming a certain known data-generating process.</p>
+<p>The data-generating process is free of anomalies, and all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
 <p>Using a Bayesian hierarchical model with partial pooling, 18 new counts exceed their respective upper control limits, vs. 68 when using a no-pooling model. (4 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.)</p>
 <pre><code>&gt; library(countcheck)
 
@@ -140,48 +146,14 @@
 +                  n_new = e$n_new,
 +                  y_new = e$y_new,
 +                  random_seed = 200807)</code></pre>
-</div>
-</div>
-<div id="example-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-2" class="anchor"></a>Example 2</h2>
-<p>The count data in the first example were simulated with a known, “normal” data-generating process. Some new count values of interest <em>y_new</em> were 0.</p>
-<p>In this example we change <em>y_new</em> as follows:</p>
-<p><code>y_new = round(2 * ceiling(e$n_new * e$true_theta))</code></p>
-<p>This is essentially twice the expected value for <em>y_new</em>, given a new reference count value n_new (used as a measure of exposure) and a value for <em>theta</em>. We round the result up, and the lowest possible value in this example is 1.</p>
-<p>Since we use a factor of 2, it is likely that the product will often exceed the upper control limit (UCL).</p>
-<p>Using a Bayesian hierarchical model with partial pooling, 332 new counts exceed their respective upper control limits, vs. 489 when using a no-pooling model. 310 counts exceed the UCLs based on the true value of the parameter <em>theta</em>, which is known in this case.</p>
-<pre><code>&gt; d2 &lt;- countcheck(unit = e$unit,
-+                  n = e$n,
-+                  y = e$y,
-+                  n_new = e$n_new,
-+                  y_new = round(2 * ceiling(e$n_new * e$true_theta)),
-+                  true_theta = e$true_theta,
-+                  random_seed = 200807)
-
-&gt; # Counts exceeding UCLs
-&gt; # *********************
-&gt; # ucl_true_theta:
-&gt; sum(d2$y_new - d2$ucl_true_theta &gt; 0)
-[1] 310
-&gt; # ucl_nopool:
-&gt; sum(d2$y_new - d2$ucl_nopool &gt; 0)
-[1] 489
-&gt; # ucl_complpool:
-&gt; sum(d2$y_new - d2$ucl_complpool &gt; 0)
-[1] 343
-&gt; # ucl_partpool:
-&gt; sum(d2$y_new - d2$ucl_partpool &gt; 0)
-[1] 332</code></pre>
-<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as was demonstrated here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
-<p>The general results are not affected when changing the seed value.</p>
 <p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
 <p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>
+</div>
 </div>
 <div id="html-report" class="section level2">
 <h2 class="hasAnchor">
 <a href="#html-report" class="anchor"></a>HTML Report</h2>
-<p>Select data from data frame d (example 1 above) for the report:</p>
+<p>Select data from data frame d (example above) for the report:</p>
 <pre><code>&gt; countcheck_df &lt;- select_for_report(d)</code></pre>
 <p>We also need a data frame with unit master data. Here, we just generate some data:</p>
 <pre><code>&gt; units_tmp &lt;- sort(unique(countcheck_df$unit))
@@ -256,7 +228,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

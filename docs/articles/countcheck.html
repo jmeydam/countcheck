@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -53,7 +53,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jmeydam/countcheck/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -80,7 +80,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">countcheck</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jmeydam/countcheck">countcheck</a></span><span class="op">)</span></code></pre></div>
 <div id="detecting-count-anomalies-using-bayesian-hierarchical-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#detecting-count-anomalies-using-bayesian-hierarchical-models" class="anchor"></a>Detecting Count Anomalies Using Bayesian Hierarchical Models</h2>
@@ -92,538 +93,542 @@
 </ul>
 <p>Model and code are based on examples in <a href="https://www.stat.columbia.edu/~gelman/book/">Gelman et al. (2014)</a> and <a href="https://xcelab.net/rm/statistical-rethinking/">McElreath (2020)</a>.</p>
 <p>This prototype is related to a previous <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>.</p>
-<p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
+<p>The distributions and parameters in the simulation study were chosen so that the generated data is comparable to certain data of interest. The prototype is meant to be used for roughly the same kind of data. Please refer to this <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">report</a> for details.</p>
 <p>The package documentation can be accessed via the <a href="https://jmeydam.github.io/countcheck/">package website</a>.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>First install dependencies:</p>
+<p>First install dependencies.</p>
+<p>To get a working C++ toolchain on macOS Big Sur (version 11.2.1 or higher), install Xcode from the App Store or install Xcode command line tools in a shell:</p>
+<pre><code>% xcode-select --install</code></pre>
+<p>Follow the instructions for cmdstanr. The macOS <a href="https://github.com/rmacoslib/r-macos-rtools">R toolchain installer</a> referred to in the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan documentation</a> is then not needed.</p>
+<p>Next, install the following R packages and their dependencies in this order:</p>
 <ul>
 <li>actuar</li>
 <li>extraDistr</li>
-<li>rstan (<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">instructions</a>)</li>
-<li>rethinking (&gt;= 2.01)</li>
+<li>knitr</li>
+<li>cmdstanr (<a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html">instructions</a>, also for installing CmdStan)</li>
+<li>rstan (<a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">instructions</a> - on macOS skip section on toolchain)</li>
+<li>rethinking (&gt;= 2.13)</li>
 </ul>
 <p>The rethinking package needs to be installed from <a href="https://github.com/rmcelreath/rethinking">GitHub</a>.</p>
 <p>The prototype can then be installed from GitHub with:</p>
 <pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("https://github.com/jmeydam/countcheck.git", 
                          build_vignettes = FALSE)</a></code></pre>
 </div>
-<div id="example-1" class="section level2">
+<div id="example" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example-1" class="anchor"></a>Example 1</h2>
-<p>We simulate count data for 1000 observational units, assuming a “normal” data-generating process.</p>
-<p>Since the data-generating process is free of anomalies, all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
+<a href="#example" class="anchor"></a>Example</h2>
+<p>We simulate count data for 1000 observational units, assuming a certain known data-generating process.</p>
+<p>The data-generating process is free of anomalies, and all counts exceeding their respective upper control limits (UCLs) are false positives. Other things being equal it is desirable to have as few false positives as possible.</p>
 <p>When we compare the results for the partial-pooling and complete pooling models we tend to find that using a Bayesian hierarchical model with partial pooling far fewer new counts exceed their respective upper control limits.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">d</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span>(<span class="kw">random_seed</span> <span class="kw">=</span> <span class="fl">200807</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span><span class="op">(</span>random_seed <span class="op">=</span> <span class="fl">200807</span><span class="op">)</span>
+<span class="co">#&gt; This is cmdstanr version 0.3.0</span>
+<span class="co">#&gt; - Online documentation and vignettes at mc-stan.org/cmdstanr</span>
+<span class="co">#&gt; - CmdStan path set to: /Users/jens/.cmdstanr/cmdstan-2.26.0</span>
+<span class="co">#&gt; - Use set_cmdstan_path() to change the path</span>
+<span class="co">#&gt; Compiling Stan program...</span>
+<span class="co">#&gt; Running MCMC with 4 sequential chains, with 1 thread(s) per chain...</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000186 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.86 seconds.</span>
-<span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 14.2231 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                9.46906 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                23.6921 seconds (Total)</span>
-<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 finished in 14.9 seconds.</span>
+<span class="co">#&gt; Chain 2 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 finished in 15.7 seconds.</span>
+<span class="co">#&gt; Chain 3 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 finished in 15.7 seconds.</span>
+<span class="co">#&gt; Chain 4 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 finished in 16.4 seconds.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000118 seconds</span>
-<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.</span>
-<span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 13.7972 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                18.4367 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                32.2339 seconds (Total)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.00012 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.2 seconds.</span>
-<span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 13.3389 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                9.43883 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                22.7777 seconds (Total)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000111 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.11 seconds.</span>
-<span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 13.2235 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                9.4737 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                22.6972 seconds (Total)</span>
-<span class="co">#&gt; Chain 4:</span>
+<span class="co">#&gt; All 4 chains finished successfully.</span>
+<span class="co">#&gt; Mean chain execution time: 15.7 seconds.</span>
+<span class="co">#&gt; Total execution time: 63.2 seconds.</span>
 <span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
-<span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
-<span class="co">#&gt; alpha 0.04911885 0.001317154 0.04705517 0.05122606 8231.436 1.0001</span></pre></body></html></div>
+<span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff     Rhat4</span>
+<span class="co">#&gt; alpha 0.04905132 0.001360069 0.04697336 0.05128713 7247.988 0.9998833</span></code></pre></div>
 <p>Result:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># Counts exceeding UCLs</span>
 <span class="co"># *********************</span>
 <span class="co"># ucl_true_theta:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d</span>$<span class="no">y_new</span> - <span class="no">d</span>$<span class="no">ucl_true_theta</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d</span><span class="op">$</span><span class="va">ucl_true_theta</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1] 4</span>
 <span class="co"># ucl_nopool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d</span>$<span class="no">y_new</span> - <span class="no">d</span>$<span class="no">ucl_nopool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d</span><span class="op">$</span><span class="va">ucl_nopool</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1] 68</span>
 <span class="co"># ucl_complpool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d</span>$<span class="no">y_new</span> - <span class="no">d</span>$<span class="no">ucl_complpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d</span><span class="op">$</span><span class="va">ucl_complpool</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1] 74</span>
 <span class="co"># ucl_partpool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d</span>$<span class="no">y_new</span> - <span class="no">d</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d</span><span class="op">$</span><span class="va">ucl_partpool</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; [1] 18</span>
 
-<span class="no">d</span>[<span class="no">d</span>$<span class="no">y_new</span> - <span class="no">d</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
+<span class="va">d</span><span class="op">[</span><span class="va">d</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d</span><span class="op">$</span><span class="va">ucl_partpool</span> <span class="op">&gt;</span> <span class="fl">0</span>,
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
     <span class="st">"true_theta"</span>, <span class="st">"theta_partpool"</span>,
-    <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span>)]
+    <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;        n  y n_new y_new true_theta theta_partpool ucl_true_theta ucl_partpool</span>
-<span class="co">#&gt; 109   24  0    12     3 0.05812885    0.024064468            3.5          2.5</span>
-<span class="co">#&gt; 228   54  1    27     4 0.11591158    0.028294979            8.5          3.5</span>
-<span class="co">#&gt; 364   95  5    48     8 0.10194831    0.050662061           12.5          7.5</span>
-<span class="co">#&gt; 374  100  2    50     6 0.07644745    0.026322423           10.5          5.5</span>
-<span class="co">#&gt; 399  110  1    55     5 0.01644587    0.016758025            4.5          4.5</span>
-<span class="co">#&gt; 462  136  2    68     8 0.04883827    0.020448365            9.5          5.5</span>
-<span class="co">#&gt; 501  157  9    79    12 0.08478296    0.055070260           14.5         11.5</span>
-<span class="co">#&gt; 529  171  5    86     9 0.05595134    0.032107721           11.5          8.5</span>
-<span class="co">#&gt; 598  210  1   105     5 0.03900614    0.009357919           10.5          4.5</span>
-<span class="co">#&gt; 613  219  2   110     6 0.01705977    0.013253719            6.5          5.5</span>
-<span class="co">#&gt; 635  239 12   120    14 0.06846729    0.049781645           17.5         13.5</span>
-<span class="co">#&gt; 698  289  9   145    16 0.04752106    0.033010537           15.5         11.5</span>
-<span class="co">#&gt; 751  336  3   168     7 0.01771915    0.011654992            8.5          6.5</span>
-<span class="co">#&gt; 805  410 39   205    33 0.15066465    0.089235197           48.5         31.5</span>
-<span class="co">#&gt; 894  612 26   306    25 0.05070100    0.042802879           27.5         24.5</span>
-<span class="co">#&gt; 935  802 54   401    51 0.09019851    0.066301597           54.5         42.5</span>
-<span class="co">#&gt; 967 1040 26   520    25 0.03408030    0.025742256           30.5         24.5</span>
-<span class="co">#&gt; 974 1124 73   562    55 0.07536090    0.064331540           62.5         54.5</span></pre></body></html></div>
+<span class="co">#&gt; 109   24  0    12     3 0.05812885    0.024302886            3.5          2.5</span>
+<span class="co">#&gt; 228   54  1    27     4 0.11591158    0.027967910            8.5          3.5</span>
+<span class="co">#&gt; 364   95  5    48     8 0.10194831    0.050417683           12.5          7.5</span>
+<span class="co">#&gt; 374  100  2    50     6 0.07644745    0.026326791           10.5          5.5</span>
+<span class="co">#&gt; 399  110  1    55     5 0.01644587    0.016491387            4.5          4.5</span>
+<span class="co">#&gt; 462  136  2    68     8 0.04883827    0.020516222            9.5          5.5</span>
+<span class="co">#&gt; 501  157  9    79    12 0.08478296    0.054769164           14.5         11.5</span>
+<span class="co">#&gt; 529  171  5    86     9 0.05595134    0.032173221           11.5          8.5</span>
+<span class="co">#&gt; 598  210  1   105     5 0.03900614    0.009289763           10.5          4.5</span>
+<span class="co">#&gt; 613  219  2   110     6 0.01705977    0.013208173            6.5          5.5</span>
+<span class="co">#&gt; 635  239 12   120    14 0.06846729    0.049739447           17.5         13.5</span>
+<span class="co">#&gt; 698  289  9   145    16 0.04752106    0.032966185           15.5         11.5</span>
+<span class="co">#&gt; 751  336  3   168     7 0.01771915    0.011626066            8.5          6.5</span>
+<span class="co">#&gt; 805  410 39   205    33 0.15066465    0.089261026           48.5         31.5</span>
+<span class="co">#&gt; 894  612 26   306    25 0.05070100    0.042676439           27.5         24.5</span>
+<span class="co">#&gt; 935  802 54   401    51 0.09019851    0.066278225           54.5         42.5</span>
+<span class="co">#&gt; 967 1040 26   520    25 0.03408030    0.025680542           30.5         24.5</span>
+<span class="co">#&gt; 974 1124 73   562    55 0.07536090    0.064351810           62.5         54.5</span></code></pre></div>
 <div id="alternatively" class="section level3">
 <h3 class="hasAnchor">
 <a href="#alternatively" class="anchor"></a>Alternatively:</h3>
 <p>Using the dataset provided in the package, the same result (here without the true_theta values) can be obtained with:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">e</span> <span class="kw">&lt;-</span> <span class="no">simdat</span>
-<span class="no">d1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span>(<span class="kw">unit</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">unit</span>,
-                 <span class="kw">n</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">n</span>,
-                 <span class="kw">y</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">y</span>,
-                 <span class="kw">n_new</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">n_new</span>,
-                 <span class="kw">y_new</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">y_new</span>,
-                 <span class="kw">random_seed</span> <span class="kw">=</span> <span class="fl">200807</span>)
-<span class="co">#&gt; recompiling to avoid crashing R session</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">e</span> <span class="op">&lt;-</span> <span class="va">simdat</span>
+<span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span><span class="op">(</span>unit <span class="op">=</span> <span class="va">e</span><span class="op">$</span><span class="va">unit</span>,
+                 n <span class="op">=</span> <span class="va">e</span><span class="op">$</span><span class="va">n</span>,
+                 y <span class="op">=</span> <span class="va">e</span><span class="op">$</span><span class="va">y</span>,
+                 n_new <span class="op">=</span> <span class="va">e</span><span class="op">$</span><span class="va">n_new</span>,
+                 y_new <span class="op">=</span> <span class="va">e</span><span class="op">$</span><span class="va">y_new</span>,
+                 random_seed <span class="op">=</span> <span class="fl">200807</span><span class="op">)</span>
+<span class="co">#&gt; Compiling Stan program...</span>
+<span class="co">#&gt; Running MCMC with 4 sequential chains, with 1 thread(s) per chain...</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000288 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.88 seconds.</span>
-<span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 15.7229 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                10.4741 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                26.197 seconds (Total)</span>
-<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 1 finished in 17.0 seconds.</span>
+<span class="co">#&gt; Chain 2 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 2 finished in 18.5 seconds.</span>
+<span class="co">#&gt; Chain 3 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 3 finished in 17.8 seconds.</span>
+<span class="co">#&gt; Chain 4 Iteration:    1 / 4000 [  0%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  100 / 4000 [  2%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  200 / 4000 [  5%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  300 / 4000 [  7%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  400 / 4000 [ 10%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  500 / 4000 [ 12%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  600 / 4000 [ 15%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  700 / 4000 [ 17%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  800 / 4000 [ 20%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration:  900 / 4000 [ 22%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1000 / 4000 [ 25%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1100 / 4000 [ 27%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1200 / 4000 [ 30%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1300 / 4000 [ 32%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1400 / 4000 [ 35%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1500 / 4000 [ 37%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1600 / 4000 [ 40%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1700 / 4000 [ 42%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1800 / 4000 [ 45%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 1900 / 4000 [ 47%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2000 / 4000 [ 50%]  (Warmup) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2001 / 4000 [ 50%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2100 / 4000 [ 52%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2200 / 4000 [ 55%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2300 / 4000 [ 57%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2400 / 4000 [ 60%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2500 / 4000 [ 62%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2600 / 4000 [ 65%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2700 / 4000 [ 67%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2800 / 4000 [ 70%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 2900 / 4000 [ 72%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3000 / 4000 [ 75%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3100 / 4000 [ 77%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3200 / 4000 [ 80%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3300 / 4000 [ 82%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3400 / 4000 [ 85%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3500 / 4000 [ 87%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3600 / 4000 [ 90%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3700 / 4000 [ 92%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3800 / 4000 [ 95%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 3900 / 4000 [ 97%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 Iteration: 4000 / 4000 [100%]  (Sampling) </span>
+<span class="co">#&gt; Chain 4 finished in 17.6 seconds.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000123 seconds</span>
-<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.23 seconds.</span>
-<span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 14.0003 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                18.9819 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                32.9822 seconds (Total)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000113 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.13 seconds.</span>
-<span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 13.8165 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                9.62245 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                23.439 seconds (Total)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000118 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.</span>
-<span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 13.2378 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                9.85371 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                23.0915 seconds (Total)</span>
-<span class="co">#&gt; Chain 4:</span>
+<span class="co">#&gt; All 4 chains finished successfully.</span>
+<span class="co">#&gt; Mean chain execution time: 17.7 seconds.</span>
+<span class="co">#&gt; Total execution time: 71.2 seconds.</span>
 <span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
-<span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
-<span class="co">#&gt; alpha 0.04911885 0.001317154 0.04705517 0.05122606 8231.436 1.0001</span></pre></body></html></div>
+<span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff     Rhat4</span>
+<span class="co">#&gt; alpha 0.04905132 0.001360069 0.04697336 0.05128713 7247.988 0.9998833</span></code></pre></div>
 <p>Result:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">d1</span>[<span class="no">d1</span>$<span class="no">y_new</span> - <span class="no">d1</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>,
-   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d1</span><span class="op">[</span><span class="va">d1</span><span class="op">$</span><span class="va">y_new</span> <span class="op">-</span> <span class="va">d1</span><span class="op">$</span><span class="va">ucl_partpool</span> <span class="op">&gt;</span> <span class="fl">0</span>,
+   <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
      <span class="st">"true_theta"</span>, <span class="st">"theta_partpool"</span>,
-     <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span>)]
+     <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt;        n  y n_new y_new true_theta theta_partpool ucl_true_theta ucl_partpool</span>
-<span class="co">#&gt; 109   24  0    12     3         NA    0.024064468             NA          2.5</span>
-<span class="co">#&gt; 228   54  1    27     4         NA    0.028294979             NA          3.5</span>
-<span class="co">#&gt; 364   95  5    48     8         NA    0.050662061             NA          7.5</span>
-<span class="co">#&gt; 374  100  2    50     6         NA    0.026322423             NA          5.5</span>
-<span class="co">#&gt; 399  110  1    55     5         NA    0.016758025             NA          4.5</span>
-<span class="co">#&gt; 462  136  2    68     8         NA    0.020448365             NA          5.5</span>
-<span class="co">#&gt; 501  157  9    79    12         NA    0.055070260             NA         11.5</span>
-<span class="co">#&gt; 529  171  5    86     9         NA    0.032107721             NA          8.5</span>
-<span class="co">#&gt; 598  210  1   105     5         NA    0.009357919             NA          4.5</span>
-<span class="co">#&gt; 613  219  2   110     6         NA    0.013253719             NA          5.5</span>
-<span class="co">#&gt; 635  239 12   120    14         NA    0.049781645             NA         13.5</span>
-<span class="co">#&gt; 698  289  9   145    16         NA    0.033010537             NA         11.5</span>
-<span class="co">#&gt; 751  336  3   168     7         NA    0.011654992             NA          6.5</span>
-<span class="co">#&gt; 805  410 39   205    33         NA    0.089235197             NA         31.5</span>
-<span class="co">#&gt; 894  612 26   306    25         NA    0.042802879             NA         24.5</span>
-<span class="co">#&gt; 935  802 54   401    51         NA    0.066301597             NA         42.5</span>
-<span class="co">#&gt; 967 1040 26   520    25         NA    0.025742256             NA         24.5</span>
-<span class="co">#&gt; 974 1124 73   562    55         NA    0.064331540             NA         54.5</span></pre></body></html></div>
-</div>
-</div>
-<div id="example-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-2" class="anchor"></a>Example 2</h2>
-<p>The count data in the first example were simulated with a known, “normal” data-generating process. Some new count values of interest <em>y_new</em> were 0.</p>
-<p>In this example we change <em>y_new</em> as follows:</p>
-<p><code>y_new = round(2 * ceiling(e$n_new * e$true_theta))</code></p>
-<p>This is essentially twice the expected value for <em>y_new</em>, given a new reference count value n_new (used as a measure of exposure) and a value for <em>theta</em>. We round the result up, and the lowest possible value in this example is 1.</p>
-<p>Since we use a factor of 2, it is likely that the product will often exceed the upper control limit (UCL).</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">d2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/countcheck.html">countcheck</a></span>(<span class="kw">unit</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">unit</span>,
-                 <span class="kw">n</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">n</span>,
-                 <span class="kw">y</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">y</span>,
-                 <span class="kw">n_new</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">n_new</span>,
-                 <span class="kw">y_new</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fl">2</span> * <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span>(<span class="no">e</span>$<span class="no">n_new</span> * <span class="no">e</span>$<span class="no">true_theta</span>)),
-                 <span class="kw">true_theta</span> <span class="kw">=</span> <span class="no">e</span>$<span class="no">true_theta</span>,
-                 <span class="kw">random_seed</span> <span class="kw">=</span> <span class="fl">200807</span>)
-<span class="co">#&gt; recompiling to avoid crashing R session</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 1).</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 0.000253 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2.53 seconds.</span>
-<span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 13.4997 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                9.49824 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                22.9979 seconds (Total)</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 2).</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Gradient evaluation took 0.000184 seconds</span>
-<span class="co">#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 1.84 seconds.</span>
-<span class="co">#&gt; Chain 2: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; Chain 2:  Elapsed Time: 13.4225 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 2:                21.2326 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 2:                34.6551 seconds (Total)</span>
-<span class="co">#&gt; Chain 2: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 3).</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Gradient evaluation took 0.000111 seconds</span>
-<span class="co">#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 1.11 seconds.</span>
-<span class="co">#&gt; Chain 3: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; Chain 3:  Elapsed Time: 14.443 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 3:                9.76409 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 3:                24.2071 seconds (Total)</span>
-<span class="co">#&gt; Chain 3: </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL '70f8c7029a69cad74d26c394cfc0955b' NOW (CHAIN 4).</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Gradient evaluation took 0.000111 seconds</span>
-<span class="co">#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 1.11 seconds.</span>
-<span class="co">#&gt; Chain 4: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1200 / 4000 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 1600 / 4000 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2000 / 4000 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2001 / 4000 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2400 / 4000 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 2800 / 4000 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3200 / 4000 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 3600 / 4000 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 4: </span>
-<span class="co">#&gt; Chain 4:  Elapsed Time: 15.1812 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 4:                11.174 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 4:                26.3552 seconds (Total)</span>
-<span class="co">#&gt; Chain 4:</span>
-<span class="co">#&gt; 1000 vector or matrix parameters hidden. Use depth=2 to show them.</span>
-<span class="co">#&gt;             mean          sd       5.5%      94.5%    n_eff  Rhat4</span>
-<span class="co">#&gt; alpha 0.04911885 0.001317154 0.04705517 0.05122606 8231.436 1.0001</span></pre></body></html></div>
-<p>Result:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># Counts exceeding UCLs</span>
-<span class="co"># *********************</span>
-<span class="co"># ucl_true_theta:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_true_theta</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
-<span class="co">#&gt; [1] 310</span>
-<span class="co"># ucl_nopool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_nopool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
-<span class="co">#&gt; [1] 489</span>
-<span class="co"># ucl_complpool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_complpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
-<span class="co">#&gt; [1] 343</span>
-<span class="co"># ucl_partpool:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>)
-<span class="co">#&gt; [1] 332</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(
-  <span class="no">d2</span>[<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>,
-     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
-       <span class="st">"true_theta"</span>, <span class="st">"theta_partpool"</span>,
-       <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span>)]
-)
-<span class="co">#&gt;   n y n_new y_new  true_theta theta_partpool ucl_true_theta ucl_partpool</span>
-<span class="co">#&gt; 1 1 0     1     2 0.049278162     0.03815631            1.5          1.5</span>
-<span class="co">#&gt; 2 1 0     1     2 0.050456677     0.03806424            1.5          1.5</span>
-<span class="co">#&gt; 3 1 0     1     2 0.118428974     0.03879413            1.5          1.5</span>
-<span class="co">#&gt; 4 2 0     1     2 0.072886179     0.03742913            1.5          1.5</span>
-<span class="co">#&gt; 5 2 0     1     2 0.004318677     0.03759384            0.5          1.5</span>
-<span class="co">#&gt; 6 2 0     1     2 0.014761557     0.03784933            0.5          1.5</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(
-  <span class="no">d2</span>[<span class="no">d2</span>$<span class="no">y_new</span> - <span class="no">d2</span>$<span class="no">ucl_partpool</span> <span class="kw">&gt;</span> <span class="fl">0</span>,
-     <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"n"</span>, <span class="st">"y"</span>, <span class="st">"n_new"</span>, <span class="st">"y_new"</span>,
-       <span class="st">"true_theta"</span>, <span class="st">"theta_partpool"</span>,
-       <span class="st">"ucl_true_theta"</span>, <span class="st">"ucl_partpool"</span>)]
-)
-<span class="co">#&gt;         n   y n_new y_new  true_theta theta_partpool ucl_true_theta</span>
-<span class="co">#&gt; 995  1952 150   976   176 0.089378272    0.076146467          115.5</span>
-<span class="co">#&gt; 996  2202   4  1101    10 0.003693479    0.002268037           10.5</span>
-<span class="co">#&gt; 997  2334  60  1167    70 0.029640283    0.025967249           52.5</span>
-<span class="co">#&gt; 998  2505  41  1253    38 0.014551266    0.016720363           31.5</span>
-<span class="co">#&gt; 999  3780 238  1890   250 0.065819145    0.062777478          158.5</span>
-<span class="co">#&gt; 1000 3909  63  1955    76 0.019160583    0.016331095           56.5</span>
-<span class="co">#&gt;      ucl_partpool</span>
-<span class="co">#&gt; 995         100.5</span>
-<span class="co">#&gt; 996           7.5</span>
-<span class="co">#&gt; 997          47.5</span>
-<span class="co">#&gt; 998          35.5</span>
-<span class="co">#&gt; 999         151.5</span>
-<span class="co">#&gt; 1000         49.5</span></pre></body></html></div>
-<p>As analyzed in detail in the <a href="https://jmeydam.github.io/count-anomalies/simulation_study.html">simulation study</a>, if we gradually increase the factor from 1 to 8 we will find that the number of cases exceeding the UCL is similar for the partial-pooling and true-theta UCLs, but initially substantially higher for the no-pooling UCLs, as can be observed here for a factor of 2. The no-pooling UCL performs poorly especially when the previously observed count <em>y</em> was 0, leading to an UCL of 0.5.</p>
-<p>The general results are not affected when changing the seed value.</p>
+<span class="co">#&gt; 109   24  0    12     3         NA    0.024302886             NA          2.5</span>
+<span class="co">#&gt; 228   54  1    27     4         NA    0.027967910             NA          3.5</span>
+<span class="co">#&gt; 364   95  5    48     8         NA    0.050417683             NA          7.5</span>
+<span class="co">#&gt; 374  100  2    50     6         NA    0.026326791             NA          5.5</span>
+<span class="co">#&gt; 399  110  1    55     5         NA    0.016491387             NA          4.5</span>
+<span class="co">#&gt; 462  136  2    68     8         NA    0.020516222             NA          5.5</span>
+<span class="co">#&gt; 501  157  9    79    12         NA    0.054769164             NA         11.5</span>
+<span class="co">#&gt; 529  171  5    86     9         NA    0.032173221             NA          8.5</span>
+<span class="co">#&gt; 598  210  1   105     5         NA    0.009289763             NA          4.5</span>
+<span class="co">#&gt; 613  219  2   110     6         NA    0.013208173             NA          5.5</span>
+<span class="co">#&gt; 635  239 12   120    14         NA    0.049739447             NA         13.5</span>
+<span class="co">#&gt; 698  289  9   145    16         NA    0.032966185             NA         11.5</span>
+<span class="co">#&gt; 751  336  3   168     7         NA    0.011626066             NA          6.5</span>
+<span class="co">#&gt; 805  410 39   205    33         NA    0.089261026             NA         31.5</span>
+<span class="co">#&gt; 894  612 26   306    25         NA    0.042676439             NA         24.5</span>
+<span class="co">#&gt; 935  802 54   401    51         NA    0.066278225             NA         42.5</span>
+<span class="co">#&gt; 967 1040 26   520    25         NA    0.025680542             NA         24.5</span>
+<span class="co">#&gt; 974 1124 73   562    55         NA    0.064351810             NA         54.5</span></code></pre></div>
 <p>In a realistic scenario it is not possible to assess performance by comparison with “true” values. The true values of <em>theta</em> are generally not known, and the probability distributions assumed for the Bayesian hierarchical model (the no-pooling model) may in fact be inappropriate.</p>
 <p>On the other hand, in a realistic scenario it is often possible to assess performance by investigating individual cases.</p>
+</div>
 </div>
 <div id="html-report" class="section level2">
 <h2 class="hasAnchor">
 <a href="#html-report" class="anchor"></a>HTML Report</h2>
-<p>Select data from data frame d (example 1 above) for the report:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">countcheck_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/select_for_report.html">select_for_report</a></span>(<span class="no">d</span>)</pre></body></html></div>
+<p>Select data from data frame d (example above) for the report:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">countcheck_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_for_report.html">select_for_report</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
 <p>Result:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">countcheck_df</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">countcheck_df</span><span class="op">)</span>
 <span class="co">#&gt; 'data.frame':    18 obs. of  3 variables:</span>
 <span class="co">#&gt;  $ y_new       : int  8 16 51 3 4 5 5 6 6 7 ...</span>
 <span class="co">#&gt;  $ ucl_partpool: num  5.5 11.5 42.5 2.5 3.5 4.5 4.5 5.5 5.5 6.5 ...</span>
-<span class="co">#&gt;  $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...</span></pre></body></html></div>
+<span class="co">#&gt;  $ unit        : int  462 698 935 109 228 399 598 374 613 751 ...</span></code></pre></div>
 <p>We also need a data frame with unit master data. Here, we just generate some data:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">units_tmp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">countcheck_df</span>$<span class="no">unit</span>))
-<span class="no">unit_df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
-  <span class="kw">unit</span> <span class="kw">=</span> <span class="no">units_tmp</span>,
-  <span class="kw">unit_name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Unit"</span>,
-                    <span class="no">units_tmp</span>),
-  <span class="kw">unit_url</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"http://domain/units/"</span>,
-                    <span class="no">units_tmp</span>,
-                    <span class="st">".html"</span>),
-  <span class="kw">unit_group_name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Group"</span>,
-                          <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>,
-                              <span class="kw">length.out</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">units_tmp</span>)))
-)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">units_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">countcheck_df</span><span class="op">$</span><span class="va">unit</span><span class="op">)</span><span class="op">)</span>
+<span class="va">unit_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+  unit <span class="op">=</span> <span class="va">units_tmp</span>,
+  unit_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Unit"</span>,
+                    <span class="va">units_tmp</span><span class="op">)</span>,
+  unit_url <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"http://domain/units/"</span>,
+                    <span class="va">units_tmp</span>,
+                    <span class="st">".html"</span><span class="op">)</span>,
+  unit_group_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Group"</span>,
+                          <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,
+                              length.out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">units_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p>Result:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">unit_df</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">unit_df</span><span class="op">)</span>
 <span class="co">#&gt; 'data.frame':    18 obs. of  4 variables:</span>
 <span class="co">#&gt;  $ unit           : int  109 228 364 374 399 462 501 529 598 613 ...</span>
 <span class="co">#&gt;  $ unit_name      : chr  "Unit 109" "Unit 228" "Unit 364" "Unit 374" ...</span>
 <span class="co">#&gt;  $ unit_url       : chr  "http://domain/units/109.html" "http://domain/units/228.html" "http://domain/units/364.html" "http://domain/units/374.html" ...</span>
-<span class="co">#&gt;  $ unit_group_name: chr  "Group 1" "Group 2" "Group 3" "Group 4" ...</span></pre></body></html></div>
+<span class="co">#&gt;  $ unit_group_name: chr  "Group 1" "Group 2" "Group 3" "Group 4" ...</span></code></pre></div>
 <p>Generate report as R string:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">report</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/html_report.html">html_report</a></span>(
-  <span class="kw">countcheck_list</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">df</span> <span class="kw">=</span> <span class="no">countcheck_df</span>, <span class="kw">caption</span> <span class="kw">=</span> <span class="st">"KPI 1"</span>)
-  ),
-  <span class="kw">unit_df</span> <span class="kw">=</span> <span class="no">unit_df</span>,
-  <span class="kw">title</span> <span class="kw">=</span> <span class="st">"Report"</span>,
-  <span class="kw">table_width_px</span> <span class="kw">=</span> <span class="fl">500</span>,
-  <span class="kw">column_headers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
-    <span class="kw">group</span> <span class="kw">=</span> <span class="st">"Group"</span>,
-    <span class="kw">count</span> <span class="kw">=</span> <span class="st">"Count"</span>,
-    <span class="kw">ucl</span> <span class="kw">=</span> <span class="st">"UCL"</span>,
-    <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"Unit"</span>,
-    <span class="kw">name</span> <span class="kw">=</span> <span class="st">"Name"</span>),
-  <span class="kw">charset</span> <span class="kw">=</span> <span class="st">"utf-8"</span>,
-  <span class="kw">lang</span> <span class="kw">=</span> <span class="st">"en"</span>,
-  <span class="kw">home_url</span> <span class="kw">=</span> <span class="st">"https://github.com/jmeydam/countcheck"</span>
-)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">report</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/html_report.html">html_report</a></span><span class="op">(</span>
+  countcheck_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>df <span class="op">=</span> <span class="va">countcheck_df</span>, caption <span class="op">=</span> <span class="st">"KPI 1"</span><span class="op">)</span>
+  <span class="op">)</span>,
+  unit_df <span class="op">=</span> <span class="va">unit_df</span>,
+  title <span class="op">=</span> <span class="st">"Report"</span>,
+  table_width_px <span class="op">=</span> <span class="fl">500</span>,
+  column_headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    group <span class="op">=</span> <span class="st">"Group"</span>,
+    count <span class="op">=</span> <span class="st">"Count"</span>,
+    ucl <span class="op">=</span> <span class="st">"UCL"</span>,
+    unit <span class="op">=</span> <span class="st">"Unit"</span>,
+    name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span>,
+  charset <span class="op">=</span> <span class="st">"utf-8"</span>,
+  lang <span class="op">=</span> <span class="st">"en"</span>,
+  home_url <span class="op">=</span> <span class="st">"https://github.com/jmeydam/countcheck"</span>
+<span class="op">)</span></code></pre></div>
 <p>Save HTML report to disk:</p>
 <pre><code>&gt; sink("report.html")
 &gt; cat(report)
@@ -648,7 +653,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

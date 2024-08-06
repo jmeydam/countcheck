@@ -9,8 +9,8 @@ html_report(
   unit_df,
   title = "Report",
   table_width_px = 1000,
-  column_headers = c(group = "Group", count = "Count", ucl = "UCL", unit = "Unit", name
-    = "Name"),
+  column_headers = c(group = "Group", count = "Count", ucl = "UCL", unit = "Unit", name =
+    "Name"),
   charset = "utf-8",
   lang = "en",
   home_url = NULL,

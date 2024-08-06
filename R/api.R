@@ -63,8 +63,6 @@
 #'   in calculation of UCLs
 #' @param random_seed Seed value (default: 200731) - used in simulation and
 #'   by Stan
-#' @param precis_depth Depth parameter for rethinking::precis() (default: 1) -
-#'   used by function for partial-pooling model
 #' @return Data frame with all columns populated
 countcheck <- function(unit = NULL,
                        n = NULL,
@@ -74,8 +72,7 @@ countcheck <- function(unit = NULL,
                        true_theta = NULL,
                        beta = 0.376,
                        factor_sd = 3,
-                       random_seed = 200731,
-                       precis_depth = 1) {
+                       random_seed = 200731) {
 
   # If unit is NULL, all data vectors passed to function are ignored,
   # and simulation is used to generate data
@@ -107,8 +104,7 @@ countcheck <- function(unit = NULL,
   d <- add_theta_partpool(
     d,
     beta = beta,
-    random_seed = random_seed,
-    precis_depth = precis_depth
+    random_seed = random_seed
   )
 
   # Add "true" UCL to data frame

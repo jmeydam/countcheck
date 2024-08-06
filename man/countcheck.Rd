@@ -13,8 +13,7 @@ countcheck(
   true_theta = NULL,
   beta = 0.376,
   factor_sd = 3,
-  random_seed = 200731,
-  precis_depth = 1
+  random_seed = 200731
 )
 }
 \arguments{
@@ -41,9 +40,6 @@ in calculation of UCLs}
 
 \item{random_seed}{Seed value (default: 200731) - used in simulation and
 by Stan}
-
-\item{precis_depth}{Depth parameter for rethinking::precis() (default: 1) -
-used by function for partial-pooling model}
 }
 \value{
 Data frame with all columns populated

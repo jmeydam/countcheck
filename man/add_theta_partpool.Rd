@@ -4,7 +4,7 @@
 \alias{add_theta_partpool}
 \title{Add partial-pooling estimate of \emph{theta} to data frame}
 \usage{
-add_theta_partpool(d, beta = 0.376, random_seed = 200731, precis_depth = 1)
+add_theta_partpool(d, beta = 0.376, random_seed = 200731)
 }
 \arguments{
 \item{d}{Initialized data frame}

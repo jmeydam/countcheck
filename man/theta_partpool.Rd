@@ -4,7 +4,7 @@
 \alias{theta_partpool}
 \title{Partial-pooling model (Bayesian hierarchical model)}
 \usage{
-theta_partpool(n, y, beta = 0.376, random_seed = 200731, precis_depth = 1)
+theta_partpool(n, y, beta = 0.376, random_seed = 200731)
 }
 \arguments{
 \item{n}{Previous reference count values (measure of exposure),
@@ -16,8 +16,6 @@ must at least be 1}
 (default: 0.376, so that the expected value of alpha is 0.3)}
 
 \item{random_seed}{Seed value for Stan (default: 200731)}
-
-\item{precis_depth}{Depth parameter for rethinking::precis() (default: 1)}
 }
 \value{
 Partial-pooling estimates of \emph{theta}

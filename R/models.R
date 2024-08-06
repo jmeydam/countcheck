@@ -96,13 +96,11 @@ theta_complpool <- function(n, y) {
 #' @param beta Parameter for half-normal distribution of alpha
 #'   (default: 0.376, so that the expected value of alpha is 0.3)
 #' @param random_seed Seed value for Stan (default: 200731)
-#' @param precis_depth Depth parameter for rethinking::precis() (default: 1)
 #' @return Partial-pooling estimates of \emph{theta}
 theta_partpool <- function(n,
                            y,
                            beta = 0.376,
-                           random_seed = 200731,
-                           precis_depth = 1) {
+                           random_seed = 200731) {
   # check arguments
   stopifnot(
     # n must be 1 or greater
@@ -114,32 +112,26 @@ theta_partpool <- function(n,
     # beta must be greater than 0
     beta > 0,
     # random_seed must be greater than 0
-    random_seed > 0,
-    # precis_depth must be either 1 or 2
-    precis_depth %in% c(1, 2)
+    random_seed > 0
   )
-  # The function ulam() returns samples drawn from the posterior
-  # distribution of our model.
   # Four chains with 4000 iterations each, of which half are used for
   # warm-up, giving 8000 samples for each of the parameters.
   unit <- 1:length(n) # unit must be index of sequence
-  dat <- list(unit = unit, n = n, y = y, beta = beta)
-  rethinking::set_ulam_cmdstan(TRUE)
-  m <- rethinking::ulam(
-    alist(
-      y ~ dpois(lambda),
-      lambda <- n * theta[unit],
-      theta[unit] ~ dhalfnorm(0, alpha),
-      alpha ~ dhalfnorm(0, beta)
-    ),
-    data = dat,
-    chains = 4,
-    iter = 4000,
-    seed = random_seed
-  )
-  print(rethinking::precis(m, depth = precis_depth))
-  post <- rethinking::extract.samples(m)
-  post_theta_means <- apply(post$theta, 2, mean)
+  d <- list(unit = unit, n = n, y = y, beta = beta)
+  stan_model_file <- system.file("stan",
+                                 "partpool.stan",
+                                 package = "countcheck")
+  model <- cmdstanr::cmdstan_model(stan_file = stan_model_file)
+  fit <- model$sample(data = d,
+                      chains = 4,
+                      iter_sampling = 2000,
+                      iter_warmup = 2000,
+                      seed = random_seed)
+  draws <- fit$draws()
+  post_theta_means <- numeric(n)
+  for (i in 1:n) {
+    post_theta_means[i] <- mean(draws[, , paste0("theta[", i, "]")])
+  }
   # We will use the sample means as point estimates.
   post_theta_means
 }
@@ -182,14 +174,12 @@ add_theta_complpool <- function(d) {
 #' @return Data frame with values for \emph{theta_partpool}
 add_theta_partpool <- function(d,
                                beta = 0.376,
-                               random_seed = 200731,
-                               precis_depth = 1) {
+                               random_seed = 200731) {
   d$theta_partpool <- theta_partpool(
     d$n,
     d$y,
     beta = beta,
-    random_seed = random_seed,
-    precis_depth = precis_depth
+    random_seed = random_seed
   )
   d
 }

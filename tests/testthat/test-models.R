@@ -75,9 +75,4 @@ test_that("models reject arguments that are not plausible", {
     "random_seed > 0 is not TRUE",
     fixed = TRUE
   )
-  expect_error(
-    theta_partpool(n = c(1, 2, 3), y = c(1, 2, 0), precis_depth = -1),
-    "precis_depth %in% c(1, 2) is not TRUE",
-    fixed = TRUE
-  )
 })

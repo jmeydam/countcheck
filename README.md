@@ -27,31 +27,12 @@ The package documentation can be accessed via the
 
 ## Installation
 
-First install dependencies.
-
-To get a working C++ toolchain on macOS Big Sur (version 11.2.1 or higher), 
-install Xcode from the App Store or install Xcode command line tools in a shell:
-
-```
-% xcode-select --install
-```
-
-Follow the instructions for cmdstanr. The macOS [R toolchain installer](https://github.com/rmacoslib/r-macos-rtools)
-referred to in the 
-[RStan documentation](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started)
-is then not needed.
-
-Next, install the following R packages and their dependencies in this order:
+Install the following R packages and their dependencies:
 
 * actuar
 * extraDistr
-* knitr
 * cmdstanr ([instructions](https://mc-stan.org/cmdstanr/articles/cmdstanr.html), also for installing CmdStan)
-* rstan ([instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) - on macOS skip section on toolchain)
-* rethinking (>= 2.13)
 
-The rethinking package needs to be installed from 
-[GitHub](https://github.com/rmcelreath/rethinking).
 
 The prototype can then be installed from GitHub with:
 ```

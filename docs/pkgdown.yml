@@ -1,7 +1,6 @@
-pandoc: 2.7.3
-pkgdown: 1.6.1
+pandoc: 3.1.11
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   countcheck: countcheck.html
-last_built: 2021-02-12T18:31Z
-
+last_built: 2024-08-06T17:24Z

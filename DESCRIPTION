@@ -1,7 +1,7 @@
 Package: countcheck
 Type: Package
 Title: Detecting Count Anomalies Using Bayesian Hierarchical Models
-Version: 0.2.0
+Version: 0.2.1
 Author: Jens Meydam
 Maintainer: Jens Meydam <jmeydam@gmail.com>
 Description: Dertermines upper control limits for count data.

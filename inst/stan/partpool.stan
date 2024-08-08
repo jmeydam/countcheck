@@ -14,6 +14,6 @@ model {
   vector[units] lambda;
   alpha ~ normal(0, beta);
   theta[1:units] ~ normal(0, alpha);
-  lambda[i:units] = n[i:units] .* theta[i:units];
-  y[i:units] ~ poisson(lambda[i:units]);
+  lambda[1:units] = n[1:units] .* theta[1:units];
+  y[1:units] ~ poisson(lambda[1:units]);
 }

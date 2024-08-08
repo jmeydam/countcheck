@@ -17,4 +17,3 @@ model {
   lambda[1:units] = [1:units] .* theta[1:units];
   y[1:units] ~ poisson(lambda[1:units]);
 }
-

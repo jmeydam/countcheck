@@ -116,8 +116,7 @@ theta_partpool <- function(n,
   )
   # Four chains with 4000 iterations each, of which half are used for
   # warm-up, giving 8000 samples for each of the parameters.
-  unit <- 1:length(n) # unit must be index of sequence
-  d <- list(unit = unit, n = n, y = y, beta = beta)
+  d <- list(units = length(n), n = n, y = y, beta = beta)
   stan_model_file <- system.file("stan",
                                  "partpool.stan",
                                  package = "countcheck")

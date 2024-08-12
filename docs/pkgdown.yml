@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   countcheck: countcheck.html
-last_built: 2024-08-08T13:08Z
+last_built: 2024-08-12T17:22Z
 urls:
   reference: https://github.com/jmeydam/countcheck/reference
   article: https://github.com/jmeydam/countcheck/articles

@@ -127,8 +127,8 @@ theta_partpool <- function(n,
                       iter_warmup = 2000,
                       seed = random_seed)
   draws <- fit$draws()
-  post_theta_means <- numeric(n)
-  for (i in 1:n) {
+  post_theta_means <- numeric(length(n))
+  for (i in 1:length(n)) {
     post_theta_means[i] <- mean(draws[, , paste0("theta[", i, "]")])
   }
   # We will use the sample means as point estimates.
